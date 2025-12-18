@@ -1,0 +1,834 @@
+{% extends "frontend/themes/base.html" %}
+{% load static %}
+
+{% block content %}
+{% csrf_token %}
+<style>
+    .ec-breadcrumb-title {
+        font-size: 16px;
+    }
+
+    .ec-breadcrumb-list li {
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 300;
+        letter-spacing: 0.02rem;
+        line-height: 1.2;
+        text-transform: capitalize;
+    }
+
+    .ec-breadcrumb-list .ec-breadcrumb-item.active::before {
+        color: #3474d4;
+    }
+
+    .ec-breadcrumb {
+        padding: 15px 0;
+        background-color: #f7f7f7;
+        border-top: 1px solid #eeeeee;
+        border-bottom: 1px solid #eeeeee;
+    }
+
+    .ec-breadcrumb-item+.ec-breadcrumb-item::before {
+        display: inline-block;
+        padding-right: 7px;
+        color: #444444;
+        content: "\f101";
+        font-family: "EcIcons";
+        font-size: 15px;
+    }
+
+    .ec-breadcrumb-list li.active {
+        color: #3474d4;
+    }
+
+    .ec-breadcrumb-item+.ec-breadcrumb-item {
+        padding-left: 7px;
+    }
+
+    .product-page {
+        padding: 12px 0;
+        background: #f8f9fa;
+    }
+
+    .product-container {
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-images {
+        padding: 30px;
+        background: #fff;
+    }
+
+    .main-image {
+        width: 100%;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        border: 1px solid #e0e0e0;
+    }
+
+    .thumbnail-images {
+        display: flex;
+        gap: 10px;
+        overflow-x: auto;
+    }
+
+    .thumbnail {
+        width: 80px;
+        height: 80px;
+        border: 2px solid #e0e0e0;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.3s;
+        object-fit: cover;
+    }
+
+    .thumbnail:hover,
+    .thumbnail.active {
+        border-color: #007bff;
+    }
+
+    .product-config {
+        padding: 30px;
+        background: #fafafa;
+    }
+
+    .product-title {
+        font-size: 28px;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .product-subtitle {
+        color: #666;
+        margin-bottom: 20px;
+        line-height: 1.6;
+    }
+
+    .config-section {
+        margin-bottom: 25px;
+    }
+
+    .config-label {
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 10px;
+        display: block;
+        font-size: 14px;
+    }
+
+    .option-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .option-btn {
+        padding: 10px 20px;
+        border: 2px solid #ddd;
+        background: white;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .option-btn:hover {
+        border-color: #007bff;
+        background: #f0f8ff;
+    }
+
+    .option-btn.active {
+        border-color: #007bff;
+        background: #007bff;
+        color: white;
+    }
+
+    .quantity-selector {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .qty-btn {
+        min-width: 80px;
+        padding: 12px 20px;
+        border: 2px solid #ddd;
+        background: white;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-weight: 600;
+        text-align: center;
+    }
+
+    .qty-btn:hover {
+        border-color: #007bff;
+    }
+
+    .qty-btn.active {
+        border-color: #007bff;
+        background: #007bff;
+        color: white;
+    }
+
+    .delivery-options {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 10px;
+    }
+
+    .delivery-card {
+        padding: 15px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        background: white;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-align: center;
+    }
+
+    .delivery-card:hover {
+        border-color: #007bff;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 123, 255, 0.15);
+    }
+
+    .delivery-card.active {
+        border-color: #007bff;
+        background: #f0f8ff;
+    }
+
+    .delivery-name {
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 5px;
+    }
+
+    .delivery-time {
+        font-size: 12px;
+        color: #666;
+    }
+
+    .pricing-grid {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 20px 0;
+        border: 1px solid #e0e0e0;
+    }
+
+    .pricing-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .pricing-table th {
+        background: #f8f9fa;
+        padding: 12px;
+        text-align: left;
+        font-weight: 600;
+        border-bottom: 2px solid #dee2e6;
+        font-size: 14px;
+    }
+
+    .pricing-table td {
+        padding: 12px;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    .pricing-table tr:hover {
+        background: #f8f9fa;
+    }
+
+    .price-highlight {
+        font-size: 18px;
+        font-weight: 700;
+        color: #28a745;
+    }
+
+    .add-to-cart-btn {
+        width: 100%;
+        padding: 18px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 18px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-top: 20px;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .add-to-cart-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+    }
+
+    .product-tabs {
+        margin-top: 40px;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .tab-buttons {
+        display: flex;
+        border-bottom: 2px solid #e0e0e0;
+        background: #f8f9fa;
+    }
+
+    .tab-btn {
+        padding: 15px 30px;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        font-weight: 600;
+        color: #666;
+        transition: all 0.3s;
+        border-bottom: 3px solid transparent;
+    }
+
+    .tab-btn:hover {
+        color: #007bff;
+    }
+
+    .tab-btn.active {
+        color: #007bff;
+        border-bottom-color: #007bff;
+        background: white;
+    }
+
+    .tab-content {
+        padding: 30px;
+        display: none;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+
+    .spec-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .spec-list li {
+        padding: 12px 0;
+        border-bottom: 1px solid #e9ecef;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .spec-label {
+        font-weight: 600;
+        color: #333;
+    }
+
+    .spec-value {
+        color: #666;
+    }
+
+    .free-delivery-badge {
+        display: inline-block;
+        background: #28a745;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 15px;
+    }
+
+    @media (max-width: 768px) {
+        .product-title {
+            font-size: 22px;
+        }
+
+        .option-buttons,
+        .quantity-selector {
+            gap: 8px;
+        }
+
+        .option-btn,
+        .qty-btn {
+            padding: 8px 15px;
+            font-size: 13px;
+        }
+    }
+</style>
+
+<!-- Breadcrumb -->
+<div class="sticky-header-next-sec ec-breadcrumb section-space-mb">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="row ec_breadcrumb_inner">
+                    <div class="col-md-6 col-sm-12">
+                        <h2 class="ec-breadcrumb-title">{{ product.name }}</h2>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <ul class="ec-breadcrumb-list">
+                            <li class="ec-breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+
+                            <li class="ec-breadcrumb-item active"><a href="#">{{ product.name }}</a></li>
+
+                            <!-- <li class="ec-breadcrumb-item active">{{ product.name }}</li> -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Product Page -->
+<section class="product-page">
+    <div class="container">
+        <div class="product-container">
+            <div class="row g-0">
+                <!-- Product Images -->
+                <div class="col-lg-6">
+                    <div class="product-images">
+                        {% if product.main_image %}
+                        <img src="{{ product.main_image.url }}" alt="{{ product.name }}" class="main-image"
+                            id="mainImage">
+                        {% else %}
+                        <img src="{% static 'frontend/assets/images/product-image/1_1.jpg' %}" alt="{{ product.name }}"
+                            class="main-image" id="mainImage">
+                        {% endif %}
+
+                        <div class="thumbnail-images">
+                            {% if product.main_image %}
+                            <img src="{{ product.main_image.url }}" class="thumbnail active"
+                                onclick="changeImage(this)">
+                            {% endif %}
+                            {% if product.image_1 %}
+                            <img src="{{ product.image_1.url }}" class="thumbnail" onclick="changeImage(this)">
+                            {% endif %}
+                            {% if product.image_2 %}
+                            <img src="{{ product.image_2.url }}" class="thumbnail" onclick="changeImage(this)">
+                            {% endif %}
+                            {% if product.image_3 %}
+                            <img src="{{ product.image_3.url }}" class="thumbnail" onclick="changeImage(this)">
+                            {% endif %}
+                            {% if product.image_4 %}
+                            <img src="{{ product.image_4.url }}" class="thumbnail" onclick="changeImage(this)">
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Configuration -->
+                <div class="col-lg-6">
+                    <div class="product-config">
+                        <span class="free-delivery-badge">🚚 FREE Delivery</span>
+
+                        <h1 class="product-title">{{ product.name }}</h1>
+                        <p class="product-subtitle">
+                            {{ product.short_description|default:"High-quality printing with fast delivery. Perfect for
+                            your business needs." }}
+                        </p>
+
+                        <!-- TRADEPRINT ORDER: Material → Size → Quantity → Service -->
+
+                        <!-- 1. Material Selection -->
+                        {% if product.material_options %}
+                        <div class="config-section">
+                            <label class="config-label">Material</label>
+                            <div class="option-buttons">
+                                {% for material in product.material_options %}
+                                <button class="option-btn {% if forloop.first %}active{% endif %}"
+                                    onclick="selectOption(this)" data-price="{{ material.price_modifier }}">
+                                    {{ material.name }}
+                                </button>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <!-- 2. Size Selection -->
+                        {% if product.size_options %}
+                        <div class="config-section">
+                            <label class="config-label">Size</label>
+                            <div class="option-buttons">
+                                {% for size in product.size_options %}
+                                <button class="option-btn {% if forloop.first %}active{% endif %}"
+                                    onclick="selectOption(this)" data-price="{{ size.price_modifier }}">
+                                    {{ size.name }}
+                                </button>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <!-- 2.5. Sides Printed -->
+                        {% if product.sides_printed and product.sides_printed != 'both' %}
+                        <div class="config-section">
+                            <label class="config-label">Sides Printed</label>
+                            <div class="option-buttons">
+                                <button class="option-btn active" onclick="selectOption(this)">
+                                    {{ product.get_sides_printed_display }}
+                                </button>
+                            </div>
+                        </div>
+                        {% elif product.sides_printed == 'both' %}
+                        <div class="config-section">
+                            <label class="config-label">Sides Printed</label>
+                            <div class="option-buttons">
+                                <button class="option-btn active" onclick="selectOption(this)" data-price="0">
+                                    Single Sided
+                                </button>
+                                <button class="option-btn" onclick="selectOption(this)"
+                                    data-price="{{ product.double_sided_price }}">
+                                    Double Sided
+                                </button>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <!-- 2.6. Lamination -->
+                        {% if product.lamination_options %}
+                        <div class="config-section">
+                            <label class="config-label">Lamination</label>
+                            <div class="option-buttons">
+                                {% for lamination in product.lamination_options %}
+                                <button class="option-btn {% if forloop.first %}active{% endif %}"
+                                    onclick="selectOption(this)" data-price="{{ lamination.price_modifier }}">
+                                    {{ lamination.name }}
+                                </button>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <!-- 3. Quantity Selection -->
+                        {% if product.quantity_tiers %}
+                        <div class="config-section">
+                            <label class="config-label">Quantity</label>
+                            <div class="quantity-selector">
+                                {% for tier in product.quantity_tiers %}
+                                <button class="qty-btn {% if forloop.first %}active{% endif %}"
+                                    onclick="selectQuantity(this, {{ tier.quantity }})" data-saver="{{ tier.saver }}"
+                                    data-standard="{{ tier.standard }}" data-express="{{ tier.express }}">
+                                    {{ tier.quantity }}
+                                </button>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <!-- 4. Delivery Service -->
+                        {% if product.delivery_options %}
+                        <div class="config-section">
+                            <label class="config-label">Service</label>
+                            <div class="delivery-options">
+                                {% for delivery in product.delivery_options %}
+                                <div class="delivery-card {% if delivery.name == 'Standard' %}active{% endif %}"
+                                    onclick="selectDelivery(this)" data-price="{{ delivery.price }}">
+                                    <div class="delivery-name">
+                                        {% if delivery.name == 'Saver' %}💰{% elif delivery.name == 'Express'
+                                        %}⚡{%else%}📦{% endif %}
+                                        {{ delivery.name }}
+                                    </div>
+                                    <div class="delivery-time">{{ delivery.days }} working days</div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <!-- Pricing Grid -->
+                        {% if product.quantity_tiers %}
+                        <div class="pricing-grid">
+                            <table class="pricing-table">
+                                <thead>
+                                    <tr>
+                                        <th>Quantity</th>
+                                        <th>Saver</th>
+                                        <th>Standard</th>
+                                        <th>Express</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for tier in product.quantity_tiers %}
+                                    <tr>
+                                        <td><strong>{{ tier.quantity }}</strong></td>
+                                        <td>₹{{ tier.saver }}</td>
+                                        <td>₹{{ tier.standard }}</td>
+                                        <td>₹{{ tier.express }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% endif %}
+
+                        <!-- 5. Artwork Upload -->
+                        <div class="config-section">
+                            <label class="config-label">Upload Artwork (PDF, AI, PNG, JPG)</label>
+                            <input type="file" id="artworkUpload" class="form-control"
+                                accept=".pdf,.ai,.png,.jpg,.jpeg">
+                            <small class="text-muted">Max file size: 50MB</small>
+                        </div>
+
+                        <!-- Add to Cart Button -->
+                        <button class="add-to-cart-btn" onclick="addToCart()">
+                            🛒 Add to Cart - <span id="currentPrice">₹{{ product.base_price|default:"0.00" }}</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Tabs -->
+        <div class="product-tabs">
+            <div class="tab-buttons">
+                <button class="tab-btn active" onclick="showTab(0)">Product Details</button>
+                <button class="tab-btn" onclick="showTab(1)">Technical Specifications</button>
+                <button class="tab-btn" onclick="showTab(2)">Delivery & Returns</button>
+            </div>
+
+            <div class="tab-content active">
+                <h3>Product Details</h3>
+                {{ product.full_description|safe|default:"<p>Our premium printing service offers exceptional quality and
+                    fast turnaround times. Perfect for businesses of all sizes.</p>" }}
+
+                {% if product.tags %}
+                <h4 style="margin-top: 20px;">Tags:</h4>
+                <p>{{ product.tags }}</p>
+                {% endif %}
+            </div>
+
+            <div class="tab-content">
+                <h3>Technical Specifications</h3>
+                <ul class="spec-list">
+                    {% if product.material_options %}
+                    <li>
+                        <span class="spec-label">Material:</span>
+                        <span class="spec-value">
+                            {% for material in product.material_options %}
+                            {{ material.name }}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </span>
+                    </li>
+                    {% endif %}
+                    {% if product.size_options %}
+                    <li>
+                        <span class="spec-label">Size:</span>
+                        <span class="spec-value">
+                            {% for size in product.size_options %}
+                            {{ size.name }}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </span>
+                    </li>
+                    {% endif %}
+                    <li>
+                        <span class="spec-label">Sides Printed:</span>
+                        <span class="spec-value">{{ product.get_sides_printed_display }}</span>
+                    </li>
+                    <li>
+                        <span class="spec-label">Minimum Order:</span>
+                        <span class="spec-value">{{ product.min_order_quantity }}</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="tab-content">
+                <h3>Delivery & Returns</h3>
+                {% if product.delivery_options %}
+                <h4>Delivery Options:</h4>
+                <ul>
+                    {% for delivery in product.delivery_options %}
+                    <li><strong>{{ delivery.name }} ({{ delivery.days }} working days):</strong>
+                        {% if delivery.price > 0 %}+₹{{ delivery.price }}{% else %}FREE{% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+
+                <h4 style="margin-top: 20px;">Returns Policy:</h4>
+                <p>We offer a 100% satisfaction guarantee. If you're not happy with your order, please contact us within
+                    7 days of receipt.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    function changeImage(thumbnail) {
+        document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
+        thumbnail.classList.add('active');
+        document.getElementById('mainImage').src = thumbnail.src;
+    }
+
+    function selectQuantity(btn, quantity) {
+        document.querySelectorAll('.qty-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        updatePrice();
+    }
+
+    function selectOption(btn) {
+        const siblings = btn.parentElement.querySelectorAll('.option-btn');
+        siblings.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        updatePrice();
+    }
+
+    function selectDelivery(card) {
+        document.querySelectorAll('.delivery-card').forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+        updatePrice();
+    }
+
+    function updatePrice() {
+        // Get selected quantity tier
+        const selectedQty = document.querySelector('.qty-btn.active');
+        const selectedDelivery = document.querySelector('.delivery-card.active');
+
+        if (selectedQty && selectedDelivery) {
+            let price = 0;
+            const deliveryName = selectedDelivery.querySelector('.delivery-name').textContent.trim();
+
+            if (deliveryName.includes('Saver')) {
+                price = parseFloat(selectedQty.dataset.saver || 0);
+            } else if (deliveryName.includes('Express')) {
+                price = parseFloat(selectedQty.dataset.express || 0);
+            } else {
+                price = parseFloat(selectedQty.dataset.standard || 0);
+            }
+
+            document.getElementById('currentPrice').textContent = '₹' + price.toFixed(2);
+        }
+    }
+
+    function showTab(index) {
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+
+        document.querySelectorAll('.tab-content')[index].classList.add('active');
+        document.querySelectorAll('.tab-btn')[index].classList.add('active');
+    }
+
+    function addToCart() {
+        // Get all selected values
+        const quantity = document.querySelector('.qty-btn.active')?.textContent.trim() || '';
+        const material = document.querySelector('.config-section:nth-of-type(1) .option-btn.active')?.textContent.trim() || '';
+        const size = document.querySelector('.config-section:nth-of-type(2) .option-btn.active')?.textContent.trim() || '';
+        const sidesPrinted = document.querySelector('.config-section:nth-of-type(3) .option-btn.active')?.textContent.trim() || '';
+        const lamination = document.querySelector('.config-section:nth-of-type(4) .option-btn.active')?.textContent.trim() || '';
+        const deliveryCard = document.querySelector('.delivery-card.active');
+        const deliveryService = deliveryCard?.querySelector('.delivery-name')?.textContent.trim().replace(/[💰⚡📦]/g, '').trim() || 'Standard';
+        const deliveryDays = deliveryCard?.querySelector('.delivery-time')?.textContent.trim() || '';
+        // Extract price: matches number like "2935" from "₹2935"
+        let priceText = document.getElementById('currentPrice').textContent;
+        const priceMatch = priceText.match(/[\d,]+\.?\d*/);
+        priceText = priceMatch ? priceMatch[0].replace(/,/g, '') : '0';
+
+        // Validation
+        if (!quantity) {
+            alert('Please select a quantity');
+            return;
+        }
+
+        // Get CSRF token from cookie
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        const csrftoken = getCookie('csrftoken') || document.querySelector('[name=csrfmiddlewaretoken]')?.value || '';
+
+        if (!csrftoken) {
+            alert('Security token missing. Please refresh the page and try again.');
+            return;
+        }
+
+        // Prepare form data
+        const formData = new FormData();
+        formData.append('product_id', '{{ product.id }}');
+        formData.append('quantity', quantity);
+        formData.append('material', material);
+        formData.append('size', size);
+        formData.append('sides_printed', sidesPrinted);
+        formData.append('lamination', lamination);
+        formData.append('delivery_service', deliveryService);
+        formData.append('delivery_days', deliveryDays);
+        formData.append('unit_price', priceText);
+        formData.append('delivery_price', '0');  // Delivery is free
+        formData.append('csrfmiddlewaretoken', csrftoken);
+
+        // Add Artwork
+        const artworkInput = document.getElementById('artworkUpload');
+        if (artworkInput && artworkInput.files.length > 0) {
+            formData.append('artwork', artworkInput.files[0]);
+        }
+
+        // Send to backend
+        fetch('{% url "add_to_cart" product.id %}', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': csrftoken
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(data => {
+                        throw new Error(data.message || 'Server error occurred');
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    alert(data.message + '\n\nCart Total: ₹' + data.cart_total.toFixed(2));
+                    // Reload page to update side cart
+                    window.location.reload();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while adding to cart:\n' + error.message);
+            });
+    }
+
+    function updateCartCount() {
+        // Update cart count badge
+        fetch('{% url "get_cart_count" %}')
+            .then(response => response.json())
+            .then(data => {
+                document.querySelectorAll('.ec-cart-count').forEach(el => {
+                    el.textContent = data.count;
+                });
+            })
+            .catch(error => console.error('Error updating cart count:', error));
+    }
+
+    // Initialize price on page load
+    document.addEventListener('DOMContentLoaded', function () {
+        updatePrice();
+        updateCartCount();  // Load initial cart count
+    });
+</script>
+
+{% endblock %}

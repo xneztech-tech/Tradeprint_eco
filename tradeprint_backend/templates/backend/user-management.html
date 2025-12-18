@@ -1,0 +1,244 @@
+{% extends 'backend/themes/base.html' %}
+{% load static %}
+
+{% block title %}User Management{% endblock %}
+
+{% block content %}
+<div class="ec-content-wrapper">
+    <div class="content">
+        <div class="breadcrumb-wrapper breadcrumb-wrapper-2 breadcrumb-contacts">
+            <h1>User Management</h1>
+            <p class="breadcrumbs">
+                <span><a href="{% url 'admin_dashboard' %}">Home</a></span>
+                <span><i class="mdi mdi-chevron-right"></i></span>
+                <span>Users</span>
+            </p>
+        </div>
+
+        {% if messages %}
+        <div class="row">
+            <div class="col-12">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card card-default" style="margin-left: 241px;">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <!-- Search -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <input type="text" id="searchInput" class="form-control"
+                                        placeholder="Search users by name, email, or phone...">
+                                </div>
+                                <div class="col-md-6 text-right">
+                                    <a href="{% url 'user_add' %}" class="btn btn-primary btn-sm mr-2">
+                                        <i class="mdi mdi-plus"></i> Add User
+                                    </a>
+                                    <span class="badge badge-primary badge-lg"
+                                        style="font-size: 14px; padding: 8px 16px;">Total Users: {{ users.count}}</span>
+                                </div>
+                            </div>
+
+                            <table id="responsive-data-table" class="table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Status</th>
+                                        <th>Joined Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for user in users %}
+                                    <tr data-role="{{ user.role }}">
+                                        <td>{{ user.id }}</td>
+                                        <td>
+                                            <div class="media">
+                                                <div class="media-image mr-3">
+                                                    <div class="avatar-circle">
+                                                        {{ user.first_name|first|upper }}{{ user.last_name|first|upper
+                                                        }}
+                                                    </div>
+                                                </div>
+                                                <div class="media-body align-self-center">
+                                                    <h6 class="mb-0">{{ user.first_name }} {{ user.last_name }}</h6>
+                                                    <small class="text-muted">@{{ user.username }}</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>{{ user.email }}</td>
+                                        <td>
+                                            {% if user.customer_profile %}
+                                            {{ user.customer_profile.phone }}
+                                            {% else %}
+                                            <span class="text-muted">N/A</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if user.is_active %}
+                                            <span class="badge badge-success">Active</span>
+                                            {% else %}
+                                            <span class="badge badge-secondary">Inactive</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ user.date_joined|date:"M d, Y" }}</td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-outline-success btn-sm"
+                                                    onclick="viewUser({{ user.id }})" title="View Details">
+                                                    <i class="mdi mdi-eye"></i>
+                                                </button>
+                                                {% if not user.is_superuser %}
+                                                <button type="button" class="btn btn-outline-danger btn-sm"
+                                                    onclick="deleteUser({{ user.id }}, '{{ user.first_name }} {{ user.last_name }}')"
+                                                    title="Delete">
+                                                    <i class="mdi mdi-delete"></i>
+                                                </button>
+                                                {% endif %}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="7" class="text-center">No users found</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <span>&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" id="userDetailsContent">
+                        <!-- Content loaded via AJAX -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <style>
+            .avatar-circle {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 600;
+                font-size: 14px;
+            }
+
+            .table tbody tr {
+                transition: all 0.3s ease;
+            }
+
+            .table tbody tr:hover {
+                background-color: #f8f9fa;
+            }
+
+            .btn-group .btn {
+                margin: 0 2px;
+            }
+        </style>
+
+        <script>
+            // Search functionality
+            document.getElementById('searchInput').addEventListener('keyup', function () {
+                const searchTerm = this.value.toLowerCase();
+                const rows = document.querySelectorAll('#responsive-data-table tbody tr');
+
+                rows.forEach(row => {
+                    const text = row.textContent.toLowerCase();
+                    row.style.display = text.includes(searchTerm) ? '' : 'none';
+                });
+            });
+
+
+
+            // View user details
+            function viewUser(userId) {
+                fetch(`/auth/user-detail/${userId}/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('userDetailsContent').innerHTML = `
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Personal Information</h6>
+                        <p><strong>Name:</strong> ${data.first_name} ${data.last_name}</p>
+                        <p><strong>Email:</strong> ${data.email}</p>
+                        <p><strong>Phone:</strong> ${data.phone || 'N/A'}</p>
+                        <p><strong>Role:</strong> ${data.role}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Account Information</h6>
+                        <p><strong>Username:</strong> ${data.username}</p>
+                        <p><strong>Status:</strong> ${data.is_active ? 'Active' : 'Inactive'}</p>
+                        <p><strong>Joined:</strong> ${data.date_joined}</p>
+                        <p><strong>Last Login:</strong> ${data.last_login || 'Never'}</p>
+                    </div>
+                </div>
+                ${data.address ? `
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <h6>Address Information</h6>
+                        <p>${data.address}, ${data.city}, ${data.postcode}</p>
+                        <p>${data.state}, ${data.country}</p>
+                    </div>
+                </div>
+                ` : ''}
+            `;
+                        $('#userDetailsModal').modal('show');
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Failed to load user details');
+                    });
+            }
+
+            // Delete user
+            function deleteUser(userId, userName) {
+                if (confirm(`Are you sure you want to delete user "${userName}"?`)) {
+                    // Get CSRF token
+                    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value ||
+                        document.cookie.split('; ').find(row => row.startsWith('csrftoken='))?.split('=')[1];
+
+                    fetch(`/auth/user-delete/${userId}/`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': csrfToken,
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert('User deleted successfully');
+                                location.reload();
+                            } else {
+                                alert('Failed to delete user: ' + data.error);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('Failed to delete user');
+                        });
+                }
+            }
+        </script>
+        {% endblock %}

@@ -1,0 +1,65 @@
+{% extends 'backend/themes/base.html' %}
+{% load static %}
+
+{% block title %}Add User{% endblock %}
+
+{% block content %}
+<div class="ec-content-wrapper">
+    <div class="content">
+        <div class="breadcrumb-wrapper breadcrumb-wrapper-2 breadcrumb-contacts">
+            <h1>Add User</h1>
+            <p class="breadcrumbs">
+                <span><a href="{% url 'admin_dashboard' %}">Home</a></span>
+                <span><i class="mdi mdi-chevron-right"></i></span>
+                <span><a href="{% url 'user_list' %}">Users</a></span>
+                <span><i class="mdi mdi-chevron-right"></i></span>
+                <span>Add User</span>
+            </p>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-8 col-lg-12" style="margin-left: 272px;">
+                <div class="ec-cat-list card card-default">
+                    <div class="card-body">
+                        <form method="POST">
+                            {% csrf_token %}
+                            <div class="form-group row">
+                                <div class="col-md-6">
+                                    <label class="col-form-label">First Name</label>
+                                    <input name="first_name" class="form-control" type="text" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="col-form-label">Last Name</label>
+                                    <input name="last_name" class="form-control" type="text" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-12 col-form-label">Email</label>
+                                <div class="col-12">
+                                    <input name="email" class="form-control" type="email" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-12 col-form-label">Password</label>
+                                <div class="col-12">
+                                    <input name="password" class="form-control" type="password" required>
+                                </div>
+                            </div>
+
+                            <!-- Role is default 'user' -->
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <button name="submit" type="submit" class="btn btn-primary">Add User</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

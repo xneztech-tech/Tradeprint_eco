@@ -1,0 +1,297 @@
+{% extends 'backend/themes/base.html' %}
+{% load static %}
+
+{% block title %}Order Management{% endblock %}
+
+{% block content %}
+<div class="ec-content-wrapper">
+    <div class="content">
+        <div class="breadcrumb-wrapper breadcrumb-wrapper-2 breadcrumb-contacts">
+            <h1>Order Management</h1>
+            <p class="breadcrumbs">
+                <span><a href="{% url 'admin_dashboard' %}">Home</a></span>
+                <span><i class="mdi mdi-chevron-right"></i></span>
+                <span>Orders</span>
+            </p>
+        </div>
+
+        {% if messages %}
+        <div class="row">
+            <div class="col-12" style="margin-left: 240px;">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card card-default" style="margin-left: 240px;">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <!-- Search and Stats -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <input type="text" id="searchInput" class="form-control"
+                                        placeholder="Search orders by order number, customer name, or email...">
+                                </div>
+                                <div class="col-md-3">
+                                    <select id="statusFilter" class="form-control">
+                                        <option value="">All Status</option>
+                                        <option value="pending">Pending</option>
+                                        <option value="processing">Processing</option>
+                                        <option value="shipped">Shipped</option>
+                                        <option value="delivered">Delivered</option>
+                                        <option value="cancelled">Cancelled</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3 text-right">
+                                    <span class="badge badge-primary badge-lg"
+                                        style="font-size: 14px; padding: 8px 16px;">
+                                        Total Orders: {{ orders.count }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <table id="responsive-data-table" class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Order #</th>
+                                        <th>Customer</th>
+                                        <th>Email</th>
+                                        <th>Items</th>
+                                        <th>Assigned Shop</th>
+                                        <th>Total</th>
+                                        <th>Payment</th>
+                                        <!-- <th>Status</th> -->
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for order in orders %}
+                                    <tr data-status="{{ order.status }}">
+                                        <td>
+                                            <strong>{{ order.order_number }}</strong>
+                                        </td>
+                                        <td>
+                                            <div class="media">
+                                                <div class="media-image mr-3">
+                                                    <div class="avatar-circle">
+                                                        {{ order.shipping_first_name|first|upper }}{{
+                                                        order.shipping_last_name|first|upper }}
+                                                    </div>
+                                                </div>
+                                                <div class="media-body align-self-center">
+                                                    <h6 class="mb-0">{{ order.shipping_first_name }}
+                                                        {{order.shipping_last_name }}</h6>
+                                                    <small class="text-muted">{{ order.shipping_phone }}</small>
+                                                    {% if order.customer %}
+                                                    <div class="mt-1">
+                                                        <small class="text-dark"><strong>Profile:</strong>
+                                                            {{order.customer.full_name }}</small>
+                                                    </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>{{ order.shipping_email }}</td>
+                                        <td>
+                                            <span class="badge badge-info">{{ order.items.count }}
+                                                item{{order.items.count|pluralize }}</span>
+                                        </td>
+                                        <td>
+                                            {% if order.assigned_shop %}
+                                            <span class="badge badge-secondary">
+                                                {{ order.assigned_shop.shop_name }}
+                                            </span>
+                                            {% else %}
+                                            <span class="text-muted">Unassigned</span>
+                                            {% endif %}
+
+                                            {% if request.user.role == 'admin' %}
+                                            <div class="dropdown d-inline-block ml-2">
+                                                <button class="btn btn-sm btn-outline-primary dropdown-toggle"
+                                                    type="button" id="assignDropdown{{ order.id }}"
+                                                    data-bs-toggle="dropdown" aria-expanded="false"
+                                                    title="Assign/Re-assign Shop">
+                                                    <i class="mdi mdi-account-convert"></i>
+                                                </button>
+                                                <ul class="dropdown-menu"
+                                                    aria-labelledby="assignDropdown{{ order.id }}">
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                            href="{% url 'auto_assign_order' order.id %}">
+                                                            <i class="mdi mdi-robot"></i> Auto Assign
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <hr class="dropdown-divider">
+                                                    </li>
+                                                    {% for shop in print_shops %}
+                                                    <li>
+                                                        <form action="{% url 'assign_order_manual' order.id %}"
+                                                            method="POST" class="d-inline w-100">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="shop_id" value="{{ shop.id }}">
+                                                            <button type="submit" class="dropdown-item">
+                                                                <i class="mdi mdi-store"></i> {{ shop.shop_name }}
+                                                            </button>
+                                                        </form>
+                                                    </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <strong>₹{{ order.total }}</strong>
+                                        </td>
+                                        <td>
+                                            {% if order.payment_status == 'paid' %}
+                                            <span class="badge badge-success">Paid</span>
+                                            {% elif order.payment_status == 'pending' %}
+                                            <span class="badge badge-warning">Pending</span>
+                                            {% else %}
+                                            <span class="badge badge-danger">Failed</span>
+                                            {% endif %}
+                                            <br>
+                                            <small class="text-muted">{{ order.get_payment_method_display }}</small>
+                                        </td>
+                                        <!--  -->
+                                        <td>
+                                            {{ order.created_at|date:"M d, Y" }}<br>
+                                            <small class="text-muted">{{ order.created_at|date:"h:i A" }}</small>
+                                        </td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <a href="{% url 'order_detail' order.id %}"
+                                                    class="btn btn-outline-success btn-sm" title="View Details">
+                                                    <i class="mdi mdi-eye"></i>
+                                                </a>
+                                                <button type="button" class="btn btn-outline-primary btn-sm"
+                                                    onclick="printOrder('{{ order.id }}')" title="Print">
+                                                    <i class="mdi mdi-printer"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="9" class="text-center">No orders found</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<style>
+    .avatar-circle {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .table tbody tr {
+        transition: all 0.3s ease;
+    }
+
+    .table tbody tr:hover {
+        background-color: #f8f9fa;
+    }
+
+    .btn-group .btn {
+        margin: 0 2px;
+    }
+
+    .status-select {
+        min-width: 120px;
+    }
+</style>
+
+<script>
+    // Search functionality
+    document.getElementById('searchInput').addEventListener('keyup', function () {
+        const searchTerm = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#responsive-data-table tbody tr');
+
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            row.style.display = text.includes(searchTerm) ? '' : 'none';
+        });
+    });
+
+    // Status filter
+    document.getElementById('statusFilter').addEventListener('change', function () {
+        const selectedStatus = this.value;
+        const rows = document.querySelectorAll('#responsive-data-table tbody tr');
+
+        rows.forEach(row => {
+            const status = row.getAttribute('data-status');
+            if (selectedStatus === '' || status === selectedStatus) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+
+    // Update order status
+    function updateOrderStatus(orderId, newStatus) {
+        // Get CSRF token
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value ||
+            document.cookie.split('; ').find(row => row.startsWith('csrftoken='))?.split('=')[1];
+
+        fetch(`/backend/order-update-status/${orderId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrfToken,
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+            body: `status=${newStatus}`
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update the row's data-status attribute
+                    const row = document.querySelector(`select[data-order-id="${orderId}"]`).closest('tr');
+                    row.setAttribute('data-status', newStatus);
+
+                    // Show success message
+                    alert('Order status updated successfully!');
+                } else {
+                    alert('Failed to update order status: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to update order status');
+            });
+    }
+
+    // Print order
+    function printOrder(orderId) {
+        window.open(`/backend/order-detail/${orderId}/`, '_blank');
+    }
+</script>
+{% endblock %}

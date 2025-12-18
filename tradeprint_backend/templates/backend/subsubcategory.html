@@ -1,0 +1,231 @@
+{% extends "backend/themes/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="ec-page-wrapper">
+
+    <!-- Header -->
+    <header class="ec-main-header" id="header">
+        <nav class="navbar navbar-static-top navbar-expand-lg">
+            <button id="sidebar-toggler" class="sidebar-toggle"></button>
+
+            <div class="search-form d-lg-inline-block">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="search..">
+                    <button class="btn btn-flat"><i class="mdi mdi-magnify"></i></button>
+                </div>
+            </div>
+
+            <div class="navbar-right">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown user-menu">
+                        <button class="dropdown-toggle nav-link ec-drop" data-bs-toggle="dropdown">
+                            <img src="{% static 'assets/img/user/user.png' %}" class="user-image">
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- CONTENT WRAPPER -->
+    <div class="ec-content-wrapper">
+        <div class="content">
+
+            <div class="breadcrumb-wrapper breadcrumb-wrapper-2 breadcrumb-contacts">
+                <h1>Sub-Sub Category</h1>
+                <p class="breadcrumbs">
+                    <span><a href="#">Home</a></span>
+                    <span><i class="mdi mdi-chevron-right"></i></span>Sub-Sub Category
+                </p>
+            </div>
+
+            <div class="row">
+
+                <!-- LEFT FORM -->
+                <div class="col-xl-4 col-lg-12">
+                    <div class="ec-cat-list card card-default mb-24px">
+                        <div class="card-body">
+                            <div class="ec-cat-form">
+
+                                <h4>
+                                    {% if editing %}
+                                        Edit Sub-Sub Category
+                                    {% else %}
+                                        Add Sub-Sub Category
+                                    {% endif %}
+                                </h4>
+
+                                <form method="POST">
+                                    {% csrf_token %}
+
+                                    <!-- NAME -->
+                                    <div class="form-group row">
+                                        <label class="col-12 col-form-label">Name</label>
+                                        <div class="col-12">
+                                            {{ form.name }}
+                                        </div>
+                                    </div>
+
+                                    <!-- SLUG -->
+                                    <div class="form-group row">
+                                        <label class="col-12 col-form-label">Slug</label>
+                                        <div class="col-12">
+                                            {{ form.slug }}
+                                            <small>The slug must be lowercase & hyphenated.</small>
+                                        </div>
+                                    </div>
+
+                                    <!-- SHORT DESC -->
+                                    <div class="form-group row">
+                                        <label class="col-12 col-form-label">Short Description</label>
+                                        <div class="col-12">
+                                            {{ form.short_description }}
+                                        </div>
+                                    </div>
+
+                                    <!-- FULL DESC -->
+                                    <div class="form-group row">
+                                        <label class="col-12 col-form-label">Full Description</label>
+                                        <div class="col-12">
+                                            {{ form.full_description }}
+                                        </div>
+                                    </div>
+
+                                    <!-- TAGS -->
+                                    <div class="form-group row">
+                                        <label class="col-12 col-form-label">Product Tags</label>
+                                        <div class="col-12">
+                                            {{ form.tags }}
+                                        </div>
+                                    </div>
+
+                                    <!-- PARENT CATEGORY -->
+                                    <div class="form-group row">
+                                        <label class="col-12 col-form-label">Parent Category</label>
+                                        <div class="col-12">
+                                            {{ form.parent_category }}
+                                        </div>
+                                    </div>
+
+                                    <!-- SUB CATEGORY (FILTERED) -->
+                                    <div class="form-group row">
+                                        <label class="col-12 col-form-label">Sub Category</label>
+                                        <div class="col-12">
+                                            {{ form.sub_category }}
+                                        </div>
+                                    </div>
+
+                                    <!-- STATUS -->
+                                    <div class="form-group row">
+                                        <label class="col-12 col-form-label">Status</label>
+                                        <div class="col-12">
+                                            {{ form.status }}
+                                        </div>
+                                    </div>
+
+                                    <!-- TRENDING -->
+                                    <div class="form-group row">
+                                        <label class="col-12 col-form-label">Trending</label>
+                                        <div class="col-12">
+                                            {{ form.trending }}
+                                        </div>
+                                    </div>
+
+                                    {% if editing %}
+                                        <button class="btn btn-warning mt-3">Update</button>
+                                        <a href="{% url 'subsubcategory_list' %}" class="btn btn-secondary mt-3">Cancel</a>
+                                    {% else %}
+                                        <button class="btn btn-primary mt-3">Submit</button>
+                                    {% endif %}
+
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT TABLE -->
+                <div class="col-xl-8 col-lg-12">
+                    <div class="ec-cat-list card card-default">
+                        <div class="card-body">
+
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            {% comment %} <th>Thumb</th> {% endcomment %}
+                                            <th>Name</th>
+                                            <th>Parent</th>
+                                            <th>Sub Category</th>
+                                            <th>Status</th>
+                                            <th>Trending</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        {% for s in items %}
+                                        <tr>
+                                            {% comment %} <td>
+                                                <img class="cat-thumb"
+                                                     src="{% static 'assets/img/category/default-thumb.png' %}">
+                                            </td> {% endcomment %}
+
+                                            <td>{{ s.name }}</td>
+                                            <td>{{ s.parent_category.name }}</td>
+                                            <td>{{ s.sub_category.name }}</td>
+
+                                            <!-- STATUS -->
+                                            <td>
+                                                {% if s.status == 'active' %}
+                                                    <span class="badge badge-success">ACTIVE</span>
+                                                {% else %}
+                                                    <span class="badge bg-danger">INACTIVE</span>
+                                                {% endif %}
+                                            </td>
+
+                                            <!-- TRENDING -->
+                                            <td>
+                                                {% if s.trending == 'top' %}
+                                                    <span class="badge badge-success">TOP</span>
+                                                {% elif s.trending == 'medium' %}
+                                                    <span class="badge bg-primary">MEDIUM</span>
+                                                {% else %}
+                                                    <span class="badge bg-danger">LOW</span>
+                                                {% endif %}
+                                            </td>
+
+                                            <!-- ACTION -->
+                                            <td>
+                                                <div class="btn-group">
+                                                    <a href="{% url 'subsubcategory_edit' s.id %}" class="dropdown-item">Edit</a>
+
+                                                    <a href="{% url 'subsubcategory_delete' s.id %}"
+                                                       class="dropdown-item text-danger"
+                                                       onclick="return confirm('Delete this sub-sub-category?');">
+                                                        Delete
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+{% comment %} </div> {% endcomment %}
+
+{% endblock %}

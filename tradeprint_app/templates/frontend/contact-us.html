@@ -1,0 +1,302 @@
+{% extends 'frontend/themes/base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* Contact Us Page Custom Styles */
+    .ec-breadcrumb {
+        background-color: #f8f9fa;
+        padding: 30px 0;
+        border-bottom: 1px solid #eee;
+    }
+
+    .ec-breadcrumb-title {
+        font-weight: 700;
+        color: #333;
+        margin: 0;
+    }
+
+    .section-title h2 {
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .section-title p {
+        color: #777;
+        font-size: 16px;
+    }
+
+    /* Contact Form Styles */
+    .ec-contact-form-wrapper {
+        background: #fff;
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        /* Softer, deeper shadow */
+        border: 1px solid #f1f1f1;
+        height: 100%;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        font-weight: 600;
+        color: #444;
+        margin-bottom: 8px;
+        display: block;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        border: 1px solid #e1e1e1;
+        padding: 12px 15px;
+        height: auto;
+        font-size: 15px;
+        color: #555;
+        transition: all 0.3s ease;
+        background-color: #f9f9f9;
+    }
+
+    .form-control:focus {
+        border-color: #ff007f;
+        background-color: #fff;
+        box-shadow: 0 0 0 4px rgba(255, 0, 127, 0.1);
+        outline: none;
+    }
+
+    textarea.form-control {
+        min-height: 150px;
+        resize: vertical;
+    }
+
+    .btn-submit {
+        background-color: #ff007f;
+        border-color: #ff007f;
+        border-radius: 50px;
+        padding: 14px 40px;
+        font-weight: 700;
+        color: #fff;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        width: 100%;
+        margin-top: 10px;
+        font-size: 15px;
+    }
+
+    .btn-submit:hover {
+        background-color: #d6006b;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(255, 0, 127, 0.2);
+    }
+
+    /* Contact Info Styles */
+    .ec-contact-info-wrapper {
+        padding: 20px 0 0 20px;
+    }
+
+    .contact-info-item {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 30px;
+    }
+
+    .contact-icon {
+        width: 60px;
+        height: 60px;
+        background-color: rgba(255, 0, 127, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 20px;
+        flex-shrink: 0;
+        color: #ff007f;
+        font-size: 24px;
+        transition: all 0.3s;
+    }
+
+    .contact-info-item:hover .contact-icon {
+        background-color: #ff007f;
+        color: #fff;
+        transform: rotateY(180deg);
+    }
+
+    .contact-details h4 {
+        margin: 0 0 5px;
+        font-size: 18px;
+        font-weight: 700;
+        color: #333;
+    }
+
+    .contact-details p,
+    .contact-details a {
+        color: #666;
+        margin: 0;
+        font-size: 15px;
+        line-height: 1.6;
+    }
+
+    .contact-details a:hover {
+        color: #ff007f;
+    }
+
+    .ec-map-wrapper {
+        margin-top: 40px;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        height: 300px;
+        border: 5px solid #fff;
+    }
+
+    .ec-map-wrapper iframe {
+        width: 100%;
+        height: 100%;
+        border: 0;
+    }
+
+    @media (max-width: 991px) {
+        .ec-contact-info-wrapper {
+            padding: 40px 0 0 0;
+        }
+    }
+</style>
+
+<!-- Ec breadcrumb start -->
+<div class="sticky-header-next-sec ec-breadcrumb section-space-mb">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="row ec_breadcrumb_inner align-items-center">
+                    <div class="col-md-6 col-sm-12">
+                        <h2 class="ec-breadcrumb-title">Contact Us</h2>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <!-- ec-breadcrumb-list start -->
+                        <ul class="ec-breadcrumb-list">
+                            <li class="ec-breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                            <li class="ec-breadcrumb-item active">Contact Us</li>
+                        </ul>
+                        <!-- ec-breadcrumb-list end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Ec breadcrumb end -->
+
+<!-- Ec Contact Us page -->
+<section class="ec-page-content section-space-p">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-12 mb-4 mb-lg-0">
+                <div class="ec-contact-form-wrapper">
+                    <div class="section-title mb-4">
+                        <h2>Get In Touch</h2>
+                        <p>Have a project in mind or any questions? We'd love to hear from you.</p>
+                    </div>
+                    <form action="#" method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>First Name <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="firstname"
+                                        placeholder="Type your first name" required />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Last Name <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="lastname"
+                                        placeholder="Type your last name" required />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Email Address <span class="text-danger">*</span></label>
+                                    <input type="email" class="form-control" name="email" placeholder="Type your email"
+                                        required />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Phone Number <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="phonenumber"
+                                        placeholder="Type your mobile no" required />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Message <span class="text-danger">*</span></label>
+                            <textarea class="form-control" name="address" placeholder="How can we help you?"></textarea>
+                        </div>
+
+                        <button class="btn btn-submit" type="submit">Submit Request</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-12">
+                <div class="ec-contact-info-wrapper">
+                    <div class="section-title mb-4">
+                        <h2>Contact Information</h2>
+                        <p>We are here to help you. Reach out to us via any of the following channels.</p>
+                    </div>
+
+                    <div class="contact-info-item">
+                        <div class="contact-icon">
+                            <i class="ecicon eci-map-marker"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>Our Location</h4>
+                            <p>71 Pilgrim Avenue, Chevy Chase, <br>MD 20815, USA</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-info-item">
+                        <div class="contact-icon">
+                            <i class="ecicon eci-phone"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>Phone Number</h4>
+                            <p><a href="tel:+440123456789">+44 (0) 123 456 789</a></p>
+                            <p><a href="tel:+440987654321">+44 (0) 987 654 321</a></p>
+                        </div>
+                    </div>
+
+                    <div class="contact-info-item">
+                        <div class="contact-icon">
+                            <i class="ecicon eci-envelope"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>Email Address</h4>
+                            <p><a href="mailto:info@tradeprint.com">info@tradeprint.com</a></p>
+                            <p><a href="mailto:support@tradeprint.com">support@tradeprint.com</a></p>
+                        </div>
+                    </div>
+
+                    <div class="ec-map-wrapper">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2937.643322197576!2d-77.08630328456636!3d38.97166797955938!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89b7c97b6b8b8b8b%3A0x8b8b8b8b8b8b8b8b!2sChevy%20Chase%2C%20MD%2020815%2C%20USA!5e0!3m2!1sen!2sbd!4v1620000000000!5m2!1sen!2sbd"
+                            allowfullscreen="" loading="lazy">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

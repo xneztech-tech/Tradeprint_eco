@@ -1,0 +1,262 @@
+{% extends "backend/themes/base.html" %}
+{% load static %}
+
+{% block content %}
+<!--  PAGE WRAPPER -->
+<!--  PAGE WRAPPER -->
+<div class="ec-page-wrapper">
+	<!-- CONTENT WRAPPER -->
+	<div class="ec-content-wrapper">
+		<div class="content">
+			<!-- Top Statistics -->
+			<div class="row">
+				<div class="col-xl-3 col-sm-6 p-b-15 lbl-card">
+					<div class="card card-mini dash-card card-1">
+						<div class="card-body">
+							<h2 class="mb-1">{{ total_users }}</h2>
+							<p>Total Users</p>
+							<span class="mdi mdi-account"></span>
+						</div>
+					</div>
+				</div>
+				<div class="col-xl-3 col-sm-6 p-b-15 lbl-card">
+					<div class="card card-mini dash-card card-2">
+						<div class="card-body">
+							<h2 class="mb-1">{{ total_orders }}</h2>
+							<p>Total Orders</p>
+							<span class="mdi mdi-cart"></span>
+						</div>
+					</div>
+				</div>
+				<div class="col-xl-3 col-sm-6 p-b-15 lbl-card">
+					<div class="card card-mini dash-card card-3">
+						<div class="card-body">
+							<h2 class="mb-1">{{ total_products }}</h2>
+							<p>Total Products</p>
+							<span class="mdi mdi-package-variant"></span>
+						</div>
+					</div>
+				</div>
+				<div class="col-xl-3 col-sm-6 p-b-15 lbl-card">
+					<div class="card card-mini dash-card card-4">
+						<div class="card-body">
+							<h2 class="mb-1">₹{{ total_revenue|floatformat:2 }}</h2>
+							<p>Total Revenue</p>
+							<span class="mdi mdi-currency-usd"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-xl-8 col-md-12 p-b-15">
+					<!-- Sales Report -->
+					<div id="user-acquisition" class="card card-default">
+						<div class="card-header">
+							<h2>Sales Report (Last 7 Days)</h2>
+						</div>
+						<div class="card-body">
+							<div class="tab-content pt-4" id="salesReport">
+								<div class="tab-pane fade show active" id="source-medium" role="tabpanel">
+									<div class="mb-6" style="max-height:247px">
+										<canvas id="acquisitionDynamic" class="chartjs2"></canvas>
+										<div id="acqLegend" class="customLegend mb-2"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-xl-4 col-md-12 p-b-15">
+					<!-- Orders Overview -->
+					<div class="card card-default">
+						<div class="card-header justify-content-center">
+							<h2>Orders Overview</h2>
+						</div>
+						<div class="card-body">
+							<canvas id="doChartDynamic"></canvas>
+						</div>
+						<a href="#" class="pb-5 d-block text-center text-muted"><i class="mdi mdi-download mr-2"></i>
+							Download overall report</a>
+						<div class="card-footer d-flex flex-wrap bg-white p-0">
+							<div class="col-6">
+								<div class="p-20">
+									<ul class="d-flex flex-column justify-content-between">
+										<li class="mb-2"><i class="mdi mdi-checkbox-blank-circle-outline mr-2"
+												style="color: #ff007f"></i>Delivered</li>
+										<li class="mb-2"><i class="mdi mdi-checkbox-blank-circle-outline mr-2"
+												style="color: #ff4da6"></i>Shipped</li>
+										<li><i class="mdi mdi-checkbox-blank-circle-outline mr-2"
+												style="color: #ff80bf"></i>Processing</li>
+									</ul>
+								</div>
+							</div>
+							<div class="col-6 border-left">
+								<div class="p-20">
+									<ul class="d-flex flex-column justify-content-between">
+										<li class="mb-2"><i class="mdi mdi-checkbox-blank-circle-outline mr-2"
+												style="color: #ffd6e0"></i>Pending</li>
+										<li class="mb-2"><i class="mdi mdi-checkbox-blank-circle-outline mr-2"
+												style="color: #ed9090"></i>Cancelled</li>
+										<li><i class="mdi mdi-checkbox-blank-circle-outline mr-2"
+												style="color: #a4d9e5"></i>Refunded</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-xl-12 col-md-12 p-b-15">
+
+					<!-- Recent Order Table -->
+					<div class="card card-table-border-none card-default recent-orders" id="recent-orders">
+						<div class="card-header justify-content-between">
+							<h2>Recent Orders</h2>
+							<div class="date-range-report">
+								<span></span>
+							</div>
+						</div>
+						<div class="card-body pt-0 pb-5">
+							<table class="table card-table table-responsive table-responsive-large" style="width:100%">
+								<thead>
+									<tr>
+										<th>Order ID</th>
+										<th>Customer</th>
+										<th class="d-none d-lg-table-cell">Date</th>
+										<th class="d-none d-lg-table-cell">Amount</th>
+										<th>Status</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for order in recent_orders %}
+									<tr>
+										<td>{{ order.order_number }}</td>
+										<td>
+											<a class="text-dark" href=""> {{ order.shipping_first_name }} {{
+												order.shipping_last_name }}</a>
+										</td>
+										<td class="d-none d-lg-table-cell">{{ order.created_at|date:"M d, Y" }}</td>
+										<td class="d-none d-lg-table-cell">₹{{ order.total }}</td>
+										<td>
+											<span
+												class="badge badge-{% if order.status == 'delivered' %}success{% elif order.status == 'shipped' %}info{% elif order.status == 'processing' %}warning{% elif order.status == 'cancelled' %}danger{% else %}secondary{% endif %}">
+												{{ order.get_status_display }}
+											</span>
+										</td>
+										<td class="text-right">
+											<a href="{% url 'order_detail' order.id %}"
+												class="btn btn-sm btn-outline-primary">View</a>
+										</td>
+									</tr>
+									{% empty %}
+									<tr>
+										<td colspan="6" class="text-center">No orders found.</td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+		</div> <!-- End Content -->
+	</div> <!-- End Content Wrapper -->
+
+	{% endblock content %}
+
+	{% block footer_scripts %}
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			console.log("Dashboard Chart Script Loaded!");
+
+			// --- 1. Dynamic Sales Report (Line Chart) ---
+			var acqCtx = document.getElementById("acquisitionDynamic");
+			if (acqCtx !== null) {
+				// Ensure parent has height to prevent collapse
+				acqCtx.parentElement.style.height = "300px";
+
+				var acqConfig = {
+					type: "line",
+					data: {
+						labels: {{ chart_dates| safe
+			}
+		},
+			datasets: [{
+				label: "Revenue (₹)",
+				backgroundColor: "rgba(255, 0, 127, .1)",
+				borderColor: "rgba(255, 0, 127, .7)",
+				data: {{ chart_sales| safe }},
+			lineTension: 0.3,
+			pointBackgroundColor: "rgba(255, 0, 127,0)",
+			pointHoverBackgroundColor: "rgba(255, 0, 127,1)",
+			pointHoverRadius: 3,
+			pointHitRadius: 30,
+			pointBorderWidth: 2,
+			pointStyle: "rectRounded"
+						}]
+					},
+			options: {
+			responsive: true,
+			maintainAspectRatio: false,
+			legend: { display: false },
+			scales: {
+				xAxes: [{ gridLines: { display: false } }],
+				yAxes: [{
+					gridLines: { display: true, color: "#eee", zeroLineColor: "#eee" },
+					ticks: { beginAtZero: true }
+				}]
+			},
+			tooltips: {
+				mode: "index",
+				titleFontColor: "#888",
+				bodyFontColor: "#555",
+				backgroundColor: "rgba(256,256,256,0.95)",
+				displayColors: true,
+				xPadding: 20,
+				yPadding: 10,
+				borderColor: "rgba(220, 220, 220, 0.9)",
+				borderWidth: 2
+			}
+		}
+				};
+		new Chart(acqCtx, acqConfig);
+			}
+
+		// --- 2. Dynamic Orders Overview (Doughnut Chart) ---
+		var doCtx = document.getElementById("doChartDynamic");
+		if (doCtx !== null) {
+			// Ensure parent has height
+			doCtx.parentElement.style.height = "300px";
+
+			new Chart(doCtx, {
+				type: "doughnut",
+				data: {
+					labels: ["Delivered", "Shipped", "Processing", "Pending", "Cancelled", "Refunded"],
+					datasets: [{
+						data: {{ doughnut_data| safe }
+			},
+				backgroundColor: ["#ff007f", "#ff4da6", "#ff80bf", "#ffd6e0", "#ed9090", "#a4d9e5"],
+				borderWidth: 1
+						}]
+					},
+		options: {
+			responsive: true,
+				maintainAspectRatio: false,
+					legend: { display: false },
+			cutoutPercentage: 75,
+				tooltips: {
+				enabled: true
+			}
+		}
+				});
+			}
+		});
+	</script>
+	{% endblock footer_scripts %}

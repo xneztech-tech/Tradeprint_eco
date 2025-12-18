@@ -1,0 +1,753 @@
+{% extends "backend/themes/base.html" %}
+{% load static %}
+
+{% block content %}
+<!-- PAGE WRAPPER -->
+<div class="ec-page-wrapper">
+
+	<!-- Header -->
+	<header class="ec-main-header" id="header">
+		<nav class="navbar navbar-static-top navbar-expand-lg">
+			<!-- Sidebar toggle button -->
+			<button id="sidebar-toggler" class="sidebar-toggle"></button>
+			<!-- search form -->
+			<div class="search-form d-lg-inline-block">
+				<div class="input-group">
+					<input type="text" name="query" id="search-input" class="form-control" placeholder="search.."
+						autofocus autocomplete="off" />
+					<button type="button" name="search" id="search-btn" class="btn btn-flat">
+						<i class="mdi mdi-magnify"></i>
+					</button>
+				</div>
+				<div id="search-results-container">
+					<ul id="search-results"></ul>
+				</div>
+			</div>
+
+			<!-- navbar right -->
+			<div class="navbar-right">
+				<ul class="nav navbar-nav">
+					<!-- User Account -->
+					<li class="dropdown user-menu">
+						<button class="dropdown-toggle nav-link ec-drop" data-bs-toggle="dropdown"
+							aria-expanded="false">
+							<img src="{% static 'backend/assets/img/user/user.png' %}" class="user-image"
+								alt="User Image" />
+						</button>
+						<ul class="dropdown-menu dropdown-menu-right ec-dropdown-menu">
+							<!-- User image -->
+							<li class="dropdown-header">
+								<img src="{% static 'backend/assets/img/user/user.png' %}" class="img-circle"
+									alt="User Image" />
+								<div class="d-inline-block">
+									{{ request.user.username }} <small class="pt-1">{{ request.user.email
+										}}</small>
+								</div>
+							</li>
+							<li>
+								<a href="user-profile.html">
+									<i class="mdi mdi-account"></i> My Profile
+								</a>
+							</li>
+
+							<li class="dropdown-footer">
+								<a href="{% url 'signin' %}"> <i class="mdi mdi-logout"></i> Log Out </a>
+							</li>
+						</ul>
+					</li>
+
+				</ul>
+			</div>
+		</nav>
+	</header>
+
+	<!-- CONTENT WRAPPER -->
+	<div class="ec-content-wrapper">
+		<div class="content">
+			<div class="breadcrumb-wrapper d-flex align-items-center justify-content-between">
+				<div>
+					<h1>{% if editing %}Edit{% else %}Add{% endif %} Product</h1>
+					<p class="breadcrumbs"><span><a href="{% url 'admin_dashboard' %}">Home</a></span>
+						<span><i class="mdi mdi-chevron-right"></i></span>Product
+					</p>
+				</div>
+				<div>
+					<a href="{% url 'product_list' %}" class="btn btn-primary"> View All
+					</a>
+				</div>
+			</div>
+
+			{% if messages %}
+			{% for message in messages %}
+			<div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+				{{ message }}
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+			{% endfor %}
+			{% endif %}
+
+			<div class="row">
+				<div class="col-12">
+					<div class="card card-default shadow-sm">
+						<div class="card-header card-header-border-bottom"
+							style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; padding: 1.5rem;">
+							<div class="d-flex align-items-center">
+								<div class="header-icon me-3"
+									style="background: rgba(255,255,255,0.2); padding: 12px; border-radius: 10px;">
+									<i class="mdi mdi-package-variant-closed"
+										style="font-size: 28px; color: white;"></i>
+								</div>
+								<div>
+									<h2 style="color: white; margin-bottom: 0.25rem; font-weight: 600;">
+										{% if editing %}Edit Product{% else %}Add New Product{% endif %}
+									</h2>
+									<p class="mb-0" style="color: rgba(255,255,255,0.9); font-size: 0.9rem;">
+										Based on Tradeprint product structure with comprehensive customization
+										options</p>
+								</div>
+							</div>
+						</div>
+
+						<div class="card-body p-4">
+							<form method="POST" enctype="multipart/form-data" class="row g-4" id="productForm">
+								{% csrf_token %}
+
+								<!-- Basic Information Section -->
+								<div class="col-12">
+									<div class="section-header">
+										<i class="mdi mdi-information-outline me-2"></i>
+										<h4 class="mb-0">Basic Information</h4>
+									</div>
+								</div>
+
+								<div class="col-md-6">
+									<label for="{{ form.name.id_for_label }}" class="form-label fw-bold">Product Name
+										<span class="text-danger">*</span></label>
+									{{ form.name }}
+									{% if form.name.errors %}
+									<div class="text-danger mt-1">{{ form.name.errors }}</div>
+									{% endif %}
+								</div>
+
+								<div class="col-md-6">
+									<label for="{{ form.slug.id_for_label }}" class="form-label fw-bold">Slug</label>
+									{{ form.slug }}
+									<small class="text-muted">Leave blank to auto-generate from product name</small>
+								</div>
+
+								<div class="col-md-4">
+									<label for="{{ form.category.id_for_label }}"
+										class="form-label fw-bold">Category</label>
+									{{ form.category }}
+								</div>
+
+								<div class="col-md-4">
+									<label for="{{ form.sub_category.id_for_label }}" class="form-label fw-bold">Sub
+										Category</label>
+									{{ form.sub_category }}
+								</div>
+
+								<div class="col-md-4">
+									<label for="{{ form.sub_sub_category.id_for_label }}"
+										class="form-label fw-bold">Sub-Sub
+										Category</label>
+									{{ form.sub_sub_category }}
+								</div>
+
+								<div class="col-md-12">
+									<label for="{{ form.short_description.id_for_label }}"
+										class="form-label fw-bold">Short
+										Description</label>
+									{{ form.short_description }}
+								</div>
+
+								<div class="col-md-12">
+									<label for="{{ form.full_description.id_for_label }}"
+										class="form-label fw-bold">Full
+										Description</label>
+									{{ form.full_description }}
+								</div>
+
+								<div class="col-md-12">
+									<label for="{{ form.tags.id_for_label }}" class="form-label fw-bold">Product
+										Tags</label>
+									{{ form.tags }}
+									<small class="text-muted">Comma separated tags (e.g., eco-friendly, premium,
+										business)</small>
+								</div>
+
+								<!-- Pricing Section -->
+								<div class="col-12 mt-5">
+									<div class="section-header">
+										<i class="mdi mdi-currency-inr me-2"></i>
+										<h4 class="mb-0">Pricing & Options</h4>
+									</div>
+								</div>
+
+								<div class="col-md-6">
+									<label for="{{ form.base_price.id_for_label }}" class="form-label fw-bold">Base
+										Price (₹) <span class="text-danger">*</span></label>
+									{{ form.base_price }}
+									{% if form.base_price.errors %}
+									<div class="text-danger mt-1">{{ form.base_price.errors }}</div>
+									{% endif %}
+								</div>
+
+								<div class="col-md-6">
+									<label for="{{ form.status.id_for_label }}"
+										class="form-label fw-bold">Status</label>
+									{{ form.status }}
+								</div>
+
+								<!-- Material Options -->
+								<div class="col-md-12">
+									<label for="{{ form.material_options_text.id_for_label }}"
+										class="form-label fw-bold">Material Options</label>
+									{{ form.material_options_text }}
+									<small class="text-muted d-block">{{ form.material_options_text.help_text }}</small>
+								</div>
+
+								<!-- Size Options -->
+								<div class="col-md-12">
+									<label for="{{ form.size_options_text.id_for_label }}"
+										class="form-label fw-bold">Size
+										Options</label>
+									{{ form.size_options_text }}
+									<small class="text-muted d-block">{{ form.size_options_text.help_text }}</small>
+								</div>
+
+								<!-- Printing Options -->
+								<div class="col-md-6">
+									<label for="{{ form.sides_printed.id_for_label }}" class="form-label fw-bold">Sides
+										Printed</label>
+									{{ form.sides_printed }}
+								</div>
+
+								<div class="col-md-6">
+									<label for="{{ form.double_sided_price.id_for_label }}"
+										class="form-label fw-bold">Double
+										Sided Additional Price (₹)</label>
+									{{ form.double_sided_price }}
+								</div>
+
+								<!-- Lamination Options -->
+								<div class="col-md-12">
+									<label for="{{ form.lamination_options_text.id_for_label }}"
+										class="form-label fw-bold">Lamination Options</label>
+									{{ form.lamination_options_text }}
+									<small class="text-muted d-block">{{ form.lamination_options_text.help_text
+										}}</small>
+								</div>
+
+								<!-- Banding Options -->
+								<div class="col-md-12">
+									<label for="{{ form.banding_options_text.id_for_label }}"
+										class="form-label fw-bold">Banding
+										Options</label>
+									{{ form.banding_options_text }}
+									<small class="text-muted d-block">{{ form.banding_options_text.help_text }}</small>
+								</div>
+
+								<!-- Different Designs -->
+								<div class="col-md-6">
+									<label class="form-label fw-bold">Allow Different Designs</label>
+									<div class="form-check form-switch">
+										{{ form.allow_different_designs }}
+										<label class="form-check-label"
+											for="{{ form.allow_different_designs.id_for_label }}">
+											Enable multiple design uploads
+										</label>
+									</div>
+								</div>
+
+								<div class="col-md-6">
+									<label for="{{ form.max_different_designs.id_for_label }}"
+										class="form-label fw-bold">Max
+										Different Designs</label>
+									{{ form.max_different_designs }}
+								</div>
+
+								<!-- Quantity Tiers -->
+								<div class="col-md-12">
+									<label class="form-label fw-bold">Quantity Pricing Tiers</label>
+									<div class="card">
+										<div class="card-body">
+											<button type="button" class="btn btn-success btn-sm mb-3"
+												id="addQuantityTier">
+												<i class="mdi mdi-plus"></i> Add Quantity Tier
+											</button>
+
+											<div class="table-responsive">
+												<table class="table table-bordered" id="quantityTiersTable">
+													<thead style="background-color: #667eea; color: white;">
+														<tr>
+															<th width="15%">Qty</th>
+															<th width="25%">Saver<br><small>5-7 days</small></th>
+															<th width="25%">Standard<br><small>3-5 days</small></th>
+															<th width="25%">Express<br><small>1-2 days</small></th>
+															<th width="10%" class="text-center">Remove</th>
+														</tr>
+													</thead>
+													<tbody id="quantityTiersBody">
+														<!-- Rows will be added here dynamically -->
+													</tbody>
+												</table>
+											</div>
+
+											<!-- Hidden field to store JSON data -->
+											<input type="hidden" name="quantity_tiers_json" id="quantityTiersJson">
+											<small class="text-muted">Add different quantity levels with prices for each
+												delivery option</small>
+										</div>
+									</div>
+								</div>
+
+								<!-- Delivery Options -->
+								<div class="col-md-12">
+									<label for="{{ form.delivery_options_text.id_for_label }}"
+										class="form-label fw-bold">Delivery Options</label>
+									{{ form.delivery_options_text }}
+									<small class="text-muted d-block">{{ form.delivery_options_text.help_text }}</small>
+								</div>
+
+								<!-- Stock Management -->
+								<div class="col-12 mt-5">
+									<div class="section-header">
+										<i class="mdi mdi-package-variant me-2"></i>
+										<h4 class="mb-0">Stock Management</h4>
+									</div>
+								</div>
+
+								<div class="col-md-6">
+									<label for="{{ form.stock_quantity.id_for_label }}" class="form-label fw-bold">Stock
+										Quantity</label>
+									{{ form.stock_quantity }}
+								</div>
+
+								<div class="col-md-6">
+									<label for="{{ form.min_order_quantity.id_for_label }}"
+										class="form-label fw-bold">Minimum
+										Order Quantity</label>
+									{{ form.min_order_quantity }}
+								</div>
+
+								<!-- Product Images -->
+								<div class="col-12 mt-5">
+									<div class="section-header">
+										<i class="mdi mdi-image-multiple me-2"></i>
+										<h4 class="mb-0">Product Images</h4>
+									</div>
+								</div>
+
+								<div class="col-md-6">
+									<label for="{{ form.main_image.id_for_label }}" class="form-label fw-bold">Main
+										Product Image</label>
+									{% if editing and product.main_image %}
+									<div class="current-image mb-2">
+										<img src="{{ product.main_image.url }}" alt="Current main image"
+											class="img-thumbnail" style="max-width: 200px; max-height: 200px;">
+										<p class="text-muted small mt-1">Current: {{ product.main_image.name }}</p>
+									</div>
+									{% endif %}
+									<div class="custom-file-upload">
+										{{ form.main_image }}
+									</div>
+									<small class="text-muted">{% if editing %}Upload new image to replace current
+										{% else %}Upload main product image {% endif %}</small>
+								</div>
+
+								<div class="col-md-6">
+									<label for="{{ form.image_1.id_for_label }}" class="form-label fw-bold">Additional
+										Image 1</label>
+									{% if editing and product.image_1 %}
+									<div class="current-image mb-2">
+										<img src="{{ product.image_1.url }}" alt="Current image 1" class="img-thumbnail"
+											style="max-width: 200px; max-height: 200px;">
+										<p class="text-muted small mt-1">Current: {{ product.image_1.name }}</p>
+									</div>
+									{% endif %}
+									<div class="custom-file-upload">
+										{{ form.image_1 }}
+									</div>
+								</div>
+
+								<div class="col-md-6">
+									<label for="{{ form.image_2.id_for_label }}" class="form-label fw-bold">Additional
+										Image 2</label>
+									{% if editing and product.image_2 %}
+									<div class="current-image mb-2">
+										<img src="{{ product.image_2.url }}" alt="Current image 2" class="img-thumbnail"
+											style="max-width: 200px; max-height: 200px;">
+										<p class="text-muted small mt-1">Current: {{ product.image_2.name }}</p>
+									</div>
+									{% endif %}
+									<div class="custom-file-upload">
+										{{ form.image_2 }}
+									</div>
+								</div>
+
+								<div class="col-md-6">
+									<label for="{{ form.image_3.id_for_label }}" class="form-label fw-bold">Additional
+										Image 3</label>
+									{% if editing and product.image_3 %}
+									<div class="current-image mb-2">
+										<img src="{{ product.image_3.url }}" alt="Current image 3" class="img-thumbnail"
+											style="max-width: 200px; max-height: 200px;">
+										<p class="text-muted small mt-1">Current: {{ product.image_3.name }}</p>
+									</div>
+									{% endif %}
+									<div class="custom-file-upload">
+										{{ form.image_3 }}
+									</div>
+								</div>
+
+								<div class="col-md-6">
+									<label for="{{ form.image_4.id_for_label }}" class="form-label fw-bold">Additional
+										Image 4</label>
+									{% if editing and product.image_4 %}
+									<div class="current-image mb-2">
+										<img src="{{ product.image_4.url }}" alt="Current image 4" class="img-thumbnail"
+											style="max-width: 200px; max-height: 200px;">
+										<p class="text-muted small mt-1">Current: {{ product.image_4.name }}</p>
+									</div>
+									{% endif %}
+									<div class="custom-file-upload">
+										{{ form.image_4 }}
+									</div>
+								</div>
+
+								<div class="col-md-6">
+									<label for="{{ form.image_5.id_for_label }}" class="form-label fw-bold">Additional
+										Image 5</label>
+									{% if editing and product.image_5 %}
+									<div class="current-image mb-2">
+										<img src="{{ product.image_5.url }}" alt="Current image 5" class="img-thumbnail"
+											style="max-width: 200px; max-height: 200px;">
+										<p class="text-muted small mt-1">Current: {{ product.image_5.name }}</p>
+									</div>
+									{% endif %}
+									<div class="custom-file-upload">
+										{{ form.image_5 }}
+									</div>
+								</div>
+
+								<div class="col-md-6">
+									<label for="{{ form.image_6.id_for_label }}" class="form-label fw-bold">Additional
+										Image 6</label>
+									{% if editing and product.image_6 %}
+									<div class="current-image mb-2">
+										<img src="{{ product.image_6.url }}" alt="Current image 6" class="img-thumbnail"
+											style="max-width: 200px; max-height: 200px;">
+										<p class="text-muted small mt-1">Current: {{ product.image_6.name }}</p>
+									</div>
+									{% endif %}
+									<div class="custom-file-upload">
+										{{ form.image_6 }}
+									</div>
+								</div>
+						</div>
+
+						<!-- Submit Button -->
+						<div class="col-12 mt-5">
+							<div class="d-flex gap-3">
+								<button type="submit" class="btn btn-primary btn-lg px-5">
+									<i class="mdi mdi-check me-2"></i>{% if editing %}Update Product{% else %}Add
+									Product{% endif %}
+								</button>
+								<a href="{% url 'product_list' %}" class="btn btn-outline-secondary btn-lg px-5">
+									<i class="mdi mdi-close me-2"></i>Cancel
+								</a>
+							</div>
+						</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div> <!-- End Content -->
+	<!-- </div> End Content Wrapper -->
+
+	<style>
+		/* Enhanced Form Styling */
+		.form-control,
+		.form-select {
+			border: 2px solid #e0e6ed;
+			border-radius: 8px;
+			padding: 0.75rem 1rem;
+			font-size: 1rem;
+			transition: all 0.3s ease;
+		}
+
+		.form-control:focus,
+		.form-select:focus {
+			border-color: #667eea;
+			box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
+			outline: none;
+		}
+
+		.form-control-lg {
+			padding: 1rem 1.25rem;
+			font-size: 1.1rem;
+		}
+
+		.form-label {
+			margin-bottom: 0.5rem;
+			color: #2d3748;
+			font-size: 0.95rem;
+		}
+
+		.fw-bold {
+			font-weight: 600 !important;
+		}
+
+		.section-header {
+			display: flex;
+			align-items: center;
+			padding: 1rem 0;
+			border-bottom: 3px solid #667eea;
+			margin-bottom: 1.5rem;
+		}
+
+		.section-header i {
+			font-size: 1.5rem;
+			color: #667eea;
+		}
+
+		.section-header h4 {
+			color: #2d3748;
+			font-weight: 700;
+			margin: 0;
+			padding: 0;
+			border: none;
+		}
+
+		.card {
+			border: none;
+			border-radius: 12px;
+			overflow: hidden;
+		}
+
+		.shadow-sm {
+			box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.075) !important;
+		}
+
+		textarea.form-control {
+			min-height: 100px;
+			resize: vertical;
+		}
+
+		.input-group-text {
+			background-color: #f7fafc;
+			border: 2px solid #e0e6ed;
+			border-right: none;
+			color: #4a5568;
+			font-weight: 600;
+		}
+
+		.input-group .form-control {
+			border-left: none;
+		}
+
+		.input-group:focus-within .input-group-text {
+			border-color: #667eea;
+			background-color: #eef2ff;
+		}
+
+		.btn-primary {
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			border: none;
+			font-weight: 600;
+			transition: all 0.3s ease;
+		}
+
+		.btn-primary:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+		}
+
+		.btn-outline-secondary {
+			border: 2px solid #cbd5e0;
+			color: #4a5568;
+			font-weight: 600;
+			transition: all 0.3s ease;
+		}
+
+		.btn-outline-secondary:hover {
+			background-color: #f7fafc;
+			border-color: #a0aec0;
+			color: #2d3748;
+		}
+
+		.form-check-input {
+			width: 3rem;
+			height: 1.5rem;
+			cursor: pointer;
+		}
+
+		.form-check-input:checked {
+			background-color: #667eea;
+			border-color: #667eea;
+		}
+
+		.custom-file-upload input[type="file"] {
+			padding: 0.75rem;
+			border: 2px dashed #cbd5e0;
+			border-radius: 8px;
+			background-color: #f7fafc;
+			cursor: pointer;
+			transition: all 0.3s ease;
+		}
+
+		.custom-file-upload input[type="file"]:hover {
+			border-color: #667eea;
+			background-color: #eef2ff;
+		}
+
+		.current-image {
+			padding: 1rem;
+			background-color: #f8f9fa;
+			border-radius: 8px;
+			border: 2px solid #e0e6ed;
+		}
+
+		.current-image img {
+			border-radius: 6px;
+			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+			transition: transform 0.3s ease;
+		}
+
+		.current-image img:hover {
+			transform: scale(1.05);
+		}
+
+		.current-image .text-muted {
+			margin-top: 0.5rem;
+			font-size: 0.8rem;
+		}
+
+		.text-danger {
+			font-size: 0.875rem;
+			font-weight: 500;
+		}
+
+		.alert {
+			border-radius: 8px;
+			border: none;
+			font-weight: 500;
+		}
+
+		.alert-success {
+			background-color: #d4edda;
+			color: #155724;
+		}
+
+		.alert-danger {
+			background-color: #f8d7da;
+			color: #721c24;
+		}
+	</style>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			let tierCounter = 0;
+
+			// Function to add a quantity tier row with optional data
+			function addQuantityTierRow(data = null) {
+				tierCounter++;
+				const tbody = document.getElementById('quantityTiersBody');
+				const row = document.createElement('tr');
+				row.id = `tier-row-${tierCounter}`;
+				row.innerHTML = `
+			<td>
+				<input type="number" class="form-control tier-quantity" placeholder="e.g., 250" min="1" required value="${data ? data.quantity : ''}">
+			</td>
+			<td>
+				<div class="input-group">
+					<span class="input-group-text">₹</span>
+					<input type="number" class="form-control tier-price-saver" placeholder="0.00" step="0.01" min="0" required value="${data ? data.saver : ''}">
+				</div>
+			</td>
+			<td>
+				<div class="input-group">
+					<span class="input-group-text">₹</span>
+					<input type="number" class="form-control tier-price-standard" placeholder="0.00" step="0.01" min="0" required value="${data ? data.standard : ''}">
+				</div>
+			</td>
+			<td>
+				<div class="input-group">
+					<span class="input-group-text">₹</span>
+					<input type="number" class="form-control tier-price-express" placeholder="0.00" step="0.01" min="0" required value="${data ? data.express : ''}">
+				</div>
+			</td>
+			<td class="text-center">
+				<button type="button" class="btn btn-danger btn-sm remove-tier" data-row="tier-row-${tierCounter}">
+					<i class="mdi mdi-delete"></i>
+				</button>
+			</td>
+		`;
+				tbody.appendChild(row);
+
+				// Add remove event listener
+				row.querySelector('.remove-tier').addEventListener('click', function () {
+					row.remove();
+					updateQuantityTiersJSON();
+				});
+
+				// Update JSON on input change
+				row.querySelectorAll('input').forEach(input => {
+					input.addEventListener('input', updateQuantityTiersJSON);
+				});
+
+				// Update JSON after adding row
+				updateQuantityTiersJSON();
+			}
+
+			// Add Quantity Tier Row button click
+			document.getElementById('addQuantityTier').addEventListener('click', function () {
+				addQuantityTierRow();
+			});
+
+			// Update hidden JSON field
+			function updateQuantityTiersJSON() {
+				const rows = document.querySelectorAll('#quantityTiersBody tr');
+				const tiers = [];
+
+				rows.forEach(row => {
+					const quantity = row.querySelector('.tier-quantity').value;
+					const priceSaver = row.querySelector('.tier-price-saver').value;
+					const priceStandard = row.querySelector('.tier-price-standard').value;
+					const priceExpress = row.querySelector('.tier-price-express').value;
+
+					if (quantity && priceSaver && priceStandard && priceExpress) {
+						tiers.push({
+							quantity: parseInt(quantity),
+							saver: parseFloat(priceSaver),
+							standard: parseFloat(priceStandard),
+							express: parseFloat(priceExpress)
+						});
+					}
+				});
+
+
+				document.getElementById('quantityTiersJson').value = JSON.stringify(tiers);
+			}
+
+			// Load existing quantity tiers if editing
+			{% if editing and quantity_tiers_json %}
+			const existingTiers = {{ quantity_tiers_json| safe
+		}};
+		if (existingTiers && existingTiers.length > 0) {
+			existingTiers.forEach(tier => {
+				addQuantityTierRow(tier);
+			});
+		}
+		else {
+			addQuantityTierRow();
+		}
+		{% else %}
+		addQuantityTierRow();
+		{% endif %}
+		});
+	</script>
+
+	{% endblock content %}

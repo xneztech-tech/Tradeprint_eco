@@ -1,0 +1,350 @@
+{% extends "frontend/themes/base.html" %}
+{% load static %}
+
+{% block content %}
+<style>
+    .ec-breadcrumb-title {
+        font-size: 16px;
+    }
+
+    .ec-breadcrumb-list li {
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 300;
+        letter-spacing: 0.02rem;
+        line-height: 1.2;
+        text-transform: capitalize;
+    }
+
+    .ec-breadcrumb-list .ec-breadcrumb-item.active::before {
+        color: #3474d4;
+    }
+
+    .ec-breadcrumb {
+        padding: 15px 0;
+        background-color: #f7f7f7;
+        border-top: 1px solid #eeeeee;
+        border-bottom: 1px solid #eeeeee;
+    }
+
+    .ec-breadcrumb-item+.ec-breadcrumb-item::before {
+        display: inline-block;
+        padding-right: 7px;
+        color: #444444;
+        content: "\f101";
+        font-family: "EcIcons";
+        font-size: 15px;
+    }
+
+    .ec-breadcrumb-list li.active {
+        color: #3474d4;
+    }
+
+    .ec-breadcrumb-item+.ec-breadcrumb-item {
+        padding-left: 7px;
+    }
+
+    /* Cart Image Styling */
+    .ec-cart-pro-img {
+        width: 80px !important;
+        height: 80px !important;
+        object-fit: cover;
+        border-radius: 8px;
+        border: 1px solid #e8e8e8;
+    }
+
+    /* Summary Section Styling */
+    .ec-sidebar-block {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+    }
+
+    .ec-sb-title {
+        background: linear-gradient(135deg, #ff007f 0%, #ff4da6 100%);
+        padding: 20px;
+        margin: 0;
+    }
+
+    .ec-sidebar-title {
+        color: #fff !important;
+        font-size: 18px;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    .ec-sb-block-content {
+        padding: 25px;
+    }
+
+    .ec-cart-summary>div {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 0;
+        border-bottom: 1px solid #f0f0f0;
+        font-size: 15px;
+    }
+
+    .ec-cart-summary>div:last-child {
+        border-bottom: none;
+    }
+
+    .ec-cart-summary-total {
+        background: #f8f9fa;
+        padding: 18px !important;
+        border-radius: 8px;
+        margin-top: 15px;
+        font-weight: 600;
+        font-size: 18px !important;
+        border: 2px solid #ff007f !important;
+    }
+
+    .ec-cart-summary-total .text-right {
+        color: #ff007f;
+        font-size: 20px;
+    }
+
+    .text-left {
+        color: #444;
+        font-weight: 500;
+    }
+
+    .text-right {
+        color: #222;
+        font-weight: 600;
+    }
+
+    /* Cart Table Improvements */
+    .cart-table-content table {
+        background: #fff;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .cart-table-content thead {
+        background: #f8f9fa;
+    }
+
+    .cart-table-content thead th {
+        font-weight: 600;
+        color: #444;
+        padding: 15px 10px;
+    }
+
+    .cart-table-content tbody td {
+        vertical-align: middle;
+        padding: 20px 10px;
+    }
+
+    .ec-cart-pro-name a {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        color: #444;
+        font-weight: 500;
+    }
+
+    .ec-cart-pro-config small {
+        line-height: 1.6;
+    }
+
+    /* Quantity Input */
+    .cart-plus-minus {
+        width: 70px;
+        text-align: center;
+        border: 2px solid #e8e8e8;
+        border-radius: 6px;
+        padding: 8px;
+        font-weight: 600;
+    }
+
+    /* Remove Button */
+    .ec-cart-pro-remove a {
+        color: #dc3545;
+        font-size: 18px;
+        transition: all 0.3s;
+    }
+
+    .ec-cart-pro-remove a:hover {
+        color: #c82333;
+        transform: scale(1.2);
+    }
+
+    /* Empty Cart */
+    .fi-rr-shopping-cart {
+        display: inline-block;
+    }
+</style>
+
+<!-- Ec breadcrumb start -->
+<div class="sticky-header-next-sec ec-breadcrumb section-space-mb">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="row ec_breadcrumb_inner">
+                    <div class="col-md-6 col-sm-12">
+                        <h2 class="ec-breadcrumb-title">Shopping Cart</h2>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <ul class="ec-breadcrumb-list">
+                            <li class="ec-breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                            <li class="ec-breadcrumb-item active">Cart</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Ec breadcrumb end -->
+
+<!-- Ec cart page -->
+<section class="ec-page-content section-space-p">
+    <div class="container">
+        {% if cart_items %}
+        <div class="row">
+            <div class="ec-cart-leftside col-lg-8 col-md-12">
+                <!-- cart content Start -->
+                <div class="ec-cart-content">
+                    <div class="ec-cart-inner">
+                        <div class="row">
+                            <form method="post">
+                                {% csrf_token %}
+                                <div class="table-content cart-table-content">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Product</th>
+                                                <th>Configuration</th>
+                                                <th>Price</th>
+                                                <th style="text-align: center;">Quantity</th>
+                                                <th>Total</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for item in cart_items %}
+                                            <tr>
+                                                <td data-label="Product" class="ec-cart-pro-name">
+                                                    <a href="{% url 'product_detail' product_id=item.product.id %}">
+                                                        {% if item.product.main_image %}
+                                                        <img class="ec-cart-pro-img mr-4"
+                                                            src="{{ item.product.main_image.url }}"
+                                                            alt="{{ item.product.name }}" />
+                                                        {% else %}
+                                                        <img class="ec-cart-pro-img mr-4"
+                                                            src="{% static 'frontend/assets/images/product-image/placeholder.jpg' %}"
+                                                            alt="{{ item.product.name }}" />
+                                                        {% endif %}
+                                                        {{ item.product.name }}
+                                                    </a>
+                                                </td>
+                                                <td data-label="Configuration" class="ec-cart-pro-config">
+                                                    <small style="display: block; color: #666; font-size: 12px;">
+                                                        {{ item.configuration_summary|default:"No configuration" }}
+                                                    </small>
+                                                </td>
+                                                <td data-label="Price" class="ec-cart-pro-price">
+                                                    <span class="amount">₹{{ item.unit_price }}</span>
+                                                </td>
+                                                <td data-label="Quantity" class="ec-cart-pro-qty"
+                                                    style="text-align: center;">
+                                                    <div class="cart-qty-plus-minus">
+                                                        <form method="post"
+                                                            action="{% url 'update_cart_item' item.id %}"
+                                                            style="display: inline;">
+                                                            {% csrf_token %}
+                                                            <input class="cart-plus-minus" type="number" name="quantity"
+                                                                value="{{ item.quantity }}" min="1"
+                                                                onchange="this.form.submit()" />
+                                                        </form>
+                                                    </div>
+                                                </td>
+                                                <td data-label="Total" class="ec-cart-pro-subtotal">
+                                                    ₹{{ item.total_price|floatformat:2 }}
+                                                </td>
+                                                <td data-label="Remove" class="ec-cart-pro-remove">
+                                                    <a href="{% url 'remove_from_cart' item.id %}"
+                                                        onclick="return confirm('Remove this item from cart?')">
+                                                        <i class="ecicon eci-trash-o"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="ec-cart-update-bottom">
+                                            <a href="{% url 'home' %}" class="btn btn-secondary">Continue Shopping</a>
+                                            <a href="{% url 'checkout' %}" class="btn btn-primary">Proceed to
+                                                Checkout</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!--cart content End -->
+            </div>
+
+            <!-- Sidebar Area Start -->
+            <div class="ec-cart-rightside col-lg-4 col-md-12">
+                <div class="ec-sidebar-wrap">
+                    <!-- Sidebar Summary Block -->
+                    <div class="ec-sidebar-block">
+                        <div class="ec-sb-title">
+                            <h3 class="ec-sidebar-title">Order Summary</h3>
+                        </div>
+                        <div class="ec-sb-block-content">
+                            <div class="ec-cart-summary-bottom">
+                                <div class="ec-cart-summary">
+                                    <div>
+                                        <span class="text-left">Sub-Total</span>
+                                        <span class="text-right">₹{{ cart.subtotal|floatformat:2 }}</span>
+                                    </div>
+                                    <div>
+                                        <span class="text-left">VAT (20%)</span>
+                                        <span class="text-right">₹{{ cart.vat|floatformat:2 }}</span>
+                                    </div>
+                                    <div class="ec-cart-summary-total">
+                                        <span class="text-left">Total Amount</span>
+                                        <span class="text-right">₹{{ cart.total|floatformat:2 }}</span>
+                                    </div>
+                                </div>
+                                <div class="ec-cart-info-box"
+                                    style="background: #fdf2f8; padding: 15px; border-radius: 8px; margin-top: 20px; border-left: 4px solid #ff007f;">
+                                    <p
+                                        style="font-size: 13px; color: #555; margin: 0; display: flex; align-items: center; gap: 8px;">
+                                        <i class="fi-rr-info" style="color: #ff007f; font-size: 16px;"></i>
+                                        <span>All prices include 20% VAT</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Sidebar Summary Block -->
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <!-- Empty Cart -->
+        <div class="row">
+            <div class="col-12">
+                <div class="ec-cart-content" style="text-align: center; padding: 60px 20px;">
+                    <i class="fi-rr-shopping-cart" style="font-size: 80px; color: #ccc; margin-bottom: 20px;"></i>
+                    <h3 style="margin-bottom: 10px;">Your cart is empty</h3>
+                    <p style="color: #666; margin-bottom: 30px;">Add some products to get started!</p>
+                    <a href="{% url 'home' %}" class="btn btn-primary">Start Shopping</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+{% endblock %}

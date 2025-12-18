@@ -1,0 +1,323 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<!-- <meta name="description" content="Ekka - Admin Dashboard eCommerce HTML Template."> -->
+
+	<title>Prints</title>
+
+	<!-- GOOGLE FONTS -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link
+		href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800;900&family=Roboto:wght@400;500;700;900&display=swap"
+		rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.x.x/css/materialdesignicons.min.css" rel="stylesheet">
+	<link href="https://cdn.materialdesignicons.com/4.4.95/css/materialdesignicons.min.css" rel="stylesheet" />
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+		integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<!-- PLUGINS CSS STYLE -->
+	<link href="{% static 'backend/assets/plugins/daterangepicker/daterangepicker.css' %}" rel="stylesheet">
+	<link href="{% static 'backend/assets/plugins/simplebar/simplebar.css' %}" rel="stylesheet" />
+
+	<!-- Ekka CSS -->
+	<link id="ekka-css" href="{% static 'backend/assets/css/ekka.css' %}" rel="stylesheet" />
+
+	<!-- FAVICON -->
+	<link href="{% static 'backend/assets/img/favicon.png' %}" rel="shortcut icon" />
+
+	<style>
+		/* Pink Theme Overrides for Backend */
+		:root {
+			--primary-pink: #ff007f;
+			--primary-pink-hover: #d6006b;
+		}
+
+		/* Card Statistics Icons (Circular backgrounds) */
+		.dash-card span.mdi {
+			background-color: rgba(255, 0, 127, 0.1) !important;
+			color: #ff007f !important;
+		}
+
+		.dash-card:hover span.mdi {
+			background-color: #ff007f !important;
+			color: #fff !important;
+		}
+
+		.dash-card.card-1 span.mdi,
+		.dash-card.card-2 span.mdi,
+		.dash-card.card-3 span.mdi,
+		.dash-card.card-4 span.mdi {
+			background-color: rgba(255, 0, 127, 0.1) !important;
+			color: #ff007f !important;
+		}
+
+		/* Sidebar Active State */
+		.sidebar .nav>li.active>a,
+		.sidebar .nav>li.active>a i,
+		.sidebar .nav>li:hover>a,
+		.sidebar .nav>li:hover>a i {
+			color: #ff007f !important;
+		}
+
+		.sidebar .nav>li.active {
+			border-left-color: #ff007f !important;
+		}
+
+		/* Status Badges */
+		.badge-primary,
+		.badge-info,
+		.badge-shipped,
+		.badge-warning {
+			background-color: #ff007f !important;
+			color: #fff !important;
+		}
+
+		/* View Buttons */
+		.btn-outline-primary {
+			border-color: #ff007f !important;
+			color: #ff007f !important;
+		}
+
+		.btn-outline-primary:hover {
+			background-color: #ff007f !important;
+			border-color: #ff007f !important;
+			color: #fff !important;
+		}
+
+		/* Search Button */
+		.search-form .btn-flat {
+			color: #ff007f !important;
+		}
+
+		/* Logo Color if applicable */
+		.ec-brand-name {
+			color: #333 !important;
+		}
+
+		/* Inputs */
+		.form-control:focus {
+			border-color: var(--primary-pink) !important;
+			box-shadow: 0 0 0 0.2rem rgba(255, 0, 127, 0.25) !important;
+		}
+	</style>
+</head>
+
+<body class="ec-header-fixed ec-sidebar-fixed ec-sidebar-light ec-header-light" id="body">
+
+	<!--  WRAPPER  -->
+	<div class="wrapper">
+		<!-- Header -->
+		<header class="ec-main-header" id="header">
+			<nav class="navbar navbar-static-top navbar-expand-lg">
+				<!-- Sidebar toggle button -->
+				<button id="sidebar-toggler" class="sidebar-toggle"></button>
+				<!-- search form -->
+				<div class="search-form d-lg-inline-block">
+					<div class="input-group">
+						<input type="text" name="query" id="search-input" class="form-control" placeholder="search.."
+							autofocus autocomplete="off" />
+						<button type="button" name="search" id="search-btn" class="btn btn-flat">
+							<i class="mdi mdi-magnify"></i>
+						</button>
+					</div>
+					<div id="search-results-container">
+						<ul id="search-results"></ul>
+					</div>
+				</div>
+
+				<!-- navbar right -->
+				<div class="navbar-right">
+					<ul class="nav navbar-nav">
+						<!-- User Account -->
+						<li class="dropdown user-menu">
+							<button class="dropdown-toggle nav-link ec-drop" data-bs-toggle="dropdown"
+								aria-expanded="false">
+								<img src="{% static 'backend/assets/img/user/user.png' %}" class="user-image"
+									alt="User Image" />
+							</button>
+							<ul class="dropdown-menu dropdown-menu-right ec-dropdown-menu">
+								<!-- User image -->
+								<li class="dropdown-header">
+									<img src="{% static 'backend/assets/img/user/user.png' %}" class="img-circle"
+										alt="User Image" />
+									<div class="d-inline-block">
+										{{ request.user.first_name|default:request.user.username }} <small
+											class="pt-1">{{ request.user.email }}</small>
+										<br>
+										<small class="pt-1 text-muted">Role: {{ request.user.get_role_display }}</small>
+									</div>
+								</li>
+								<!-- <li>
+									<a href="user-profile.html">
+										<i class="mdi mdi-account"></i> My Profile
+									</a>
+								</li> -->
+
+								<li class="dropdown-footer">
+									<a href="{% url 'signout' %}"> <i class="mdi mdi-logout"></i> Log Out </a>
+								</li>
+							</ul>
+						</li>
+
+					</ul>
+				</div>
+			</nav>
+		</header>
+		<!-- LEFT MAIN SIDEBAR -->
+		<div class="ec-left-sidebar ec-bg-sidebar">
+			<div id="sidebar" class="sidebar ec-sidebar-footer">
+
+				<div class="ec-brand">
+					<a href="index.html" title="PRINTS">
+						<img class="ec-brand-icon" src="{% static 'backend/assets/img/logo/ec-site-logo.png' %}"
+							alt="" />
+						<span class="ec-brand-name text-truncate">PRINTS</span>
+					</a>
+				</div>
+
+				<!-- begin sidebar scrollbar -->
+				<div class="ec-navigation" data-simplebar>
+					<!-- sidebar menu -->
+					<ul class="nav sidebar-inner" id="sidebar-menu">
+						<!-- Dashboard -->
+						<li class="active">
+							<a class="sidenav-item-link"
+								href="{% if request.user.role == 'shopkeeper' %}{% url 'shop_dashboard' %}{% else %}{% url 'admin_dashboard' %}{% endif %}">
+								<i class="mdi mdi-view-dashboard-outline"></i>
+								<span class="nav-text">Dashboard</span>
+							</a>
+							<hr>
+						</li>
+
+						{% if request.user.role == 'admin' %}
+						<!-- Users -->
+						<li class="has-sub">
+							<a class="sidenav-item-link" href="javascript:void(0)">
+								<i class="mdi mdi-account-group"></i>
+								<span class="nav-text">Users</span> <b class="caret"></b>
+							</a>
+							<div class="collapse">
+								<ul class="sub-menu" id="users" data-parent="#sidebar-menu">
+
+									<li class="">
+										<a class="sidenav-item-link" href="{% url 'user_list' %}">
+											<span class="nav-text">User List</span>
+										</a>
+									</li>
+
+								</ul>
+							</div>
+							<hr>
+						</li>
+
+						<!-- Shopkeeper -->
+						<li class="has-sub">
+							<a class="sidenav-item-link" href="javascript:void(0)">
+								<i class="mdi mdi-store"></i>
+								<span class="nav-text">Shopkeeper</span> <b class="caret"></b>
+							</a>
+							<div class="collapse">
+								<ul class="sub-menu" id="shopkeeper" data-parent="#sidebar-menu">
+									<li class="">
+										<a class="sidenav-item-link" href="{% url 'shopkeeper_add' %}">
+											<span class="nav-text">Add Shopkeeper</span>
+										</a>
+									</li>
+									<li class="">
+										<a class="sidenav-item-link" href="{% url 'shopkeeper_list' %}">
+											<span class="nav-text">Shopkeeper List</span>
+										</a>
+									</li>
+									<!-- <li class="">
+										<a class="sidenav-item-link" href="shopkeeper-detail.html">
+											<span class="nav-text">Shopkeeper Details</span>
+										</a>
+									</li> -->
+								</ul>
+							</div>
+							<hr>
+						</li>
+
+
+						<!-- Category -->
+						<li class="has-sub">
+							<a class="sidenav-item-link" href="javascript:void(0)">
+								<i class="mdi mdi-dns-outline"></i>
+								<span class="nav-text">Categories</span> <b class="caret"></b>
+							</a>
+							<div class="collapse">
+								<ul class="sub-menu" id="categorys" data-parent="#sidebar-menu">
+									<li class="">
+										<a class="sidenav-item-link" href="{% url 'category_list' %}">
+											<span class="nav-text">Main Category</span>
+										</a>
+									</li>
+									<li class="">
+										<a class="sidenav-item-link" href="{% url 'subcategory_list' %}">
+											<span class="nav-text">Sub Category</span>
+										</a>
+									</li>
+									<li class="">
+										<a class="sidenav-item-link" href="{% url 'subsubcategory_list' %}">
+											<span class="nav-text">Sub Sub Category</span>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</li>
+
+						<!-- Products -->
+						<li class="has-sub">
+							<a class="sidenav-item-link" href="javascript:void(0)">
+								<i class="mdi mdi-palette-advanced"></i>
+								<span class="nav-text">Products</span> <b class="caret"></b>
+							</a>
+							<div class="collapse">
+								<ul class="sub-menu" id="products" data-parent="#sidebar-menu">
+									<li class="">
+										<a class="sidenav-item-link" href="{% url 'product_add' %}">
+											<span class="nav-text">Add Product</span>
+										</a>
+									</li>
+									<li class="">
+										<a class="sidenav-item-link" href="{% url 'product_list' %}">
+											<span class="nav-text">List Product</span>
+										</a>
+									</li>
+
+								</ul>
+							</div>
+						</li>
+
+						{% endif %}
+
+						<!-- Orders (Visible to Admin and Shopkeeper) -->
+						{% if request.user.role == 'admin' or request.user.role == 'shopkeeper' %}
+						<li class="has-sub">
+							<a class="sidenav-item-link" href="javascript:void(0)">
+								<i class="mdi mdi-cart"></i>
+								<span class="nav-text">Orders</span> <b class="caret"></b>
+							</a>
+							<div class="collapse">
+								<ul class="sub-menu" id="orders" data-parent="#sidebar-menu">
+									<li class="">
+										<a class="sidenav-item-link" href="{% url 'order_list' %}">
+											<span class="nav-text">Assigned Orders</span>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</li>
+						{% endif %}
+
+					</ul>
+				</div>
+			</div>
+		</div>

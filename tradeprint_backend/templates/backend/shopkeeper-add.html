@@ -1,0 +1,71 @@
+{% extends 'backend/themes/base.html' %}
+{% load static %}
+
+{% block title %}Add Shopkeeper{% endblock %}
+
+{% block content %}
+<div class="ec-content-wrapper">
+    <div class="content">
+        <div class="breadcrumb-wrapper breadcrumb-wrapper-2 breadcrumb-contacts">
+            <h1>Add Shopkeeper</h1>
+            <p class="breadcrumbs">
+                <span><a href="{% url 'admin_dashboard' %}">Home</a></span>
+                <span><i class="mdi mdi-chevron-right"></i></span>
+                <span>Add Shopkeeper</span>
+            </p>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-8 col-lg-12" style="margin-left: 272px;">
+                <div class="ec-cat-list card card-default">
+                    <div class="card-body">
+                        <form method="POST">
+                            {% csrf_token %}
+                            <div class="form-group row">
+                                <label class="col-12 col-form-label">Shop Name</label>
+                                <div class="col-12">
+                                    <input name="shop_name" class="form-control" type="text" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-12 col-form-label">Email (Login Username)</label>
+                                <div class="col-12">
+                                    <input name="email" class="form-control" type="email" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-12 col-form-label">Password</label>
+                                <div class="col-12">
+                                    <input name="password" class="form-control" type="password" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-12 col-form-label">Location (City)</label>
+                                <div class="col-12">
+                                    <input name="location" class="form-control" type="text" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-12 col-form-label">Contact Phone</label>
+                                <div class="col-12">
+                                    <input name="phone" class="form-control" type="text" required>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <button name="submit" type="submit" class="btn btn-primary">Add Shopkeeper</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

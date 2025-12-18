@@ -1,0 +1,568 @@
+{% extends "frontend/themes/base.html" %}
+{% load static %}
+
+{% block content %}
+<style>
+    .ec-breadcrumb-title {
+        font-size: 16px;
+    }
+
+    .ec-breadcrumb-list li {
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 300;
+        letter-spacing: 0.02rem;
+        line-height: 1.2;
+        text-transform: capitalize;
+    }
+
+    .ec-breadcrumb-list .ec-breadcrumb-item.active::before {
+        color: #3474d4;
+    }
+
+    .ec-breadcrumb {
+        padding: 15px 0;
+        background-color: #f7f7f7;
+        border-top: 1px solid #eeeeee;
+        border-bottom: 1px solid #eeeeee;
+    }
+
+    .ec-breadcrumb-item+.ec-breadcrumb-item::before {
+        display: inline-block;
+        padding-right: 7px;
+        color: #444444;
+        content: "\f101";
+        font-family: "EcIcons";
+        font-size: 15px;
+    }
+
+    .ec-breadcrumb-list li.active {
+        color: #3474d4;
+    }
+
+    .ec-breadcrumb-item+.ec-breadcrumb-item {
+        padding-left: 7px;
+    }
+
+    /* Checkout Page Styling */
+    .ec-checkout-block {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        margin-bottom: 25px;
+    }
+
+    .ec-checkout-title {
+        background: linear-gradient(135deg, #ff007f 0%, #ff4da6 100%);
+        color: #fff !important;
+        padding: 20px 25px;
+        margin: 0;
+        font-size: 18px;
+        font-weight: 600;
+    }
+
+    .ec-check-block-content,
+    .ec-bl-block-content {
+        padding: 30px 25px;
+    }
+
+    /* Billing Form Styling */
+    .ec-check-bill-form {
+        margin-top: 0;
+    }
+
+    .ec-bill-wrap {
+        display: block;
+        margin-bottom: 20px;
+    }
+
+    .ec-bill-wrap label {
+        display: block;
+        font-weight: 600;
+        color: #444;
+        margin-bottom: 8px;
+        font-size: 14px;
+    }
+
+    .ec-bill-wrap input[type="text"],
+    .ec-bill-wrap input[type="email"],
+    .ec-bill-wrap input[type="tel"] {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #e8e8e8;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: all 0.3s;
+    }
+
+    .ec-bill-wrap input:focus {
+        border-color: #ff007f;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(255, 0, 127, 0.1);
+    }
+
+    .ec-bill-select {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #e8e8e8;
+        border-radius: 8px;
+        font-size: 14px;
+        background: #fff;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .ec-bill-select:focus {
+        border-color: #ff007f;
+        outline: none;
+    }
+
+    /* Place Order Button */
+    .ec-check-order-btn {
+        display: block;
+        margin-top: 30px;
+    }
+
+    .ec-check-order-btn .btn {
+        padding: 15px 50px;
+        font-size: 16px;
+        font-weight: 600;
+        width: 100%;
+    }
+
+    /* Sidebar Styling */
+    .ec-sidebar-block {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        margin-bottom: 25px;
+    }
+
+    .ec-sb-title {
+        background: linear-gradient(135deg, #ff007f 0%, #ff4da6 100%);
+        padding: 20px;
+    }
+
+    .ec-sidebar-title {
+        color: #fff !important;
+        font-size: 18px;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    .ec-sb-block-content {
+        padding: 25px;
+    }
+
+    /* Summary Styling */
+    .ec-checkout-summary>div {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 0;
+        border-bottom: 1px solid #f0f0f0;
+        font-size: 15px;
+    }
+
+    .ec-checkout-summary-total {
+        background: #fdf2f8;
+        padding: 18px !important;
+        border-radius: 8px;
+        margin-top: 15px;
+        font-weight: 600;
+        font-size: 18px !important;
+        border: 2px solid #ff007f !important;
+    }
+
+    .ec-checkout-summary-total .text-right {
+        color: #ff007f;
+        font-size: 20px;
+    }
+
+    /* Delivery & Payment Options */
+    .ec-del-option,
+    .ec-pay-option {
+        margin: 20px 0;
+    }
+
+    .ec-del-option span,
+    .ec-pay-option span {
+        display: block;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        border: 2px solid transparent;
+        transition: all 0.3s;
+    }
+
+    .ec-del-option span:has(input:checked),
+    .ec-pay-option span:has(input:checked) {
+        background: #fdf2f8;
+        border-color: #ff007f;
+    }
+
+    .ec-del-opt-head,
+    .ec-pay-opt-head {
+        display: block;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 8px;
+    }
+
+    .ec-del-option input[type="radio"],
+    .ec-pay-option input[type="radio"] {
+        width: 18px;
+        height: 18px;
+        accent-color: #ff007f;
+        margin-right: 8px;
+        cursor: pointer;
+    }
+
+    .ec-del-option label,
+    .ec-pay-option label {
+        font-size: 14px;
+        color: #666;
+        cursor: pointer;
+        margin: 0;
+    }
+
+    textarea {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #e8e8e8;
+        border-radius: 8px;
+        font-size: 14px;
+        min-height: 100px;
+        resize: vertical;
+    }
+
+    textarea:focus {
+        border-color: #ff007f;
+        outline: none;
+    }
+
+    .ec-pay-agree {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 15px;
+    }
+
+    .ec-pay-agree input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        accent-color: #ff007f;
+        cursor: pointer;
+    }
+
+    .ec-pay-agree a {
+        color: #444;
+        font-size: 14px;
+    }
+
+    .ec-pay-agree span {
+        color: #ff007f;
+        font-weight: 600;
+    }
+
+    /* Payment Icons */
+    .ec-check-pay-img-inner {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+    }
+
+    .ec-check-pay-img {
+        padding: 10px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        text-align: center;
+    }
+
+    /* Responsive */
+    @media (max-width: 767px) {
+        .ec-check-pay-img-inner {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+</style>
+
+<!-- Ec breadcrumb start -->
+<div class="sticky-header-next-sec ec-breadcrumb section-space-mb">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="row ec_breadcrumb_inner">
+                    <div class="col-md-6 col-sm-12">
+                        <h2 class="ec-breadcrumb-title">Checkout</h2>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <ul class="ec-breadcrumb-list">
+                            <li class="ec-breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                            <li class="ec-breadcrumb-item active">Checkout</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Ec breadcrumb end -->
+
+<!-- Ec checkout page -->
+<section class="ec-page-content section-space-p">
+    <div class="container">
+        <form method="post" action="{% url 'checkout' %}" id="checkoutForm">
+            {% csrf_token %}
+
+            <!-- Hidden fields for delivery and payment -->
+            <input type="hidden" name="delivery_method" id="delivery_method_input" value="standard">
+            <input type="hidden" name="delivery_notes" id="delivery_notes_input" value="">
+            <input type="hidden" name="payment_method" id="payment_method_input" value="cod">
+
+            <div class="row">
+                <div class="ec-checkout-leftside col-lg-8 col-md-12">
+                    <!-- checkout content Start -->
+                    <div class="ec-checkout-content">
+                        <div class="ec-checkout-inner">
+                            <!-- Billing Details Section -->
+                            <div class="ec-checkout-wrap">
+                                <div class="ec-checkout-block ec-check-bill">
+                                    <h3 class="ec-checkout-title">📍 Billing & Contact Details</h3>
+                                    <div class="ec-bl-block-content">
+                                        <div class="ec-check-bill-form">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <span class="ec-bill-wrap">
+                                                        <label>First Name *</label>
+                                                        <input type="text" name="firstname"
+                                                            placeholder="Enter your first name" required />
+                                                    </span>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <span class="ec-bill-wrap">
+                                                        <label>Last Name *</label>
+                                                        <input type="text" name="lastname"
+                                                            placeholder="Enter your last name" required />
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <span class="ec-bill-wrap">
+                                                        <label>Email Address *</label>
+                                                        <input type="email" name="email"
+                                                            placeholder="your.email@example.com" required />
+                                                    </span>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <span class="ec-bill-wrap">
+                                                        <label>Phone Number *</label>
+                                                        <input type="tel" name="phone" placeholder="+91 1234 567890"
+                                                            required />
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <span class="ec-bill-wrap">
+                                                <label>Address *</label>
+                                                <input type="text" name="address" placeholder="Street address, P.O. box"
+                                                    required />
+                                            </span>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <span class="ec-bill-wrap">
+                                                        <label>City *</label>
+                                                        <input type="text" name="city" placeholder="City" required />
+                                                    </span>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <span class="ec-bill-wrap">
+                                                        <label>Post Code *</label>
+                                                        <input type="text" name="postcode" placeholder="Post Code"
+                                                            required />
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <span class="ec-bill-wrap">
+                                                        <label>Country *</label>
+                                                        <select name="country" class="ec-bill-select" required>
+                                                            <option value="" selected disabled>Select Country</option>
+                                                            <option value="UK">United Kingdom</option>
+                                                            <option value="US">United States</option>
+                                                            <option value="CA">Canada</option>
+                                                            <option value="AU">Australia</option>
+                                                        </select>
+                                                    </span>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <span class="ec-bill-wrap">
+                                                        <label>Region/State</label>
+                                                        <select name="state" class="ec-bill-select">
+                                                            <option value="" selected disabled>Select Region/State
+                                                            </option>
+                                                            <option value="England">England</option>
+                                                            <option value="Scotland">Scotland</option>
+                                                            <option value="Wales">Wales</option>
+                                                            <option value="Northern Ireland">Northern Ireland</option>
+                                                        </select>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <span class="ec-check-order-btn">
+                                <button type="submit" class="btn btn-primary">Place Order</button>
+                            </span>
+                        </div>
+                    </div>
+                    <!--checkout content End -->
+                </div>
+
+                <!-- Sidebar Area Start -->
+                <div class="ec-checkout-rightside col-lg-4 col-md-12">
+                    <div class="ec-sidebar-wrap">
+                        <!-- Order Summary Block -->
+                        <div class="ec-sidebar-block">
+                            <div class="ec-sb-title">
+                                <h3 class="ec-sidebar-title">Order Summary</h3>
+                            </div>
+                            <div class="ec-sb-block-content">
+                                <div class="ec-checkout-summary">
+                                    <div>
+                                        <span class="text-left">Sub-Total</span>
+                                        <span class="text-right">₹{{ cart.subtotal|default:"0.00"|floatformat:2}}</span>
+                                    </div>
+                                    <div>
+                                        <span class="text-left">VAT (20%)</span>
+                                        <span class="text-right">₹{{ cart.vat|default:"0.00"|floatformat:2 }}</span>
+                                    </div>
+                                    <div>
+                                        <span class="text-left">Delivery</span>
+                                        <span class="text-right" id="delivery_cost">₹0.00</span>
+                                    </div>
+                                    <div class="ec-checkout-summary-total">
+                                        <span class="text-left">Total Amount</span>
+                                        <span class="text-right">₹{{ cart.total|default:"0.00"|floatformat:2 }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Delivery Method Block -->
+                        <div class="ec-sidebar-block">
+                            <div class="ec-sb-title">
+                                <h3 class="ec-sidebar-title">🚚 Delivery Method</h3>
+                            </div>
+                            <div class="ec-sb-block-content">
+                                <div class="ec-checkout-del">
+                                    <span class="ec-del-option">
+                                        <span>
+                                            <span class="ec-del-opt-head">Standard Delivery</span>
+                                            <input type="radio" id="del1" name="delivery_method_radio" value="standard"
+                                                checked onchange="updateDeliveryMethod('standard')">
+                                            <label for="del1">3-5 working days - FREE</label>
+                                        </span>
+                                        <span>
+                                            <span class="ec-del-opt-head">Express Delivery</span>
+                                            <input type="radio" id="del2" name="delivery_method_radio" value="express"
+                                                onchange="updateDeliveryMethod('express')">
+                                            <label for="del2">1-2 working days - ₹500.00</label>
+                                        </span>
+                                    </span>
+                                    <span class="ec-del-commemt">
+                                        <span class="ec-del-opt-head">Delivery Instructions</span>
+                                        <textarea id="delivery_notes_textarea"
+                                            placeholder="Add any special delivery instructions..."
+                                            onchange="updateDeliveryNotes()"></textarea>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Payment Method Block -->
+                        <div class="ec-sidebar-block">
+                            <div class="ec-sb-title">
+                                <h3 class="ec-sidebar-title">💳 Payment Method</h3>
+                            </div>
+                            <div class="ec-sb-block-content">
+                                <div class="ec-checkout-pay">
+                                    <span class="ec-pay-option">
+                                        <span>
+                                            <input type="radio" id="pay1" name="payment_method_radio" value="cod"
+                                                checked onchange="updatePaymentMethod('cod')">
+                                            <label for="pay1">Cash on Delivery</label>
+                                        </span>
+                                        <span>
+                                            <input type="radio" id="pay2" name="payment_method_radio" value="card"
+                                                onchange="updatePaymentMethod('card')">
+                                            <label for="pay2">Credit/Debit Card</label>
+                                        </span>
+                                        <span>
+                                            <input type="radio" id="pay3" name="payment_method_radio" value="paypal"
+                                                onchange="updatePaymentMethod('paypal')">
+                                            <label for="pay3">PayPal</label>
+                                        </span>
+                                    </span>
+                                    <span class="ec-pay-agree">
+                                        <input type="checkbox" value="" required>
+                                        <a href="#">I agree to the <span>Terms & Conditions</span></a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Payment Icons Block -->
+                        <div class="ec-sidebar-block">
+                            <div class="ec-sb-title">
+                                <h3 class="ec-sidebar-title">We Accept</h3>
+                            </div>
+                            <div class="ec-sb-block-content">
+                                <div class="ec-check-pay-img-inner">
+                                    <div class="ec-check-pay-img">
+                                        <i class="fab fa-cc-visa" style="font-size: 32px; color: #1A1F71;"></i>
+                                    </div>
+                                    <div class="ec-check-pay-img">
+                                        <i class="fab fa-cc-mastercard" style="font-size: 32px; color: #EB001B;"></i>
+                                    </div>
+                                    <div class="ec-check-pay-img">
+                                        <i class="fab fa-cc-amex" style="font-size: 32px; color: #006FCF;"></i>
+                                    </div>
+                                    <div class="ec-check-pay-img">
+                                        <i class="fab fa-cc-paypal" style="font-size: 32px; color: #003087;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+<script>
+    function updateDeliveryMethod(method) {
+        document.getElementById('delivery_method_input').value = method;
+        // Update delivery cost display
+        const deliveryCost = method === 'express' ? '₹500.00' : '₹0.00';
+        document.getElementById('delivery_cost').textContent = deliveryCost;
+    }
+
+    function updateDeliveryNotes() {
+        const notes = document.getElementById('delivery_notes_textarea').value;
+        document.getElementById('delivery_notes_input').value = notes;
+    }
+
+    function updatePaymentMethod(method) {
+        document.getElementById('payment_method_input').value = method;
+    }
+</script>
+
+{% endblock %}

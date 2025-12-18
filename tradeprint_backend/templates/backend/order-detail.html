@@ -1,0 +1,287 @@
+{% extends 'backend/themes/base.html' %}
+{% load static %}
+
+{% block title %}Order Detail - {{ order.order_number }}{% endblock %}
+
+{% block content %}
+<!-- CONTENT WRAPPER -->
+<div class="ec-content-wrapper">
+	<div class="content">
+		<div class="breadcrumb-wrapper breadcrumb-wrapper-2">
+			<h1>Order Detail</h1>
+			<p class="breadcrumbs"><span><a href="{% url 'admin_dashboard' %}">Home</a></span>
+				<span><i class="mdi mdi-chevron-right"></i></span>
+				<span><a href="{% url 'order_list' %}">Orders</a></span>
+				<span><i class="mdi mdi-chevron-right"></i></span>{{ order.order_number }}
+			</p>
+		</div>
+
+		{% if messages %}
+		<div class="row">
+			<div class="col-12" style="margin-left: 240px;">
+				{% for message in messages %}
+				<div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+					{{ message }}
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+		{% endif %}
+
+		<div class="row">
+			<div class="col-12">
+				<div class="ec-odr-dtl card card-default" style="margin-left: 240px;">
+					<div
+						class="card-header card-header-border-bottom d-flex justify-content-between align-items-center">
+						<h2 class="ec-odr">Order Detail<br>
+							<span class="small">Order ID: #{{ order.order_number }}</span>
+						</h2>
+						<div class="d-flex gap-2">
+							{% if order.barcode_image %}
+							<div class="text-center me-4">
+								<img src="{{ order.barcode_image.url }}" alt="Barcode" style="max-height: 50px;">
+								<div class="small text-muted">{{ order.order_number }}</div>
+							</div>
+							{% endif %}
+
+							<div class="btn-group">
+								{% if request.user.role == 'admin' %}
+								{% if not order.is_artwork_verified %}
+								<a href="{% url 'validate_artwork' order.id %}" class="btn btn-warning">
+									<i class="mdi mdi-check-decagram"></i> Validate Artwork
+								</a>
+								{% else %}
+								<button class="btn btn-success disabled">
+									<i class="mdi mdi-check-circle"></i> Artwork Verified
+								</button>
+								{% endif %}
+
+								{% if not order.tracking_number %}
+								<a href="{% url 'integrate_delivery' order.id %}" class="btn btn-secondary">
+									<i class="mdi mdi-truck-delivery"></i> Integrate Delivery
+								</a>
+								{% endif %}
+
+								{% elif request.user.role == 'shopkeeper' %}
+								<!-- Send to Printer (Moved from Admin) -->
+								<a href="{% url 'send_order_to_printer' order.id %}"
+									class="btn btn-primary {% if order.is_sent_to_printer %}disabled{% endif %}">
+									<i class="mdi mdi-printer"></i>
+									{% if order.is_sent_to_printer %}Sent to Printer{% else %}Send to Printer{% endif %}
+								</a>
+
+								<!-- Print Label (Moved from global/admin) -->
+								{% if order.tracking_number %}
+								<a href="{{ order.shipping_label_url }}" target="_blank"
+									class="btn btn-outline-secondary">
+									<i class="mdi mdi-file-document"></i> Print Label
+								</a>
+								{% endif %}
+
+								<button onclick="window.print()" class="btn btn-outline-info">
+									<i class="mdi mdi-printer"></i> Print Order Sheet
+								</button>
+
+								{% if order.status == 'processing' %}
+								<form action="{% url 'order_update_status' order.id %}" method="POST"
+									style="display:inline;">
+									{% csrf_token %}
+									<input type="hidden" name="status" value="shipped">
+									<button type="submit" class="btn btn-primary btn-pill">
+										<i class="mdi mdi-check-underline"></i> Printed / Ready for Shipping
+									</button>
+								</form>
+								{% elif order.status == 'shipped' %}
+								<button class="btn btn-success disabled">
+									<i class="mdi mdi-check-underline"></i> Ready for Pickup / Handed Over
+								</button>
+								{% endif %}
+								{% endif %}
+							</div>
+						</div>
+					</div>
+					<div class="card-body">
+						<div class="row">
+							<div class="col-xl-3 col-lg-6">
+								<address class="info-grid">
+									<div class="info-title"><strong>Customer:</strong></div><br>
+									<div class="info-content">
+										{{ order.customer.first_name }} {{ order.customer.last_name }}<br>
+										{{ order.customer.email }}<br>
+										<abbr title="Phone">P:</abbr> {{ order.customer.phone }}
+									</div>
+								</address>
+							</div>
+							<div class="col-xl-3 col-lg-6">
+								<address class="info-grid">
+									<div class="info-title"><strong>Shipped To:</strong></div><br>
+									<div class="info-content">
+										{{ order.shipping_first_name }} {{ order.shipping_last_name }}<br>
+										{{ order.shipping_address }}<br>
+										{{ order.shipping_city }}, {{ order.shipping_state }} {{ order.shipping_postcode
+										}}<br>
+										{{ order.shipping_country }}<br>
+										<abbr title="Phone">P:</abbr> {{ order.shipping_phone }}
+									</div>
+								</address>
+							</div>
+							<div class="col-xl-3 col-lg-6">
+								<address class="info-grid">
+									<div class="info-title"><strong>Payment Method:</strong></div><br>
+									<div class="info-content">
+										{{ order.get_payment_method_display }}<br>
+										Status: <span
+											class="badge badge-{% if order.payment_status == 'paid' %}success{% else %}warning{% endif %}">{{
+											order.get_payment_status_display }}</span><br>
+									</div>
+								</address>
+							</div>
+							<div class="col-xl-3 col-lg-6">
+								<address class="info-grid">
+									<div class="info-title"><strong>Order Date:</strong></div><br>
+									<div class="info-content">
+										{{ order.created_at|date:"h:iA" }},<br>
+										{{ order.created_at|date:"D, M d, Y" }}
+									</div>
+								</address>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<h3 class="tbl-title">PRODUCT SUMMARY</h3>
+								<div class="table-responsive">
+									<table class="table table-striped o-tbl">
+										<thead>
+											<tr class="line">
+												<td><strong>#</strong></td>
+												<td class="text-center"><strong>IMAGE</strong></td>
+												<td class="text-center"><strong>PRODUCT</strong></td>
+												<td class="text-center"><strong>CONFIG</strong></td>
+												<td class="text-center"><strong>PRICE</strong></td>
+												<td class="text-center"><strong>QTY</strong></td>
+												<td class="text-right"><strong>TOTAL</strong></td>
+											</tr>
+										</thead>
+										<tbody>
+											{% for item in order_items %}
+											<tr>
+												<td>{{ forloop.counter }}</td>
+												<td>
+													{% if item.product.main_image %}
+													<img class="product-img" src="{{ item.product.main_image.url }}"
+														alt="{{ item.product.name }}" />
+													{% else %}
+													<img class="product-img"
+														src="{% static 'assets/img/products/p1.jpg' %}"
+														alt="No Image" />
+													{% endif %}
+												</td>
+												<td>
+													<strong>{{ item.product.name }}</strong><br>
+
+													{% if item.artwork_file %}
+													<a href="{{ item.artwork_file.url }}" target="_blank"
+														class="btn btn-sm btn-info mt-1">
+														<i class="mdi mdi-download"></i> Download Artwork
+													</a>
+													{% else %}
+													<span class="badge badge-warning mt-1">No Artwork</span>
+													{% endif %}
+												</td>
+												<td class="text-center small">
+													{% if item.material %}Mat: {{ item.material }}<br>{% endif %}
+													{% if item.size %}Size: {{ item.size }}<br>{% endif %}
+													{% if item.sides_printed %}Sides: {{ item.sides_printed }}<br>{%
+													endif %}
+													{% if item.lamination %}Lam: {{ item.lamination }}<br>{% endif %}
+												</td>
+												<td class="text-center">₹{{ item.unit_price }}</td>
+												<td class="text-center">{{ item.quantity }}</td>
+												<td class="text-right">₹{{ item.total_price }}</td>
+											</tr>
+											{% endfor %}
+											<tr class="line">
+												<td colspan="5"></td>
+												<td class="text-right"><strong>Subtotal</strong></td>
+												<td class="text-right">₹{{ order.subtotal }}</td>
+											</tr>
+											<tr>
+												<td colspan="5"></td>
+												<td class="text-right"><strong>VAT</strong></td>
+												<td class="text-right">₹{{ order.vat }}</td>
+											</tr>
+											<tr>
+												<td colspan="5"></td>
+												<td class="text-right"><strong>Delivery Charge</strong></td>
+												<td class="text-right">₹{{ order.delivery_charge }}</td>
+											</tr>
+											<tr>
+												<td colspan="5">
+												</td>
+												<td class="text-right"><strong>Total</strong></td>
+												<td class="text-right"><strong>₹{{ order.total }}</strong></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Tracking Detail -->
+				{% if order.tracking_number %}
+				<div class="card mt-4 ms-4 trk-order" style="margin-left: 240px;">
+					<div class="p-4 text-center text-white text-lg bg-dark rounded-top">
+						<span class="text-uppercase">Tracking Order No - </span>
+						<span class="text-medium">{{ order.tracking_number }}</span>
+					</div>
+					<div class="d-flex flex-wrap flex-sm-nowrap justify-content-between py-3 px-2 bg-secondary">
+						<div class="w-100 text-center py-1 px-2"><span class="text-medium">Shipped Via:</span> {{
+							order.delivery_method|default:"Standard"|title }}</div>
+						<div class="w-100 text-center py-1 px-2"><span class="text-medium">Status:</span> {{
+							order.get_status_display }}</div>
+						<div class="w-100 text-center py-1 px-2"><span class="text-medium">Date:</span> {{
+							order.updated_at|date:"M d, Y" }}</div>
+					</div>
+					<div class="card-body">
+						<div
+							class="steps d-flex flex-wrap flex-sm-nowrap justify-content-between padding-top-2x padding-bottom-1x">
+							<div class="step {% if order.status != 'cancelled' %}completed{% endif %}">
+								<div class="step-icon-wrap">
+									<div class="step-icon"><i class="mdi mdi-cart"></i></div>
+								</div>
+								<h4 class="step-title">Order Placed</h4>
+							</div>
+							<div
+								class="step {% if order.status == 'processing' or order.status == 'shipped' or order.status == 'delivered' %}completed{% endif %}">
+								<div class="step-icon-wrap">
+									<div class="step-icon"><i class="mdi mdi-printer"></i></div>
+								</div>
+								<h4 class="step-title">Processing</h4>
+							</div>
+							<div
+								class="step {% if order.status == 'shipped' or order.status == 'delivered' %}completed{% endif %}">
+								<div class="step-icon-wrap">
+									<div class="step-icon"><i class="mdi mdi-truck-delivery"></i></div>
+								</div>
+								<h4 class="step-title">Shipped</h4>
+							</div>
+							<div class="step {% if order.status == 'delivered' %}completed{% endif %}">
+								<div class="step-icon-wrap">
+									<div class="step-icon"><i class="mdi mdi-check-circle"></i></div>
+								</div>
+								<h4 class="step-title">Delivered</h4>
+							</div>
+						</div>
+					</div>
+				</div>
+				{% endif %}
+
+			</div>
+		</div>
+	</div> <!-- End Content -->
+</div> <!-- End Content Wrapper -->
+</div>
+{% endblock %}

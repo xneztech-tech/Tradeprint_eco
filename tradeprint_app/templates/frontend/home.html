@@ -1,0 +1,838 @@
+{% extends "frontend/themes/base.html" %}
+{% load static %}
+
+{% block content %}
+<!-- Main Slider Start -->
+<div class="ec-main-slider section section-space-mb">
+    <div class="ec-slider">
+        <div class="ec-slide-item d-flex slide-1">
+            <div class="container align-self-center">
+
+            </div>
+        </div>
+        <div class="ec-slide-item d-flex slide-2">
+            <!-- <img src="assets/images/main-slider-banner/arrow-8.png" class="main_banner_arrow_img" alt="" /> -->
+            <div class="container align-self-center">
+                <div class="row">
+                    <div class="col-xl-6 col-lg-7 col-md-7 col-sm-7 align-self-center">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ec-slide-item d-flex slide-3">
+            <!-- <img src="assets/images/main-slider-banner/arrow-9.png" class="main_banner_arrow_img" alt="" /> -->
+            <div class="container align-self-center">
+                <div class="row">
+                    <div class="col-xl-6 col-lg-7 col-md-7 col-sm-7 align-self-center">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- Dot Navigation -->
+    <div class="ec-slider-dots">
+        <span class="dot active" data-slide="0"></span>
+        <span class="dot" data-slide="1"></span>
+        <span class="dot" data-slide="2"></span>
+    </div>
+</div>
+
+<style>
+    /* Banner Dots Styling */
+    .ec-main-slider {
+        position: relative;
+        padding-bottom: 0;
+        /* Removing excess padding if any */
+    }
+
+    .ec-slider-dots {
+        position: absolute;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10;
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+    }
+
+    .ec-slider-dots .dot {
+        width: 12px;
+        height: 12px;
+        background-color: rgba(255, 255, 255, 0.5);
+        /* Semi-transparent white */
+        border: 2px solid #fff;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .ec-slider-dots .dot:hover {
+        background-color: #fff;
+        transform: scale(1.1);
+    }
+
+    .ec-slider-dots .dot.active {
+        background-color: #4389a2;
+        /* Theme color */
+        border-color: #4389a2;
+        width: 30px;
+        /* Elongate active dot */
+        border-radius: 10px;
+    }
+
+    /* Features Section Styling */
+    .features-section {
+        background-color: #f8f9fa;
+        padding: 40px 0;
+        margin-bottom: 40px;
+        border-bottom: 1px solid #eaeaea;
+    }
+
+    .features-container {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        flex-wrap: wrap;
+        max-width: 1200px;
+        margin: 0 auto;
+        gap: 20px;
+        padding: 0 15px;
+    }
+
+    .feature-item {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 15px 25px;
+        background: #fff;
+        border-radius: 50px;
+        /* Pill shape */
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.03);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        min-width: 250px;
+    }
+
+    .feature-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+    }
+
+    .feature-item i {
+        font-size: 24px;
+        color: #4389a2;
+        /* Theme color */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 45px;
+        height: 45px;
+        background: #eef6f8;
+        border-radius: 50%;
+        flex-shrink: 0;
+    }
+
+    .feature-item p {
+        margin: 0;
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #333;
+        line-height: 1.4;
+    }
+
+    @media (max-width: 991px) {
+        .features-container {
+            justify-content: center;
+        }
+    }
+</style>
+<!-- Main Slider End -->
+<section class="features-section">
+    <div class="features-container">
+        <div class="feature-item">
+            <i class="fi fi-rs-truck-moving"></i>
+            <!-- <img src="assets/icons/delivery.svg" alt="Delivery Icon" /> -->
+            <p>Fast, Reliable Delivery</p>
+        </div>
+
+        <div class="feature-item">
+            <i class="fi fi-rr-trophy"></i>
+            <p>PRO for trade Professionals</p>
+        </div>
+
+        <div class="feature-item">
+            <i class="fi fi-rr-star"></i>
+            <p>Commitment to High Quality</p>
+        </div>
+
+        <div class="feature-item">
+            <i class="fi fi-rr-euro"></i>
+            <p>Highly Competitive Prices</p>
+        </div>
+
+        <div class="feature-item">
+            <i class="fi fi-rr-seedling"></i>
+            <p>A Focus on Sustainability</p>
+        </div>
+    </div>
+
+</section>
+
+<!-- Category Section - Grid Style -->
+<!-- Category Section - Grid Style -->
+<style>
+    /* Custom Category Section Styles */
+    .ec-category-section.cat .section-title h2.ec-title {
+        color: #ff007f;
+        /* Vibrant Pink */
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .ec-category-section.cat .sub-title {
+        color: #777;
+    }
+
+    .category-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 30px;
+        margin-top: 30px;
+    }
+
+    .category-card {
+        background: #fff;
+        border-radius: 20px;
+        padding: 25px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        border: 1px solid #f0f0f0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .category-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(255, 0, 127, 0.1);
+        /* Pinkish shadow */
+        border-color: rgba(255, 0, 127, 0.15);
+    }
+
+    .category-card .img-wrapper {
+        height: 200px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 25px;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #fafafa;
+    }
+
+    .category-card img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        transition: transform 0.5s ease;
+    }
+
+    .category-card:hover img {
+        transform: scale(1.05);
+    }
+
+    .category-card .btn-custom {
+        background-color: #ff007f;
+        border: none;
+        border-radius: 50px;
+        padding: 12px 35px;
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.9rem;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        color: #fff;
+        margin-top: auto;
+        display: inline-block;
+        box-shadow: 0 4px 15px rgba(255, 0, 127, 0.3);
+    }
+
+    .category-card .btn-custom:hover {
+        background-color: #d6006b;
+        box-shadow: 0 8px 25px rgba(255, 0, 127, 0.5);
+        transform: translateY(-2px);
+        color: #fff;
+    }
+</style>
+
+<section class="section ec-category-section cat section-space-p">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="section-title text-center">
+                    <h2 class="ec-title text-center">Custom Printed Best Seller</h2>
+                    <p class="sub-title">Browse our product categories</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="category-grid">
+                    <div class="category-card">
+                        <div class="img-wrapper">
+                            <img src="{% static 'frontend/assets/images/WhatsApp Image 2025-10-24 at 12.18.17 AM (2).jpeg' %}"
+                                alt="Business Card">
+                        </div>
+                        <a href="#" class="btn-custom">Business Card</a>
+                    </div>
+                    <div class="category-card">
+                        <div class="img-wrapper">
+                            <img src="{% static 'frontend/assets/images/WhatsApp Image 2025-10-24 at 12.18.17 AM (3).jpeg' %}"
+                                alt="Flyer">
+                        </div>
+                        <a href="#" class="btn-custom">Flyer</a>
+                    </div>
+                    <div class="category-card">
+                        <div class="img-wrapper">
+                            <img src="{% static 'frontend/assets/images/WhatsApp Image 2025-10-24 at 12.18.17 AM (1).jpeg' %}"
+                                alt="Leaflets">
+                        </div>
+                        <a href="#" class="btn-custom">Leaflets</a>
+                    </div>
+                    <div class="category-card">
+                        <div class="img-wrapper">
+                            <img src="{% static 'frontend/assets/images/WhatsApp Image 2025-10-24 at 12.18.17 AM (4).jpeg' %}"
+                                alt="Posters">
+                        </div>
+                        <a href="#" class="btn-custom">Posters</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--  offer Section Start -->
+<!-- Offer Section Start -->
+<style>
+    /* Offer Section Custom Styles */
+    .ec-offer-section {
+        position: relative;
+        z-index: 1;
+    }
+
+    .ec-offer-inner {
+        background: linear-gradient(135deg, rgba(255, 0, 127, 0.05) 0%, rgba(255, 255, 255, 1) 100%);
+        border: 2px solid rgba(255, 0, 127, 0.1);
+        border-radius: 30px;
+        padding: 60px;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        position: relative;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Decorative Background Shape */
+    .ec-offer-inner::before {
+        content: '';
+        position: absolute;
+        top: -50px;
+        right: -50px;
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(circle, rgba(255, 0, 127, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+        border-radius: 50%;
+        z-index: -1;
+    }
+
+    .ec-offer-content {
+        z-index: 2;
+        max-width: 600px;
+    }
+
+    .ec-offer-stitle {
+        font-family: 'Inter', sans-serif;
+        font-weight: 600;
+        font-size: 1.2rem;
+        color: #ff007f;
+        /* Pink */
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        display: block;
+    }
+
+    .ec-offer-title {
+        /* Premium Serif */
+        font-weight: 700;
+        font-size: 3.5rem;
+        color: #333;
+        line-height: 1.1;
+        margin-bottom: 5px;
+    }
+
+    .ec-offer-desc {
+        font-family: 'Inter', sans-serif;
+        font-size: 1.5rem;
+        font-weight: 300;
+        color: #555;
+        display: block;
+        margin-bottom: 35px;
+    }
+
+    .ec-offer-btn .btn-primary {
+        background-color: #ff007f;
+        border: none;
+        padding: 15px 40px;
+        font-size: 1rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        border-radius: 50px;
+        box-shadow: 0 10px 20px rgba(255, 0, 127, 0.3);
+        transition: all 0.3s ease;
+    }
+
+    .ec-offer-btn .btn-primary:hover {
+        background-color: #d6006b;
+        transform: translateY(-3px);
+        box-shadow: 0 15px 30px rgba(255, 0, 127, 0.4);
+    }
+
+    /* Add an image if possible, or style the empty space */
+    .ec-offer-inner.ofr-img {
+        /* Assuming background image handled by CSS or existing class, 
+           but we'll add a subtle pattern overlay */
+        background-image: radial-gradient(#ff007f 1px, transparent 1px);
+        background-size: 20px 20px;
+        background-color: #fffafa;
+        /* Very light pink/white */
+    }
+</style>
+
+<section class="section ec-offer-section section-space-mt section-space-mb">
+    <h2 class="d-none">Offer</h2>
+    <div class="container">
+        <div class="ec-offer-inner ofr-img">
+            <div class="col-sm-12 ec-offer-content">
+                <div class="ec-offer-content-inner text-center">
+                    <h2 class="ec-offer-stitle">Print Sample Packs</h2>
+                    <h2 class="ec-offer-title">Discover</h2>
+                    <span class="ec-offer-desc">Our Bestselling Products</span>
+
+                    <div class="ec-offer-btn">
+                        <a href="#" class="btn btn-primary">Sign up now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- offer Section End -->
+
+<!-- Custom Testimonial Slider Script -->
+<script>
+    (function () {
+        function initTestimonialSlider() {
+            if (typeof jQuery === 'undefined' || typeof jQuery.fn.slick === 'undefined') {
+                setTimeout(initTestimonialSlider, 100);
+                return;
+            }
+
+            jQuery(document).ready(function ($) {
+                // Destroy any existing slick instance first
+                if ($('#ec-testimonial-slider').hasClass('slick-initialized')) {
+                    $('#ec-testimonial-slider').slick('unslick');
+                }
+
+                // Initialize the testimonial slider
+                $('#ec-testimonial-slider').slick({
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    dots: true,
+                    arrows: false,
+                    infinite: true,
+                    autoplay: true,
+                    autoplaySpeed: 4000,
+                    speed: 800,
+                    fade: true,
+                    cssEase: 'linear',
+                    adaptiveHeight: true,
+                    appendDots: $('.ec-test-section .ec-slider-dots')
+                });
+
+                // Add custom dot images after initialization
+                setTimeout(function () {
+                    $("#ec-testimonial-slider .slick-slide").each(function (i) {
+                        var imgHtml = $(this).find(".ec-test-img").html();
+                        if (imgHtml) {
+                            $("#ec-testimonial-slider").parent().find(".slick-dots li").eq(i).html(imgHtml);
+                        }
+                    });
+                }, 200);
+
+                // Initialize New Premium Testimonial Slider
+                if ($('.new-test-slider').length) {
+                    $('.new-test-slider').slick({
+                        dots: true,
+                        infinite: true,
+                        speed: 500,
+                        slidesToShow: 2,
+                        slidesToScroll: 1,
+                        autoplay: true,
+                        autoplaySpeed: 2000,
+                        arrows: false,
+                        responsive: [
+                            {
+                                breakpoint: 1024,
+                                settings: {
+                                    slidesToShow: 2,
+                                    slidesToScroll: 1,
+                                    infinite: true,
+                                    dots: true
+                                }
+                            },
+                            {
+                                breakpoint: 768,
+                                settings: {
+                                    slidesToShow: 1,
+                                    slidesToScroll: 1
+                                }
+                            }
+                        ]
+                    });
+                }
+            });
+        }
+
+        // Start initialization
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initTestimonialSlider);
+        } else {
+            initTestimonialSlider();
+        }
+    })();
+</script>
+
+<!-- New Premium Testimonial Section -->
+<style>
+    .new-test-section {
+        background: #fdfdfd;
+        padding: 100px 0;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .new-test-section::before {
+        content: '';
+        position: absolute;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(67, 137, 162, 0.05) 0%, rgba(255, 255, 255, 0) 70%);
+        top: -200px;
+        left: -200px;
+        z-index: 0;
+        pointer-events: none;
+    }
+
+    .new-test-header {
+        text-align: center;
+        margin-bottom: 70px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .new-test-header h2 {
+        font-family: 'Inter', sans-serif;
+        font-size: 2.8rem;
+        font-weight: 800;
+        color: #1a1a1a;
+        margin-bottom: 16px;
+        letter-spacing: -0.02em;
+    }
+
+    .new-test-header p {
+        color: #666;
+        font-size: 1.15rem;
+        max-width: 600px;
+        margin: 0 auto;
+        line-height: 1.6;
+    }
+
+    .new-test-slider {
+        position: relative;
+        z-index: 1;
+        padding: 0 15px;
+    }
+
+    /* Slick Slide Spacing */
+    .new-test-slider .slick-slide {
+        margin: 0 15px;
+        /* Creates gap between slides */
+        height: auto;
+        /* Ensures flex height works */
+    }
+
+    .new-test-slider .slick-list {
+        margin: 0 -15px;
+        /* Compensates for slide margins */
+        padding-bottom: 30px;
+        /* Space for shadows/dots */
+    }
+
+    .test-card {
+        background: #ffffff;
+        border-radius: 24px;
+        padding: 40px 35px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+        transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+        border: 1px solid rgba(0, 0, 0, 0.04);
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        position: relative;
+    }
+
+    .test-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+        border-color: rgba(0, 0, 0, 0.08);
+    }
+
+    .test-card-content {
+        flex-grow: 1;
+        position: relative;
+    }
+
+    .test-stars {
+        color: #ffb900;
+        margin-bottom: 24px;
+        font-size: 1.1rem;
+        display: flex;
+        gap: 3px;
+    }
+
+    .test-text {
+        color: #444;
+        font-size: 1.1rem;
+        line-height: 1.7;
+        margin-bottom: 35px;
+        font-style: italic;
+        font-weight: 400;
+    }
+
+    .test-user {
+        display: flex;
+        align-items: center;
+        padding-top: 25px;
+        border-top: 1px solid #f0f0f0;
+    }
+
+    .test-avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 18px;
+        border: 3px solid #fff;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .test-user-info h4 {
+        margin: 0;
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+    }
+
+    .test-user-info span {
+        font-size: 0.85rem;
+        color: #888;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .test-quote-icon {
+        position: absolute;
+        top: -10px;
+        right: 0px;
+        font-size: 5rem;
+        color: rgba(0, 0, 0, 0.04);
+        font-family: serif;
+        line-height: 1;
+        z-index: 0;
+    }
+
+    /* Slick Dots Customization */
+    .new-test-slider .slick-dots {
+        bottom: -40px;
+        display: flex;
+        justify-content: center;
+        list-style: none;
+        padding: 0;
+        text-align: center;
+        width: 100%;
+    }
+
+    .new-test-slider .slick-dots li {
+        margin: 0 5px;
+        display: inline-block;
+    }
+
+    .new-test-slider .slick-dots li button:before {
+        font-size: 14px;
+        /* Larger dots */
+        color: #cccccc;
+        /* Slightly darker initial color */
+        opacity: 1;
+    }
+
+    .new-test-slider .slick-dots li.slick-active button:before {
+        color: #4389a2;
+        /* Match your theme/gradient color */
+    }
+
+    @media (max-width: 768px) {
+        .new-test-header h2 {
+            font-size: 2rem;
+        }
+    }
+</style>
+
+<section class="new-test-section">
+    <div class="container">
+        <div class="new-test-header">
+            <h2>Trusted by Professionals</h2>
+            <p>Join thousands of businesses, designers, and agencies who trust Tradeprint with their brand.</p>
+        </div>
+        <div class="new-test-slider">
+            <!-- Card 1 -->
+            <div class="test-card">
+                <div class="test-quote-icon">“</div>
+                <div class="test-card-content">
+                    <div class="test-stars">
+                        <i class="fi-rr-star"></i><i class="fi-rr-star"></i><i class="fi-rr-star"></i><i
+                            class="fi-rr-star"></i><i class="fi-rr-star"></i>
+                    </div>
+                    <p class="test-text">"The print quality is absolutely stunning. We've retouched our entire marketing
+                        collateral with Tradeprint and the results speak for themselves. The colors are vivid and the
+                        paper stock feels incredibly premium."</p>
+                </div>
+                <div class="test-user">
+                    <img src="{% static 'frontend/assets/images/testimonial/1.jpg' %}" class="test-avatar"
+                        alt="Sarah J.">
+                    <div class="test-user-info">
+                        <h4>Sarah Jenkins</h4>
+                        <span>Creative Director</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Card 2 -->
+            <div class="test-card">
+                <div class="test-quote-icon">“</div>
+                <div class="test-card-content">
+                    <div class="test-stars">
+                        <i class="fi-rr-star"></i><i class="fi-rr-star"></i><i class="fi-rr-star"></i><i
+                            class="fi-rr-star"></i><i class="fi-rr-star"></i>
+                    </div>
+                    <p class="test-text">"Fast delivery and exceptional support. I needed a rush order for an event and
+                        they delivered 2 days early. The team was responsive and kept me updated throughout the entire
+                        process."</p>
+                </div>
+                <div class="test-user">
+                    <img src="{% static 'frontend/assets/images/testimonial/2.jpg' %}" class="test-avatar"
+                        alt="Michael C.">
+                    <div class="test-user-info">
+                        <h4>Michael Chen</h4>
+                        <span>Freelance Designer</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Card 3 -->
+            <div class="test-card">
+                <div class="test-quote-icon">“</div>
+                <div class="test-card-content">
+                    <div class="test-stars">
+                        <i class="fi-rr-star"></i><i class="fi-rr-star"></i><i class="fi-rr-star"></i><i
+                            class="fi-rr-star"></i><i class="fi-rr-star"></i>
+                    </div>
+                    <p class="test-text">"The eco-friendly options are a game changer for our brand. We can print
+                        high-quality flyers while staying true to our sustainability goals. It's rare to find such
+                        quality in green printing."</p>
+                </div>
+                <div class="test-user">
+                    <img src="{% static 'frontend/assets/images/testimonial/3.jpg' %}" class="test-avatar"
+                        alt="Emma T.">
+                    <div class="test-user-info">
+                        <h4>Emma Thompson</h4>
+                        <span>Marketing Manager</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Category Section - Grid Style -->
+<section class="section ec-category-section section-space-p">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="section-title text-center">
+                    <h2 class="ec-title text-center">Discover print ideas and inspiration</h2>
+                    <p class="sub-title">Print stories,inspiration and materials</p>
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="category-grid1">
+                    <div class="category-card">
+                        <img src="{% static 'frontend\assets\images\WhatsApp Image 2025-10-24 at 12.18.17 AM (2).jpeg' %}"
+                            alt="Business Card">
+                        <p class="ec-test-name me-2">Print inspiration</p>
+                        <a href="#" class="btn-primary">Download</a>
+                    </div>
+                    <div class="category-card">
+                        <img src="{% static 'frontend\assets\images\WhatsApp Image 2025-10-24 at 12.18.17 AM (3).jpeg' %}"
+                            alt="Flyer">
+                        <p class="ec-test-name me-2">Materials</p>
+                        <a href="#" class="btn-primary">Download</a>
+                    </div>
+                    <div class="category-card">
+                        <img src="{% static 'frontend\assets\images\WhatsApp Image 2025-10-24 at 12.18.17 AM (1).jpeg' %}"
+                            alt="Leaflets">
+                        <p class="ec-test-name me-2">Design inspiration</p>
+                        <a href="#" class="btn-primary">Download</a>
+                    </div>
+                    <div class="category-card">
+                        <img src="{% static 'frontend\assets\images\WhatsApp Image 2025-10-24 at 12.18.17 AM (4).jpeg' %}"
+                            alt="Leaflets">
+                        <p class="ec-test-name me-2">Design inspiration</p>
+                        <a href="#" class="btn-primary">Download</a>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+{% endblock %}

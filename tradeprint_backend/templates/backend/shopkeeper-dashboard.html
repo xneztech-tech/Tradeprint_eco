@@ -1,0 +1,131 @@
+{% extends "backend/themes/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<!-- CONTENT WRAPPER -->
+<div class="ec-content-wrapper">
+	<div class="content" style="margin-left: 240px;">
+		<div class="breadcrumb-wrapper breadcrumb-wrapper-2">
+			<h1>Shopkeeper Dashboard</h1>
+			{% if shop %}
+			<p class="breadcrumbs"><span>{{ shop.shop_name }}</span></p>
+			{% endif %}
+		</div>
+
+		{% if messages %}
+		<div class="row">
+			<div class="col-12">
+				{% for message in messages %}
+				<div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+					{{ message }}
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+		{% endif %}
+
+
+		{% if not shop %}
+		<div class="row">
+			<div class="col-12">
+				<div class="alert alert-danger" role="alert">
+					<i class="mdi mdi-alert-circle"></i> <strong>Attention:</strong> Your account is not linked to a
+					Active Print Shop configuration. You will not receive any orders. Please contact support.
+				</div>
+			</div>
+		</div>
+		{% endif %}
+
+		<div class="row">
+			<div class="col-xl-4 col-sm-6 p-b-15 lbl-card">
+				<div class="card card-mini dash-card card-1">
+					<div class="card-body">
+						<h2 class="mb-1">{{ total_assigned }}</h2>
+						<p>Total Assigned</p>
+						<span class="mdi mdi-cart-outline"></span>
+					</div>
+				</div>
+			</div>
+			<div class="col-xl-4 col-sm-6 p-b-15 lbl-card">
+				<div class="card card-mini dash-card card-2">
+					<div class="card-body">
+						<h2 class="mb-1">{{ pending_orders }}</h2>
+						<p>Pending Orders</p>
+						<span class="mdi mdi-clock-outline"></span>
+					</div>
+				</div>
+			</div>
+			<div class="col-xl-4 col-sm-6 p-b-15 lbl-card">
+				<div class="card card-mini dash-card card-3">
+					<div class="card-body">
+						<h2 class="mb-1">{{ completed_orders }}</h2>
+						<p>Completed/Shipped</p>
+						<span class="mdi mdi-check-network-outline"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-12">
+				<div class="card card-default">
+					<div class="card-header card-header-border-bottom d-flex justify-content-between">
+						<h2>Assigned Orders</h2>
+					</div>
+					<div class="card-body">
+						<div class="table-responsive">
+							<table id="responsive-data-table" class="table" style="width:100%">
+								<thead>
+									<tr>
+										<th>Order ID</th>
+										<th>Customer</th>
+										<th>Date</th>
+										<th>Status</th>
+										<th>Platform Status</th>
+										<th>Action</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for order in orders %}
+									<tr>
+										<td>{{ order.order_number }}</td>
+										<td>{{ order.shipping_first_name }} {{ order.shipping_last_name }}</td>
+										<td>{{ order.created_at|date:"M d, Y" }}</td>
+										<td>
+											<span
+												class="badge badge-{% if order.status == 'delivered' %}success{% elif order.status == 'shipped' %}info{% elif order.status == 'processing' %}warning{% elif order.status == 'cancelled' %}danger{% else %}secondary{% endif %}">
+												{{ order.get_status_display }}
+											</span>
+										</td>
+										<td>
+											{% if order.is_sent_to_printer %}
+											<span class="badge badge-success">Job Received</span>
+											{% else %}
+											<span class="badge badge-warning">Waiting for Job</span>
+											{% endif %}
+										</td>
+										<td>
+											<div class="btn-group">
+												<a href="{% url 'order_detail' order.id %}"
+													class="btn btn-outline-success">View</a>
+											</div>
+										</td>
+									</tr>
+									{% empty %}
+									<tr>
+										<td colspan="6" class="text-center">No orders assigned yet.</td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div> <!-- End Content -->
+</div> <!-- End Content Wrapper -->
+
+{% endblock %}

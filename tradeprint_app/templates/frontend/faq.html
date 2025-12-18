@@ -1,0 +1,184 @@
+{% extends 'frontend/themes/base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* FAQ Page Custom Styles */
+    .ec-breadcrumb {
+        background-color: #f8f9fa;
+        padding: 20px 0;
+    }
+
+    .ec-breadcrumb-title {
+        font-weight: 700;
+        color: #333;
+    }
+
+    .ec-faq-wrapper {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .ec-faq-heading {
+        font-weight: 700;
+        color: #ff007f;
+        /* Pink */
+        margin-bottom: 30px;
+        text-align: center;
+        font-size: 2rem;
+    }
+
+    .ec-faq-block {
+        background: #fff;
+        border: 1px solid #eee;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .ec-faq-block:hover {
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        border-color: rgba(255, 0, 127, 0.2);
+    }
+
+    .ec-faq-title {
+        padding: 20px;
+        margin: 0;
+        font-weight: 600;
+        cursor: pointer;
+        position: relative;
+        color: #333;
+        font-size: 1.1rem;
+        background: #fff;
+    }
+
+    .ec-faq-title::after {
+        content: '+';
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #ff007f;
+        font-weight: bold;
+        font-size: 1.2rem;
+        transition: transform 0.3s;
+    }
+
+    .ec-faq-block.active .ec-faq-title {
+        color: #ff007f;
+        background: #fffafa;
+    }
+
+    .ec-faq-block.active .ec-faq-title::after {
+        content: '-';
+        transform: translateY(-50%) rotate(180deg);
+    }
+
+    .ec-faq-content {
+        padding: 0 20px 20px;
+        color: #666;
+        line-height: 1.6;
+        display: none;
+        /* JS needed to toggle */
+    }
+
+    .ec-faq-block.active .ec-faq-content {
+        display: block;
+    }
+</style>
+
+<!-- Ec breadcrumb start -->
+<div class="sticky-header-next-sec  ec-breadcrumb section-space-mb">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="row ec_breadcrumb_inner">
+                    <div class="col-md-6 col-sm-12">
+                        <h2 class="ec-breadcrumb-title">FAQ</h2>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <!-- ec-breadcrumb-list start -->
+                        <ul class="ec-breadcrumb-list">
+                            <li class="ec-breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                            <li class="ec-breadcrumb-item active">FAQ</li>
+                        </ul>
+                        <!-- ec-breadcrumb-list end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Ec breadcrumb end -->
+
+<!-- Ec FAQ page -->
+<section class="ec-page-content section-space-p">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <div class="section-title">
+                    <h2 class="ec-bg-title">FAQ</h2>
+                    <h2 class="ec-title">FAQ</h2>
+                    <p class="sub-title mb-3">Customer service management</p>
+                </div>
+            </div>
+            <div class="ec-faq-wrapper">
+                <div class="ec-faq-container">
+                    <h2 class="ec-faq-heading">Common Questions</h2>
+                    <div id="ec-faq">
+                        <div class="col-sm-12 ec-faq-block">
+                            <h4 class="ec-faq-title">What is your return policy?</h4>
+                            <div class="ec-faq-content">
+                                <p>We want you to be completely happy with your order. If for any reason you are not
+                                    satisfied, we will gladly accept returns for a full refund within 30 days of
+                                    purchase.</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 ec-faq-block">
+                            <h4 class="ec-faq-title">How can I track my order?</h4>
+                            <div class="ec-faq-content">
+                                <p>Once your order ships, you will receive a confirmation email with a tracking number.
+                                    You can also view your order status in your account dashboard.</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 ec-faq-block">
+                            <h4 class="ec-faq-title">Do you offer international shipping?</h4>
+                            <div class="ec-faq-content">
+                                <p>Yes, we ship globally! Shipping rates and times vary by country. Please proceed to
+                                    checkout to see specific options for your location.</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 ec-faq-block">
+                            <h4 class="ec-faq-title">What payment methods do you accept?</h4>
+                            <div class="ec-faq-content">
+                                <p>We accept all major credit cards (Visa, MasterCard, Amex), PayPal, and Apple Pay.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const faqTitles = document.querySelectorAll('.ec-faq-title');
+
+        faqTitles.forEach(title => {
+            title.addEventListener('click', () => {
+                const block = title.parentElement;
+
+                // Close others
+                document.querySelectorAll('.ec-faq-block').forEach(b => {
+                    if (b !== block) b.classList.remove('active');
+                });
+
+                // Toggle current
+                block.classList.toggle('active');
+            });
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,713 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+
+    <title>PRINTS</title>
+    <meta name="keywords" content="PRINTS" />
+    <meta name="description" content="PRINTS">
+    <meta name="author" content="ashishmaraviya">
+
+    <!-- site Favicon -->
+    <link rel="icon" href="{% static 'frontend/assets/images/favicon/favicon-3.png' %}" sizes="32x32" />
+    <link rel="apple-touch-icon" href="{% static 'frontend/assets/images/favicon/favicon-3.png' %}" />
+    <meta name="msapplication-TileImage" content="assets/images/favicon/favicon-3.png' %}" />
+
+    <!-- css Icon Font -->
+    <link rel="stylesheet" href="{% static 'frontend/assets/css/vendor/ecicons.min.css' %}" />
+
+    <!-- css All Plugins Files -->
+    <link rel="stylesheet" href="{% static 'frontend/assets/css/plugins/animate.css' %}" />
+    <link rel="stylesheet" href="{% static 'frontend/assets/css/plugins/swiper-bundle.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'frontend/assets/css/plugins/jquery-ui.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'frontend/assets/css/plugins/countdownTimer.css' %}" />
+    <link rel="stylesheet" href="{% static 'frontend/assets/css/plugins/slick.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'frontend/assets/css/plugins/bootstrap.css' %}" />
+
+    <!-- Main Style -->
+    <link rel="stylesheet" href="{% static 'frontend/assets/css/demo3.css' %}" />
+
+    <!-- For CSS (CDN example) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css'">
+
+    <!-- For JS Kit (recommended for newer versions) -->
+    <script src="{% static 'frontend/https://kit.fontawesome.com/YOUR_KIT_CODE.js' %}" crossorigin="anonymous"></script>
+
+
+
+    <style>
+        /* Global Pink Theme Overrides */
+        :root {
+            --primary-pink: #ff007f;
+            --primary-pink-hover: #d6006b;
+            --primary-pink-light: #fff0f7;
+        }
+
+
+
+        .btn-primary,
+        .ec-btn-primary {
+            background-color: var(--primary-pink) !important;
+            border-color: var(--primary-pink) !important;
+            color: #fff !important;
+        }
+
+        .btn-primary:hover,
+        .ec-btn-primary:hover {
+            background-color: var(--primary-pink-hover) !important;
+            border-color: var(--primary-pink-hover) !important;
+        }
+
+        a:hover,
+        .ec-header-btn:hover i {
+            color: var(--primary-pink);
+        }
+
+        .ec-header-btn .ec-header-count {
+            background-color: var(--primary-pink) !important;
+        }
+
+        /* Form Focus States */
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: var(--primary-pink) !important;
+            box-shadow: 0 0 0 3px rgba(255, 0, 127, 0.1) !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="ec-overlay">
+        <div class="ec-ellipsis">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+
+    <!-- Header start  -->
+    <header class="ec-header">
+        <!--Ec Header Top Start -->
+        <div class="header-top">
+            <div class="container">
+                <div class="row align-items-center">
+
+                    <!-- Header Top responsive Action -->
+                    <div class="col header-top-res d-lg-none">
+                        <div class="ec-header-bottons">
+
+
+
+                            <!-- Header User Start -->
+                            <div class="ec-header-user dropdown">
+                                <button class="dropdown-toggle" data-bs-toggle="dropdown"><i
+                                        class="fi-rr-user"></i></button>
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    <li><a class="dropdown-item" href="frontend/register.html">Register</a></li>
+                                    <li><a class="dropdown-item" href="checkout.html">Checkout</a></li>
+                                    <li><a class="dropdown-item" href="login.html">Login</a></li>
+                                </ul>
+                            </div>
+                            <!-- Header User End -->
+                            <!-- Header Cart Start -->
+                            <a href="#" class="ec-header-btn ec-header-wishlist">
+                                <div class="header-icon"><i class="fi-rr-heart"></i></div>
+                                <span class="ec-header-count ec-wishlist-count">0</span>
+                            </a>
+                            <!-- Header Cart End -->
+                            <!-- Header Cart Start -->
+                            <a href="#ec-side-cart" class="ec-header-btn ec-side-toggle">
+                                <div class="header-icon"><i class="fi-rr-shopping-basket"></i></div>
+                                <span class="ec-header-count ec-cart-count">3</span>
+                            </a>
+                            <!-- Header Cart End -->
+                            <!-- Header menu Start -->
+                            <a href="#ec-mobile-menu" class="ec-header-btn ec-side-toggle ec-d-l d-lg-none">
+                                <i class="ecicon eci-bars"></i>
+                            </a>
+                            <!-- Header menu End -->
+                        </div>
+                    </div>
+                    <!-- Header Top responsive Action -->
+                </div>
+            </div>
+        </div>
+        <!-- Ec Header Top  End -->
+        <!-- Ec Header Bottom  Start -->
+        <div class="ec-header-bottom d-none d-lg-block">
+            <div class="container position-relative">
+                <div class="row">
+                    <div class="header-bottom-flex">
+                        <!-- Ec Header Logo Start -->
+                        <div class="align-self-center ec-header-logo ">
+                            <div class="header-logo" style="font-size:30px;font-weight :400px;">
+                                <a href="{% url 'home' %}">PRINTS</a>
+                            </div>
+                        </div>
+                        <!-- Ec Header Logo End -->
+
+                        <!-- Ec Header Search Start -->
+                        <div class="align-self-center ec-header-search">
+                            <div class="header-search">
+                                <form class="ec-search-group-form" action="#">
+                                    <input class="form-control" type="search">
+                                    <button class="search_submit" type="submit">Search <i
+                                            class="fi-rr-search"></i></button>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- Ec Header Search End -->
+
+                        <!-- Ec Header Button Start -->
+                        <div class="align-self-center ec-header-cart">
+                            <div class="ec-header-bottons">
+                                <!-- <div class="vat-toggle me-3">
+                                    <span class="vat-label">INC</span>
+                                    <div class="vat-switch" id="vatSwitch">
+                                        <div class="vat-circle"></div>
+                                    </div>
+                                    <span class="vat-label">VAT</span>
+                                    </div> -->
+                                <!-- Header help Start -->
+                                <div class="ec-header-user me-3">
+                                    <a href="{% url 'help_page' %}" class="ec-header-btn">
+                                        <div class="header-icon"><i class="fi fi-rr-info"></i></div>
+                                        <span class="ec-btn-title">Help</span>
+                                    </a>
+                                </div>
+                                <!-- Header help End -->
+                                <!-- Header Contact Start -->
+                                <div class="ec-header-user me-3">
+                                    <a href="{% url 'contact_us' %}" class="ec-header-btn">
+                                        <div class="header-icon"><i class="fi fi-rr-headset"></i></div>
+                                        <span class="ec-btn-title">Contact Us</span>
+                                    </a>
+                                </div>
+                                <!-- Header Contact End -->
+                                <!-- Header User Start -->
+                                <div class="ec-header-user dropdown me-3">
+                                    <button class="dropdown-toggle" data-bs-toggle="dropdown"><i class="fi-rr-user"></i>
+                                        <span class="ec-btn-title">
+                                            {% if user.is_authenticated %}
+                                            {{ user.first_name|default:user.email }}
+                                            {% else %}
+                                            Account
+                                            {% endif %}
+                                        </span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        {% if user.is_authenticated %}
+                                        <li><a class="dropdown-item" href="{% url 'checkout' %}">Checkout</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'my_orders' %}">My Orders</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'user_logout' %}">Logout</a></li>
+                                        {% else %}
+                                        <li><a class="dropdown-item" href="{% url 'user_register' %}">Register</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'user_login' %}">Login</a></li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                                <!-- Header User End -->
+
+                                <!-- Header Cart Start -->
+                                <a href="#ec-side-cart" class="ec-header-btn ec-side-toggle">
+                                    <div class="header-icon"><i class="fi-rr-shopping-basket"></i></div>
+                                    <span class="ec-header-count ec-cart-count">3</span><span class="ec-btn-title">In
+                                        Cart</span>
+                                </a>
+                                <!-- Header Cart End -->
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- Ec Header Button End -->
+        <!-- Header responsive Bottom  Start -->
+        <div class="ec-header-bottom d-lg-none">
+            <div class="container position-relative">
+                <div class="row ">
+
+                    <!-- Ec Header Logo Start -->
+                    <div class="col">
+                        <div class="header-logo">
+                            <a href="index.html"><img src="#" alt="Site Logo" /><img class="dark-logo" src="#"
+                                    alt="Site Logo" style="display: none;" />PRINTS</a>
+                        </div>
+                    </div>
+                    <!-- Ec Header Logo End -->
+
+                </div>
+            </div>
+        </div>
+        <!-- Header responsive Bottom  End -->
+        <!-- EC Main Menu Start -->
+        <div id="ec-main-menu-desk" class="sticky-nav">
+            <div class="container position-relative">
+                <div class="row">
+                    <div class="col-sm-10 ec-main-menu-block align-self-center d-none d-lg-block">
+                        <div class="ec-main-menu">
+
+                            <ul>
+                                {% for block in menu_data %}
+                                <li class="dropdown position-static text-upper">
+                                    <a href="javascript:void(0)">{{ block.category.name }}</a>
+
+                                    {% if block.subcategories %}
+                                    <ul class="mega-menu d-block">
+                                        <li class="d-flex">
+
+                                            {% for s in block.subcategories %}
+                                            <ul class="d-block">
+                                                <li class="menu_title">
+                                                    <a href="#">{{ s.subcategory.name }}</a>
+                                                </li>
+
+                                                {% for product in s.products %}
+                                                <li><a href="{% url 'product_detail' product_id=product.id %}">
+                                                        {{product.name }}</a></li>
+                                                {% endfor %}
+                                            </ul>
+                                            {% endfor %}
+
+                                        </li>
+                                    </ul>
+                                    {% endif %}
+                                </li>
+                                {% endfor %}
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Ec Main Menu End -->
+        <!-- Ekka Menu Start -->
+        <div id="ec-mobile-menu" class="ec-side-cart ec-mobile-menu">
+            <div class="ec-menu-title">
+                <span class="menu_title">My Menu</span>
+                <button class="ec-close">×</button>
+            </div>
+            <div class="ec-menu-inner">
+                <div class="ec-menu-content">
+                    <ul>
+                        <li><a href="javascript:void(0)">Home</a></li>
+
+                        <li><a href="javascript:void(0)">Categories</a>
+                            <ul class="sub-menu">
+                                <li>
+                                    <a href="{% static 'frontend/javascript:void(0)">Classic Variation</a>
+                                    <ul class="sub-menu">
+                                        <li><a href="{% static 'frontend/shop-left-sidebar-col-3.html">Left
+                                                sidebar 3
+                                                column</a></li>
+                                        <li><a href="{% static 'frontend/shop-left-sidebar-col-4.html">Left
+                                                sidebar 4
+                                                column</a></li>
+                                        <li><a href="{% static 'frontend/shop-right-sidebar-col-3.html">Right
+                                                sidebar 3
+                                                column</a></li>
+                                        <li><a href="{% static 'frontend/shop-right-sidebar-col-4.html">Right
+                                                sidebar 4
+                                                column</a></li>
+                                        <li><a href="{% static 'frontend/shop-full-width.html">Full width 4
+                                                column</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="{% static 'frontend/javascript:void(0)">Classic Variation</a>
+                                    <ul class="sub-menu">
+                                        <li><a href="{% static 'frontend/shop-banner-left-sidebar-col-3.html">Banner
+                                                left sidebar 3
+                                                column</a></li>
+                                        <li><a href="{% static 'frontend/shop-banner-left-sidebar-col-4.html">Banner
+                                                left sidebar 4
+                                                column</a></li>
+                                        <li><a href="{% static 'frontend/shop-banner-right-sidebar-col-3.html">Banner
+                                                right sidebar 3
+                                                column</a></li>
+                                        <li><a href="{% static 'frontend/shop-banner-right-sidebar-col-4.html">Banner
+                                                right sidebar 4
+                                                column</a></li>
+                                        <li><a href="{% static 'frontend/shop-banner-full-width.html">Banner
+                                                Full width
+                                                4 column</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="{% static 'frontend/javascript:void(0)">Columns Variation</a>
+                                    <ul class="sub-menu">
+                                        <li><a href="{% static 'frontend/shop-full-width-col-3.html">3 Columns
+                                                full
+                                                width</a></li>
+                                        <li><a href="{% static 'frontend/shop-full-width-col-4.html">4 Columns
+                                                full
+                                                width</a></li>
+                                        <li><a href="{% static 'frontend/shop-full-width-col-5.html">5 Columns
+                                                full
+                                                width</a></li>
+                                        <li><a href="{% static 'frontend/shop-full-width-col-6.html">6 Columns
+                                                full
+                                                width</a></li>
+                                        <li><a href="{% static 'frontend/shop-banner-full-width-col-3.html">Banner
+                                                3
+                                                Columns</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="{% static 'frontend/javascript:void(0)">List Variation</a>
+                                    <ul class="sub-menu">
+                                        <li><a href="{% static 'frontend/shop-list-left-sidebar.html">Shop left
+                                                sidebar</a></li>
+                                        <li><a href="{% static 'frontend/shop-list-right-sidebar.html">Shop
+                                                right
+                                                sidebar</a></li>
+                                        <li><a href="{% static 'frontend/shop-list-banner-left-sidebar.html">Banner
+                                                left
+                                                sidebar</a></li>
+                                        <li><a href="{% static 'frontend/shop-list-banner-right-sidebar.html">Banner
+                                                right sidebar</a></li>
+                                        <li><a href="{% static 'frontend/shop-list-full-col-2.html">Full width 2
+                                                columns</a></li>
+                                    </ul>
+                                </li>
+                                <li><a class="p-0" href="{% static 'frontend/shop-left-sidebar-col-3.html"><img
+                                            class="img-responsive"
+                                            src="{% static 'frontend/assets/images/menu-banner/1..jpg' %}" alt=""></a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><a href="{% static 'frontend/javascript:void(0)">Products</a>
+                            <ul class="sub-menu">
+                                <li><a href="{% static 'frontend/javascript:void(0)">Product page</a>
+                                    <ul class="sub-menu">
+                                        <li><a href="{% static 'frontend/product-left-sidebar.html">Product left
+                                                sidebar</a></li>
+                                        <li><a href="{% static 'frontend/product-right-sidebar.html">Product
+                                                right
+                                                sidebar</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="{% static 'frontend/javascript:void(0)">Product 360</a>
+                                    <ul class="sub-menu">
+                                        <li><a href="{% static 'frontend/product-360-left-sidebar.html">360 left
+                                                sidebar</a></li>
+                                        <li><a href="{% static 'frontend/product-360-right-sidebar.html">360
+                                                right
+                                                sidebar</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="{% static 'frontend/javascript:void(0)">Product vodeo</a>
+                                    <ul class="sub-menu">
+                                        <li><a href="{% static 'frontend/product-video-left-sidebar.html">vodeo
+                                                left
+                                                sidebar</a></li>
+                                        <li><a href="{% static 'frontend/product-video-right-sidebar.html">vodeo
+                                                right
+                                                sidebar</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="{% static 'frontend/javascript:void(0)">Product gallery</a>
+                                    <ul class="sub-menu">
+                                        <li><a href="{% static 'frontend/product-gallery-left-sidebar.html">Gallery
+                                                left
+                                                sidebar</a></li>
+                                        <li><a href="{% static 'frontend/product-gallery-right-sidebar.html">Gallery
+                                                right sidebar</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="{% static 'frontend/product-full-width.html">Product full width</a>
+                                </li>
+                                <li><a href="{% static 'frontend/product-360-full-width.html">360 full width</a>
+                                </li>
+                                <li><a href="{% static 'frontend/product-video-full-width.html">Video full
+                                        width</a>
+                                </li>
+                                <li><a href="{% static 'frontend/product-gallery-full-width.html">Gallery full
+                                        width</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><a href="{% static 'frontend/javascript:void(0)">Others</a>
+                            <ul class="sub-menu">
+                                <li><a href="{% static 'frontend/javascript:void(0)">Mail Confirmation</a>
+                                    <ul class="sub-menu">
+                                        <li><a href="{% static 'frontend/email-template-confirm-1.html">Mail
+                                                Confirmation 1</a></li>
+                                        <li><a href="{% static 'frontend/email-template-confirm-2.html">Mail
+                                                Confirmation 2</a></li>
+                                        <li><a href="{% static 'frontend/email-template-confirm-3.html">Mail
+                                                Confirmation 3</a></li>
+                                        <li><a href="{% static 'frontend/email-template-confirm-4.html">Mail
+                                                Confirmation 4</a></li>
+                                        <li><a href="{% static 'frontend/email-template-confirm-5.html">Mail
+                                                Confirmation 5</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="{% static 'frontend/javascript:void(0)">Mail Reset password</a>
+                                    <ul class="sub-menu">
+                                        <li><a href="{% static 'frontend/email-template-forgot-password-1.html">Reset
+                                                password 1</a></li>
+                                        <li><a href="{% static 'frontend/email-template-forgot-password-2.html">Reset
+                                                password 2</a></li>
+                                        <li><a href="{% static 'frontend/email-template-forgot-password-3.html">Reset
+                                                password 3</a></li>
+                                        <li><a href="{% static 'frontend/email-template-forgot-password-4.html">Reset
+                                                password 4</a></li>
+                                        <li><a href="{% static 'frontend/email-template-forgot-password-5.html">Reset
+                                                password 5</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="{% static 'frontend/javascript:void(0)">Mail Promotional</a>
+                                    <ul class="sub-menu">
+                                        <li><a href="{% static 'frontend/email-template-offers-1.html">Offer
+                                                Mail 1</a>
+                                        </li>
+                                        <li><a href="{% static 'frontend/email-template-offers-2.html">Offer
+                                                Mail 2</a>
+                                        </li>
+                                        <li><a href="{% static 'frontend/email-template-offers-3.html">Offer
+                                                Mail 3</a>
+                                        </li>
+                                        <li><a href="{% static 'frontend/email-template-offers-4.html">Offer
+                                                Mail 4</a>
+                                        </li>
+                                        <li><a href="{% static 'frontend/email-template-offers-5.html">Offer
+                                                Mail 5</a>
+                                        </li>
+                                        <li><a href="{% static 'frontend/email-template-offers-6.html">Offer
+                                                Mail 6</a>
+                                        </li>
+                                        <li><a href="{% static 'frontend/email-template-offers-7.html">Offer
+                                                Mail 7</a>
+                                        </li>
+                                        <li><a href="{% static 'frontend/email-template-offers-8.html">Offer
+                                                Mail 8</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li><a href="{% static 'frontend/javascript:void(0)">Vendor Account Pages</a>
+                                    <ul class="sub-menu">
+                                        <li><a href="{% static 'frontend/vendor-dashboard.html">Vendor
+                                                Dashboard</a>
+                                        </li>
+                                        <li><a href="{% static 'frontend/vendor-profile.html">Vendor Profile</a>
+                                        </li>
+                                        <li><a href="{% static 'frontend/vendor-uploads.html">Vendor Uploads</a>
+                                        </li>
+                                        <li><a href="{% static 'frontend/vendor-settings.html">Vendor
+                                                Settings</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="{% static 'frontend/javascript:void(0)">User Account Pages</a>
+                                    <ul class="sub-menu">
+                                        <li><a href="{% static 'frontend/user-profile.html">User Profile</a>
+                                        </li>
+                                        <li><a href="{% static 'frontend/user-history.html">User History</a>
+                                        </li>
+                                        <li><a href="{% static 'frontend/wishlist.html">Wishlist</a></li>
+                                        <li><a href="{% static 'frontend/track-order.html">Track Order</a></li>
+                                        <li><a href="{% static 'frontend/user-invoice.html">User Invoice</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li><a href="{% static 'frontend/javascript:void(0)">Construction Pages</a>
+                                    <ul class="sub-menu">
+                                        <li><a href="{% static 'frontend/404-error-page.html">404 Error Page</a>
+                                        </li>
+                                        <li><a href="{% static 'frontend/under-maintenance.html">Maintenance
+                                                Page</a>
+                                        </li>
+                                        <li><a href="{% static 'frontend/coming-soon.html">Comming Soon Page</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li><a href="{% static 'frontend/javascript:void(0)">Vendor Catalog Pages</a>
+                                    <ul class="sub-menu">
+                                        <li><a href="{% static 'frontend/catalog-single-vendor.html">Catalog
+                                                Single
+                                                Vendor</a></li>
+                                        <li><a href="{% static 'frontend/catalog-multi-vendor.html">Catalog
+                                                Multi
+                                                Vendor</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><a href="{% static 'frontend/javascript:void(0)">Pages</a>
+                            <ul class="sub-menu">
+                                <li><a href="{% static 'frontend/about-us.html">About Us</a></li>
+                                <li><a href="{% static 'frontend/contact-us.html">Contact Us</a></li>
+                                <li><a href="{% static 'frontend/cart.html">Cart</a></li>
+                                <li><a href="{% static 'frontend/checkout.html">Checkout</a></li>
+                                <li><a href="{% static 'frontend/compare.html">Compare</a></li>
+                                <li><a href="{% static 'frontend/faq.html">FAQ</a></li>
+                                <li><a href="{% static 'frontend/login.html">Login</a></li>
+                                <li><a href="{% static 'frontend/register.html">Register</a></li>
+                                <li><a href="{% static 'frontend/track-order.html">Track Order</a></li>
+                                <li><a href="{% static 'frontend/terms-condition.html">Terms Condition</a></li>
+                                <li><a href="{% static 'frontend/privacy-policy.html">Privacy Policy</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown"><a href="{% static 'frontend/javascript:void(0)">Blog</a>
+                            <ul class="sub-menu">
+                                <li><a href="{% static 'frontend/blog-left-sidebar.html">Blog left sidebar</a>
+                                </li>
+                                <li><a href="{% static 'frontend/blog-right-sidebar.html">Blog right sidebar</a>
+                                </li>
+                                <li><a href="{% static 'frontend/blog-detail-left-sidebar.html">Blog detail left
+                                        sidebar</a></li>
+                                <li><a href="{% static 'frontend/blog-detail-right-sidebar.html">Blog detail
+                                        right
+                                        sidebar</a></li>
+                                <li><a href="{% static 'frontend/blog-full-width.html">Blog full width</a></li>
+                                <li><a href="{% static 'frontend/blog-detail-full-width.html">Blog detail full
+                                        width</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown"><a href="{% static 'frontend/javascript:void(0)">Elements</a>
+                            <ul class="sub-menu">
+                                <li><a href="{% static 'frontend/elemets-products.html">Products</a></li>
+                                <li><a href="{% static 'frontend/elemets-typography.html">Typography</a></li>
+                                <li><a href="{% static 'frontend/elemets-title.html">Titles</a></li>
+                                <li><a href="{% static 'frontend/elemets-categories.html">Categories</a></li>
+                                <li><a href="{% static 'frontend/elemets-buttons.html">Buttons</a></li>
+                                <li><a href="{% static 'frontend/elemets-tabs.html">Tabs</a></li>
+                                <li><a href="{% static 'frontend/elemets-accordions.html">Accordions</a></li>
+                                <li><a href="{% static 'frontend/elemets-blog.html">Blogs</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="{% static 'frontend/offer.html">Hot Offers</a></li>
+                    </ul>
+                </div>
+                <div class="header-res-lan-curr">
+                    <div class="header-top-lan-curr">
+                        <!-- Language Start -->
+                        <div class="header-top-lan dropdown">
+                            <button class="dropdown-toggle text-upper" data-bs-toggle="dropdown">Language <i
+                                    class="ecicon eci-caret-down" aria-hidden="true"></i></button>
+                            <ul class="dropdown-menu">
+                                <li class="active"><a class="dropdown-item" href="{% static 'frontend/#">English</a>
+                                </li>
+                                <li><a class="dropdown-item" href="{% static 'frontend/#">Italiano</a></li>
+                            </ul>
+                        </div>
+                        <!-- Language End -->
+                        <!-- Currency Start -->
+                        <div class="header-top-curr dropdown">
+                            <button class="dropdown-toggle text-upper" data-bs-toggle="dropdown">Currency <i
+                                    class="ecicon eci-caret-down" aria-hidden="true"></i></button>
+                            <ul class="dropdown-menu">
+                                <li class="active"><a class="dropdown-item" href="#">INR ₹</a></li>
+                                <li><a class="dropdown-item" href="#">EUR €</a></li>
+                            </ul>
+                        </div>
+                        <!-- Currency End -->
+                    </div>
+                    <!-- Social Start -->
+                    <div class="header-res-social">
+                        <div class="header-top-social">
+                            <ul class="mb-0">
+                                <li class="list-inline-item"><a href="{% static 'frontend/#"><i
+                                            class="ecicon eci-facebook"></i></a></li>
+                                <li class="list-inline-item"><a href="{% static 'frontend/#"><i
+                                            class="ecicon eci-twitter"></i></a></li>
+                                <li class="list-inline-item"><a href="{% static 'frontend/#"><i
+                                            class="ecicon eci-instagram"></i></a></li>
+                                <li class="list-inline-item"><a href="{% static 'frontend/#"><i
+                                            class="ecicon eci-linkedin"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Social End -->
+                </div>
+            </div>
+        </div>
+        <!-- Ekka Menu End -->
+    </header>
+    <!-- Header End  -->
+
+    <!-- Ekka Cart Start -->
+    <div class="ec-side-cart-overlay"></div>
+    <div id="ec-side-cart" class="ec-side-cart">
+        <div class="ec-cart-inner">
+            <div class="ec-cart-top">
+                <div class="ec-cart-title">
+                    <span class="cart_title">My Cart</span>
+                    <button class="ec-close">×</button>
+                </div>
+                <ul class="eccart-pro-items">
+                    {% if cart_items %}
+                    {% for item in cart_items|slice:":5" %}
+                    <li>
+                        <a href="{% url 'product_detail' product_id=item.product.id %}" class="sidecart_pro_img">
+                            {% if item.product.main_image %}
+                            <img src="{{ item.product.main_image.url }}" alt="{{ item.product.name }}">
+                            {% else %}
+                            <img src="{% static 'frontend/assets/images/product-image/placeholder.jpg' %}"
+                                alt="{{ item.product.name }}">
+                            {% endif %}
+                        </a>
+                        <div class="ec-pro-content">
+                            <a href="{% url 'product_detail' product_id=item.product.id %}" class="cart_pro_title">
+                                {{ item.product.name }}
+                            </a>
+                            <small style="display: block; color: #666; font-size: 11px; margin: 3px 0;">
+                                {{ item.configuration_summary|truncatewords:5 }}
+                            </small>
+                            <span class="cart-price"><span>₹{{ item.unit_price }}</span> x {{ item.quantity }}</span>
+                            <a href="{% url 'remove_from_cart' item.id %}" class="remove"
+                                onclick="return confirm('Remove this item?')">×</a>
+                        </div>
+                    </li>
+                    {% endfor %}
+                    {% else %}
+                    <li style="text-align: center; padding: 40px 20px;">
+                        <p style="color: #999;">Your cart is empty</p>
+                        <a href="{% url 'home' %}" class="btn btn-primary btn-sm" style="margin-top: 10px;">
+                            Start Shopping
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="ec-cart-bottom">
+                <div class="cart-sub-total">
+                    <table class="table cart-table">
+                        <tbody>
+                            <tr>
+                                <td class="text-left">Sub-Total :</td>
+                                <td class="text-right">₹{{ cart.subtotal|default:"0.00"|floatformat:2 }}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-left">VAT (20%) :</td>
+                                <td class="text-right">₹{{ cart.vat|default:"0.00"|floatformat:2 }}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-left">Total :</td>
+                                <td class="text-right primary-color">₹{{ cart.total|default:"0.00"|floatformat:2 }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="cart_btn">
+                    <a href="{% url 'view_cart' %}" class="btn btn-primary">View Cart</a>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'checkout' %}" class="btn btn-secondary">Checkout</a>
+                    {% else %}
+                    <a href="{% url 'user_login' %}" class="btn btn-secondary">Login to Checkout</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Ekka Cart End -->
