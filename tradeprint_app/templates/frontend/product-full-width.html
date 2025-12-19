@@ -535,8 +535,7 @@
                                 <div class="delivery-card {% if delivery.name == 'Standard' %}active{% endif %}"
                                     onclick="selectDelivery(this)" data-price="{{ delivery.price }}">
                                     <div class="delivery-name">
-                                        {% if delivery.name == 'Saver' %}💰{% elif delivery.name == 'Express'
-                                        %}⚡{%else%}📦{% endif %}
+                                        {% if delivery.name == 'Saver' %}💰{% elif delivery.name == 'Express' %}⚡{%else%}📦{% endif %}
                                         {{ delivery.name }}
                                     </div>
                                     <div class="delivery-time">{{ delivery.days }} working days</div>
@@ -599,8 +598,7 @@
 
             <div class="tab-content active">
                 <h3>Product Details</h3>
-                {{ product.full_description|safe|default:"<p>Our premium printing service offers exceptional quality and
-                    fast turnaround times. Perfect for businesses of all sizes.</p>" }}
+                {{ product.full_description|safe|default:"<p>Our premium printing service offers exceptional quality and fast turnaround times. Perfect for businesses of all sizes.</p>" }}
 
                 {% if product.tags %}
                 <h4 style="margin-top: 20px;">Tags:</h4>
