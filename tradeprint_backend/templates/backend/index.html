@@ -48,6 +48,33 @@
 				</div>
 			</div>
 
+			<!-- Shopkeeper Statistics Row -->
+			<div class="row">
+				<div class="col-xl-3 col-sm-6 p-b-15 lbl-card">
+					<div class="card card-mini dash-card"
+						style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+						<div class="card-body">
+							<h2 class="mb-1" style="color: white;">{{ total_shopkeepers }}</h2>
+							<p style="color: rgba(255,255,255,0.9);">Active Shopkeepers</p>
+							<span class="mdi mdi-store" style="color: rgba(255,255,255,0.3);"></span>
+						</div>
+					</div>
+				</div>
+				<div class="col-xl-9 col-sm-6 p-b-15">
+					<div class="card" style="height: 100%;">
+						<div class="card-body d-flex align-items-center justify-content-between">
+							<div>
+								<h5 class="mb-0">Shopkeeper Management</h5>
+								<p class="text-muted mb-0 small">Manage print shops and shopkeeper accounts</p>
+							</div>
+							<a href="{% url 'shopkeeper_list' %}" class="btn btn-primary">
+								<i class="mdi mdi-store-outline mr-1"></i> View All Shopkeepers
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
 			<!-- <div class="row">
 				<div class="col-xl-8 col-md-12 p-b-15">
 					
@@ -163,6 +190,63 @@
 						</div>
 					</div>
 
+				</div>
+			</div>
+
+			<!-- Recent Shopkeepers Table -->
+			<div class="row">
+				<div class="col-xl-12 col-md-12 p-b-15">
+					<div class="card card-table-border-none card-default">
+						<div class="card-header justify-content-between">
+							<h2>Recent Shopkeepers</h2>
+							<a href="{% url 'shopkeeper_list' %}" class="btn btn-sm btn-outline-primary">View All</a>
+						</div>
+						<div class="card-body pt-0 pb-5">
+							<table class="table card-table table-responsive table-responsive-large" style="width:100%">
+								<thead>
+									<tr>
+										<th>Shop Name</th>
+										<th>Owner</th>
+										<th class="d-none d-lg-table-cell">Email</th>
+										<th class="d-none d-lg-table-cell">Phone</th>
+										<th>Status</th>
+										<th>Actions</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for shop in recent_shopkeepers %}
+									<tr>
+										<td>
+											<a class="text-dark font-weight-bold"
+												href="{% url 'shopkeeper_edit' shop.id %}">
+												<i class="mdi mdi-store mr-1"></i> {{ shop.shop_name }}
+											</a>
+										</td>
+										<td>{{ shop.user.first_name }} {{ shop.user.last_name }}</td>
+										<td class="d-none d-lg-table-cell">{{ shop.user.email }}</td>
+										<td class="d-none d-lg-table-cell">{{ shop.contact_phone|default:"-" }}</td>
+										<td>
+											<span
+												class="badge badge-{% if shop.status == 'active' %}success{% else %}secondary{% endif %}">
+												{{ shop.get_status_display }}
+											</span>
+										</td>
+										<td class="text-right">
+											<a href="{% url 'shopkeeper_edit' shop.id %}"
+												class="btn btn-sm btn-outline-primary">
+												<i class="mdi mdi-pencil"></i> Edit
+											</a>
+										</td>
+									</tr>
+									{% empty %}
+									<tr>
+										<td colspan="6" class="text-center">No shopkeepers found.</td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
 				</div>
 			</div>
 
