@@ -19,6 +19,9 @@ from django.urls import include, path
 from django.conf import settings
 from django.conf.urls.static import static
 
+def home(request):
+    return HttpResponse("Tradeprint Eco is live")
+    
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('tradeprint_app.urls')),
