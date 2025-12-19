@@ -18,7 +18,7 @@
     }
 
     .ec-breadcrumb-list .ec-breadcrumb-item.active::before {
-        color: #3474d4;
+        color: #ff007f;
     }
 
     .ec-breadcrumb {
@@ -38,7 +38,7 @@
     }
 
     .ec-breadcrumb-list li.active {
-        color: #3474d4;
+        color: #ff007f;
     }
 
     .ec-breadcrumb-item+.ec-breadcrumb-item {
@@ -87,7 +87,7 @@
 
     .thumbnail:hover,
     .thumbnail.active {
-        border-color: #007bff;
+        border-color: #ff007f;
     }
 
     .product-config {
@@ -138,13 +138,14 @@
     }
 
     .option-btn:hover {
-        border-color: #007bff;
-        background: #f0f8ff;
+        border-color: #ff007f;
+        background: #fff5f9;
+        /* Light pink background */
     }
 
     .option-btn.active {
-        border-color: #007bff;
-        background: #007bff;
+        border-color: #ff007f;
+        background: #ff007f;
         color: white;
     }
 
@@ -168,12 +169,12 @@
     }
 
     .qty-btn:hover {
-        border-color: #007bff;
+        border-color: #ff007f;
     }
 
     .qty-btn.active {
-        border-color: #007bff;
-        background: #007bff;
+        border-color: #ff007f;
+        background: #ff007f;
         color: white;
     }
 
@@ -194,14 +195,14 @@
     }
 
     .delivery-card:hover {
-        border-color: #007bff;
+        border-color: #ff007f;
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 123, 255, 0.15);
+        box-shadow: 0 4px 12px rgba(255, 0, 127, 0.15);
     }
 
     .delivery-card.active {
-        border-color: #007bff;
-        background: #f0f8ff;
+        border-color: #ff007f;
+        background: #fff5f9;
     }
 
     .delivery-name {
@@ -255,7 +256,7 @@
     .add-to-cart-btn {
         width: 100%;
         padding: 18px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #ff007f 0%, #ff5e9e 100%);
         color: white;
         border: none;
         border-radius: 8px;
@@ -264,12 +265,12 @@
         cursor: pointer;
         transition: all 0.3s;
         margin-top: 20px;
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        box-shadow: 0 4px 15px rgba(255, 0, 127, 0.4);
     }
 
     .add-to-cart-btn:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        box-shadow: 0 6px 20px rgba(255, 0, 127, 0.5);
     }
 
     .product-tabs {
@@ -297,12 +298,12 @@
     }
 
     .tab-btn:hover {
-        color: #007bff;
+        color: #ff007f;
     }
 
     .tab-btn.active {
-        color: #007bff;
-        border-bottom-color: #007bff;
+        color: #ff007f;
+        border-bottom-color: #ff007f;
         background: white;
     }
 
@@ -429,7 +430,7 @@
                 <!-- Product Configuration -->
                 <div class="col-lg-6">
                     <div class="product-config">
-                        <span class="free-delivery-badge">🚚 FREE Delivery</span>
+                        <span class="free-delivery-badge">🚚 FREE UK Mainland Delivery</span>
 
                         <h1 class="product-title">{{ product.name }}</h1>
                         <p class="product-subtitle">
@@ -561,9 +562,9 @@
                                     {% for tier in product.quantity_tiers %}
                                     <tr>
                                         <td><strong>{{ tier.quantity }}</strong></td>
-                                        <td>₹{{ tier.saver }}</td>
-                                        <td>₹{{ tier.standard }}</td>
-                                        <td>₹{{ tier.express }}</td>
+                                        <td>£{{ tier.saver }}</td>
+                                        <td>£{{ tier.standard }}</td>
+                                        <td>£{{ tier.express }}</td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>
@@ -581,7 +582,7 @@
 
                         <!-- Add to Cart Button -->
                         <button class="add-to-cart-btn" onclick="addToCart()">
-                            🛒 Add to Cart - <span id="currentPrice">₹{{ product.base_price|default:"0.00" }}</span>
+                            🛒 Add to Cart - <span id="currentPrice">£{{ product.base_price|default:"0.00" }}</span>
                         </button>
                     </div>
                 </div>
@@ -648,7 +649,7 @@
                 <ul>
                     {% for delivery in product.delivery_options %}
                     <li><strong>{{ delivery.name }} ({{ delivery.days }} working days):</strong>
-                        {% if delivery.price > 0 %}+₹{{ delivery.price }}{% else %}FREE{% endif %}
+                        {% if delivery.price > 0 %}+£{{ delivery.price }}{% else %}FREE{% endif %}
                     </li>
                     {% endfor %}
                 </ul>
@@ -705,7 +706,7 @@
                 price = parseFloat(selectedQty.dataset.standard || 0);
             }
 
-            document.getElementById('currentPrice').textContent = '₹' + price.toFixed(2);
+            document.getElementById('currentPrice').textContent = '£' + price.toFixed(2);
         }
     }
 
@@ -727,7 +728,7 @@
         const deliveryCard = document.querySelector('.delivery-card.active');
         const deliveryService = deliveryCard?.querySelector('.delivery-name')?.textContent.trim().replace(/[💰⚡📦]/g, '').trim() || 'Standard';
         const deliveryDays = deliveryCard?.querySelector('.delivery-time')?.textContent.trim() || '';
-        // Extract price: matches number like "2935" from "₹2935"
+        // Extract price: matches number like "29.35" from "£29.35 (₹3,547.25)"
         let priceText = document.getElementById('currentPrice').textContent;
         const priceMatch = priceText.match(/[\d,]+\.?\d*/);
         priceText = priceMatch ? priceMatch[0].replace(/,/g, '') : '0';
@@ -799,7 +800,7 @@
             })
             .then(data => {
                 if (data.success) {
-                    alert(data.message + '\n\nCart Total: ₹' + data.cart_total.toFixed(2));
+                    alert(data.message + '\n\nCart Total: £' + data.cart_total.toFixed(2));
                     // Reload page to update side cart
                     window.location.reload();
                 } else {

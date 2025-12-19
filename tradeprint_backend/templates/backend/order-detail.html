@@ -196,31 +196,31 @@
 													endif %}
 													{% if item.lamination %}Lam: {{ item.lamination }}<br>{% endif %}
 												</td>
-												<td class="text-center">₹{{ item.unit_price }}</td>
+												<td class="text-center">${{ item.unit_price }}</td>
 												<td class="text-center">{{ item.quantity }}</td>
-												<td class="text-right">₹{{ item.total_price }}</td>
+												<td class="text-right">${{ item.total_price }}</td>
 											</tr>
 											{% endfor %}
 											<tr class="line">
 												<td colspan="5"></td>
 												<td class="text-right"><strong>Subtotal</strong></td>
-												<td class="text-right">₹{{ order.subtotal }}</td>
+												<td class="text-right">${{ order.subtotal }}</td>
 											</tr>
 											<tr>
 												<td colspan="5"></td>
 												<td class="text-right"><strong>VAT</strong></td>
-												<td class="text-right">₹{{ order.vat }}</td>
+												<td class="text-right">${{ order.vat }}</td>
 											</tr>
 											<tr>
 												<td colspan="5"></td>
 												<td class="text-right"><strong>Delivery Charge</strong></td>
-												<td class="text-right">₹{{ order.delivery_charge }}</td>
+												<td class="text-right">${{ order.delivery_charge }}</td>
 											</tr>
 											<tr>
 												<td colspan="5">
 												</td>
 												<td class="text-right"><strong>Total</strong></td>
-												<td class="text-right"><strong>₹{{ order.total }}</strong></td>
+												<td class="text-right"><strong>${{ order.total }}</strong></td>
 											</tr>
 										</tbody>
 									</table>

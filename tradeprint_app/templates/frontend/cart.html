@@ -17,7 +17,7 @@
     }
 
     .ec-breadcrumb-list .ec-breadcrumb-item.active::before {
-        color: #3474d4;
+        color: #ff007f;
     }
 
     .ec-breadcrumb {
@@ -37,7 +37,7 @@
     }
 
     .ec-breadcrumb-list li.active {
-        color: #3474d4;
+        color: #ff007f;
     }
 
     .ec-breadcrumb-item+.ec-breadcrumb-item {
@@ -62,7 +62,7 @@
     }
 
     .ec-sb-title {
-        background: linear-gradient(135deg, #ff007f 0%, #ff4da6 100%);
+        background: linear-gradient(135deg, #ff007f 0%, #ff5e9e 100%);
         padding: 20px;
         margin: 0;
     }
@@ -247,7 +247,7 @@
                                                     </small>
                                                 </td>
                                                 <td data-label="Price" class="ec-cart-pro-price">
-                                                    <span class="amount">₹{{ item.unit_price }}</span>
+                                                    <span class="amount">£{{ item.unit_price }}</span>
                                                 </td>
                                                 <td data-label="Quantity" class="ec-cart-pro-qty"
                                                     style="text-align: center;">
@@ -263,7 +263,7 @@
                                                     </div>
                                                 </td>
                                                 <td data-label="Total" class="ec-cart-pro-subtotal">
-                                                    ₹{{ item.total_price|floatformat:2 }}
+                                                    £{{ item.total_price|floatformat:2 }}
                                                 </td>
                                                 <td data-label="Remove" class="ec-cart-pro-remove">
                                                     <a href="{% url 'remove_from_cart' item.id %}"
@@ -305,15 +305,15 @@
                                 <div class="ec-cart-summary">
                                     <div>
                                         <span class="text-left">Sub-Total</span>
-                                        <span class="text-right">₹{{ cart.subtotal|floatformat:2 }}</span>
+                                        <span class="text-right">£{{ cart.subtotal|floatformat:2 }}</span>
                                     </div>
                                     <div>
                                         <span class="text-left">VAT (20%)</span>
-                                        <span class="text-right">₹{{ cart.vat|floatformat:2 }}</span>
+                                        <span class="text-right">£{{ cart.vat|floatformat:2 }}</span>
                                     </div>
                                     <div class="ec-cart-summary-total">
                                         <span class="text-left">Total Amount</span>
-                                        <span class="text-right">₹{{ cart.total|floatformat:2 }}</span>
+                                        <span class="text-right">£{{ cart.total|floatformat:2 }}</span>
                                     </div>
                                 </div>
                                 <div class="ec-cart-info-box"

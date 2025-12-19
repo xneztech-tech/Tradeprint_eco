@@ -40,7 +40,7 @@
 				<div class="col-xl-3 col-sm-6 p-b-15 lbl-card">
 					<div class="card card-mini dash-card card-4">
 						<div class="card-body">
-							<h2 class="mb-1">₹{{ total_revenue|floatformat:2 }}</h2>
+							<h2 class="mb-1">${{ total_revenue|floatformat:2 }}</h2>
 							<p>Total Revenue</p>
 							<span class="mdi mdi-currency-usd"></span>
 						</div>
@@ -48,9 +48,9 @@
 				</div>
 			</div>
 
-			<div class="row">
+			<!-- <div class="row">
 				<div class="col-xl-8 col-md-12 p-b-15">
-					<!-- Sales Report -->
+					
 					<div id="user-acquisition" class="card card-default">
 						<div class="card-header">
 							<h2>Sales Report (Last 7 Days)</h2>
@@ -69,7 +69,7 @@
 				</div>
 
 				<div class="col-xl-4 col-md-12 p-b-15">
-					<!-- Orders Overview -->
+					
 					<div class="card card-default">
 						<div class="card-header justify-content-center">
 							<h2>Orders Overview</h2>
@@ -84,11 +84,11 @@
 								<div class="p-20">
 									<ul class="d-flex flex-column justify-content-between">
 										<li class="mb-2"><i class="mdi mdi-checkbox-blank-circle-outline mr-2"
-												style="color: #ff007f"></i>Delivered</li>
+												style="color: #50d7ab"></i>Delivered</li>
 										<li class="mb-2"><i class="mdi mdi-checkbox-blank-circle-outline mr-2"
-												style="color: #ff4da6"></i>Shipped</li>
+												style="color: #88aaf3"></i>Shipped</li>
 										<li><i class="mdi mdi-checkbox-blank-circle-outline mr-2"
-												style="color: #ff80bf"></i>Processing</li>
+												style="color: #9586cd"></i>Processing</li>
 									</ul>
 								</div>
 							</div>
@@ -96,7 +96,7 @@
 								<div class="p-20">
 									<ul class="d-flex flex-column justify-content-between">
 										<li class="mb-2"><i class="mdi mdi-checkbox-blank-circle-outline mr-2"
-												style="color: #ffd6e0"></i>Pending</li>
+												style="color: #f3d676"></i>Pending</li>
 										<li class="mb-2"><i class="mdi mdi-checkbox-blank-circle-outline mr-2"
 												style="color: #ed9090"></i>Cancelled</li>
 										<li><i class="mdi mdi-checkbox-blank-circle-outline mr-2"
@@ -107,7 +107,7 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			</div> -->
 
 			<div class="row">
 				<div class="col-xl-12 col-md-12 p-b-15">
@@ -141,7 +141,7 @@
 												order.shipping_last_name }}</a>
 										</td>
 										<td class="d-none d-lg-table-cell">{{ order.created_at|date:"M d, Y" }}</td>
-										<td class="d-none d-lg-table-cell">₹{{ order.total }}</td>
+										<td class="d-none d-lg-table-cell">${{ order.total }}</td>
 										<td>
 											<span
 												class="badge badge-{% if order.status == 'delivered' %}success{% elif order.status == 'shipped' %}info{% elif order.status == 'processing' %}warning{% elif order.status == 'cancelled' %}danger{% else %}secondary{% endif %}">
@@ -189,13 +189,13 @@
 			}
 		},
 			datasets: [{
-				label: "Revenue (₹)",
-				backgroundColor: "rgba(255, 0, 127, .1)",
-				borderColor: "rgba(255, 0, 127, .7)",
+				label: "Revenue ($)",
+				backgroundColor: "rgba(52, 116, 212, .2)",
+				borderColor: "rgba(52, 116, 212, .7)",
 				data: {{ chart_sales| safe }},
 			lineTension: 0.3,
-			pointBackgroundColor: "rgba(255, 0, 127,0)",
-			pointHoverBackgroundColor: "rgba(255, 0, 127,1)",
+			pointBackgroundColor: "rgba(52, 116, 212,0)",
+			pointHoverBackgroundColor: "rgba(52, 116, 212,1)",
 			pointHoverRadius: 3,
 			pointHitRadius: 30,
 			pointBorderWidth: 2,
@@ -242,7 +242,7 @@
 					datasets: [{
 						data: {{ doughnut_data| safe }
 			},
-				backgroundColor: ["#ff007f", "#ff4da6", "#ff80bf", "#ffd6e0", "#ed9090", "#a4d9e5"],
+				backgroundColor: ["#50d7ab", "#88aaf3", "#9586cd", "#f3d676", "#ed9090", "#a4d9e5"],
 				borderWidth: 1
 						}]
 					},

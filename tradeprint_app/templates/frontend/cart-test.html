@@ -129,8 +129,8 @@
                 .then(data => {
                     resultDiv.innerHTML = `
                         <p class="success">✅ Cart Count: ${data.count}</p>
-                        <p>Subtotal: ₹${data.subtotal}</p>
-                        <p>Total: ₹${data.total}</p>
+                        <p>Subtotal: £${data.subtotal}</p>
+                        <p>Total: £${data.total}</p>
                     `;
                     log(`Cart count: ${data.count} items`, 'success');
                 })
@@ -188,7 +188,7 @@
                         resultDiv.innerHTML = `
                         <p class="success">✅ ${data.message}</p>
                         <p>Cart Count: ${data.cart_count}</p>
-                        <p>Cart Total: ₹${data.cart_total.toFixed(2)}</p>
+                        <p>Cart Total: £${data.cart_total.toFixed(2)}</p>
                     `;
                         log('Product added successfully!', 'success');
                     } else {

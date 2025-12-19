@@ -34,7 +34,7 @@
 
     .back-btn {
         text-decoration: none;
-        color: #667eea;
+        color: #ff007f;
         font-weight: 500;
         display: flex;
         align-items: center;
@@ -224,15 +224,15 @@
                                     {% if item.artwork_file %}
                                     <div style="margin-top: 5px;">
                                         <a href="{{ item.artwork_file.url }}" target="_blank"
-                                            style="font-size: 12px; color: #667eea;">
+                                            style="font-size: 12px; color: #ff007f;">
                                             <i class="fi-rr-document"></i> View Artwork
                                         </a>
                                     </div>
                                     {% endif %}
                                 </td>
                                 <td>x{{ item.quantity }}</td>
-                                <td>₹{{ item.unit_price }}</td>
-                                <td class="price-col">₹{{ item.total_price }}</td>
+                                <td>£{{ item.unit_price }}</td>
+                                <td class="price-col">£{{ item.total_price }}</td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -304,19 +304,19 @@
                     <h3 class="card-title">Payment Summary</h3>
                     <div class="summary-row">
                         <span>Subtotal</span>
-                        <span>₹{{ order.subtotal }}</span>
+                        <span>£{{ order.subtotal }}</span>
                     </div>
                     <div class="summary-row">
                         <span>VAT (20%)</span>
-                        <span>₹{{ order.vat }}</span>
+                        <span>£{{ order.vat }}</span>
                     </div>
                     <div class="summary-row">
                         <span>Delivery</span>
-                        <span>₹{{ order.delivery_charge }}</span>
+                        <span>£{{ order.delivery_charge }}</span>
                     </div>
                     <div class="summary-row total">
                         <span>Total</span>
-                        <span>₹{{ order.total }}</span>
+                        <span>£{{ order.total }}</span>
                     </div>
                     <div class="info-group" style="margin-top: 20px;">
                         <div class="info-label">Payment Method</div>

@@ -1,8 +1,21 @@
-asgiref==3.10.0
-Django==5.2.8
-pillow==12.0.0
-sqlparse==0.5.3
-gunicorn==21.2.0
-whitenoise==6.6.0
-dj-database-url==2.1.0
-psycopg2-binary==2.9.9
+# Django Framework
+Django==5.1.4
+
+# Database
+dj-database-url==2.2.0
+psycopg2-binary==2.9.10
+
+# Static Files
+whitenoise==6.8.2
+
+# Web Server (for production)
+gunicorn==23.0.0
+
+# Environment Variables
+python-decouple==3.8
+
+# Image Processing (for product images)
+Pillow==11.0.0
+
+# Additional utilities
+pytz==2024.2

@@ -55,7 +55,7 @@
     .order-number {
         font-size: 18px;
         font-weight: 600;
-        color: #667eea;
+        color: #ff007f;
     }
 
     .order-date {
@@ -133,12 +133,12 @@
     .order-total {
         font-size: 20px;
         font-weight: 700;
-        color: #667eea;
+        color: #ff007f;
     }
 
     .view-details-btn {
         padding: 10px 25px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #ff007f 0%, #ff5e9e 100%);
         color: white;
         border: none;
         border-radius: 6px;
@@ -151,7 +151,7 @@
 
     .view-details-btn:hover {
         transform: translateY(-2px);
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        box-shadow: 0 4px 15px rgba(255, 0, 127, 0.4);
         color: white;
     }
 
@@ -180,7 +180,7 @@
 
     .shop-now-btn {
         padding: 12px 30px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #ff007f 0%, #ff5e9e 100%);
         color: white;
         border: none;
         border-radius: 6px;
@@ -230,7 +230,7 @@
             </div>
 
             <div class="order-footer">
-                <div class="order-total">Total: ₹{{ order.total|floatformat:2 }}</div>
+                <div class="order-total">Total: £{{ order.total|floatformat:2 }}</div>
                 <a href="{% url 'order_detail_customer' order.id %}" class="view-details-btn">View Details</a>
             </div>
         </div>

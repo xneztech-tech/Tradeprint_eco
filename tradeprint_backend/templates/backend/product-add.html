@@ -90,7 +90,7 @@
 				<div class="col-12">
 					<div class="card card-default shadow-sm">
 						<div class="card-header card-header-border-bottom"
-							style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; padding: 1.5rem;">
+							style="background: linear-gradient(135deg, #ff007f 0%, #ff5e9e 100%); border: none; padding: 1.5rem;">
 							<div class="d-flex align-items-center">
 								<div class="header-icon me-3"
 									style="background: rgba(255,255,255,0.2); padding: 12px; border-radius: 10px;">
@@ -179,14 +179,14 @@
 								<!-- Pricing Section -->
 								<div class="col-12 mt-5">
 									<div class="section-header">
-										<i class="mdi mdi-currency-inr me-2"></i>
+										<i class="mdi mdi-currency-gbp me-2"></i>
 										<h4 class="mb-0">Pricing & Options</h4>
 									</div>
 								</div>
 
 								<div class="col-md-6">
 									<label for="{{ form.base_price.id_for_label }}" class="form-label fw-bold">Base
-										Price (₹) <span class="text-danger">*</span></label>
+										Price (£) <span class="text-danger">*</span></label>
 									{{ form.base_price }}
 									{% if form.base_price.errors %}
 									<div class="text-danger mt-1">{{ form.base_price.errors }}</div>
@@ -226,7 +226,7 @@
 								<div class="col-md-6">
 									<label for="{{ form.double_sided_price.id_for_label }}"
 										class="form-label fw-bold">Double
-										Sided Additional Price (₹)</label>
+										Sided Additional Price (£)</label>
 									{{ form.double_sided_price }}
 								</div>
 
@@ -279,7 +279,7 @@
 
 											<div class="table-responsive">
 												<table class="table table-bordered" id="quantityTiersTable">
-													<thead style="background-color: #667eea; color: white;">
+													<thead style="background-color: #ff007f; color: white;">
 														<tr>
 															<th width="15%">Qty</th>
 															<th width="25%">Saver<br><small>5-7 days</small></th>
@@ -480,8 +480,8 @@
 
 		.form-control:focus,
 		.form-select:focus {
-			border-color: #667eea;
-			box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
+			border-color: #ff007f;
+			box-shadow: 0 0 0 0.2rem rgba(255, 0, 127, 0.15);
 			outline: none;
 		}
 
@@ -504,13 +504,13 @@
 			display: flex;
 			align-items: center;
 			padding: 1rem 0;
-			border-bottom: 3px solid #667eea;
+			border-bottom: 3px solid #ff007f;
 			margin-bottom: 1.5rem;
 		}
 
 		.section-header i {
 			font-size: 1.5rem;
-			color: #667eea;
+			color: #ff007f;
 		}
 
 		.section-header h4 {
@@ -549,12 +549,12 @@
 		}
 
 		.input-group:focus-within .input-group-text {
-			border-color: #667eea;
-			background-color: #eef2ff;
+			border-color: #ff007f;
+			background-color: #fff5f9;
 		}
 
 		.btn-primary {
-			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			background: linear-gradient(135deg, #ff007f 0%, #ff5e9e 100%);
 			border: none;
 			font-weight: 600;
 			transition: all 0.3s ease;
@@ -562,7 +562,7 @@
 
 		.btn-primary:hover {
 			transform: translateY(-2px);
-			box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+			box-shadow: 0 8px 16px rgba(255, 0, 127, 0.3);
 		}
 
 		.btn-outline-secondary {
@@ -585,8 +585,8 @@
 		}
 
 		.form-check-input:checked {
-			background-color: #667eea;
-			border-color: #667eea;
+			background-color: #ff007f;
+			border-color: #ff007f;
 		}
 
 		.custom-file-upload input[type="file"] {
@@ -599,8 +599,8 @@
 		}
 
 		.custom-file-upload input[type="file"]:hover {
-			border-color: #667eea;
-			background-color: #eef2ff;
+			border-color: #ff007f;
+			background-color: #fff5f9;
 		}
 
 		.current-image {
@@ -651,47 +651,61 @@
 		document.addEventListener('DOMContentLoaded', function () {
 			let tierCounter = 0;
 
-			// Function to add a quantity tier row with optional data
 			function addQuantityTierRow(data = null) {
+				console.log("Adding row with data:", data);
 				tierCounter++;
 				const tbody = document.getElementById('quantityTiersBody');
+				if (!tbody) {
+					console.error("Could not find quantityTiersBody");
+					return;
+				}
+
 				const row = document.createElement('tr');
 				row.id = `tier-row-${tierCounter}`;
+
+				const qty = data ? data.quantity : '';
+				const saver = data ? data.saver : '';
+				const standard = data ? data.standard : '';
+				const express = data ? data.express : '';
+
 				row.innerHTML = `
-			<td>
-				<input type="number" class="form-control tier-quantity" placeholder="e.g., 250" min="1" required value="${data ? data.quantity : ''}">
-			</td>
-			<td>
-				<div class="input-group">
-					<span class="input-group-text">₹</span>
-					<input type="number" class="form-control tier-price-saver" placeholder="0.00" step="0.01" min="0" required value="${data ? data.saver : ''}">
-				</div>
-			</td>
-			<td>
-				<div class="input-group">
-					<span class="input-group-text">₹</span>
-					<input type="number" class="form-control tier-price-standard" placeholder="0.00" step="0.01" min="0" required value="${data ? data.standard : ''}">
-				</div>
-			</td>
-			<td>
-				<div class="input-group">
-					<span class="input-group-text">₹</span>
-					<input type="number" class="form-control tier-price-express" placeholder="0.00" step="0.01" min="0" required value="${data ? data.express : ''}">
-				</div>
-			</td>
-			<td class="text-center">
-				<button type="button" class="btn btn-danger btn-sm remove-tier" data-row="tier-row-${tierCounter}">
-					<i class="mdi mdi-delete"></i>
-				</button>
-			</td>
-		`;
+					<td>
+						<input type="number" class="form-control tier-quantity" placeholder="e.g., 250" min="1" required value="${qty}">
+					</td>
+					<td>
+						<div class="input-group">
+							<span class="input-group-text">£</span>
+							<input type="number" class="form-control tier-price-saver" placeholder="0.00" step="0.01" min="0" required value="${saver}">
+						</div>
+					</td>
+					<td>
+						<div class="input-group">
+							<span class="input-group-text">£</span>
+							<input type="number" class="form-control tier-price-standard" placeholder="0.00" step="0.01" min="0" required value="${standard}">
+						</div>
+					</td>
+					<td>
+						<div class="input-group">
+							<span class="input-group-text">£</span>
+							<input type="number" class="form-control tier-price-express" placeholder="0.00" step="0.01" min="0" required value="${express}">
+						</div>
+					</td>
+					<td class="text-center">
+						<button type="button" class="btn btn-danger btn-sm remove-tier" data-row="tier-row-${tierCounter}">
+							<i class="mdi mdi-delete"></i>
+						</button>
+					</td>
+				`;
 				tbody.appendChild(row);
 
 				// Add remove event listener
-				row.querySelector('.remove-tier').addEventListener('click', function () {
-					row.remove();
-					updateQuantityTiersJSON();
-				});
+				const removeBtn = row.querySelector('.remove-tier');
+				if (removeBtn) {
+					removeBtn.addEventListener('click', function () {
+						row.remove();
+						updateQuantityTiersJSON();
+					});
+				}
 
 				// Update JSON on input change
 				row.querySelectorAll('input').forEach(input => {
@@ -734,14 +748,23 @@
 
 			// Load existing quantity tiers if editing
 			{% if editing and quantity_tiers_json %}
-			const existingTiers = {{ quantity_tiers_json| safe
-		}};
-		if (existingTiers && existingTiers.length > 0) {
-			existingTiers.forEach(tier => {
+			try {
+				const quantityData = {{ quantity_tiers_json| safe }};
+		console.log("Loading existing tiers:", quantityData);
+
+		if (quantityData && Array.isArray(quantityData) && quantityData.length > 0) {
+			// Clear the initial empty row if entries exist
+			const tbody = document.getElementById('quantityTiersBody');
+			if (tbody) tbody.innerHTML = '';
+
+			quantityData.forEach(tier => {
 				addQuantityTierRow(tier);
 			});
+		} else {
+			addQuantityTierRow();
 		}
-		else {
+			} catch (e) {
+			console.error("Error parsing quantity tiers JSON:", e);
 			addQuantityTierRow();
 		}
 		{% else %}

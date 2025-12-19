@@ -17,7 +17,7 @@
     }
 
     .ec-breadcrumb-list .ec-breadcrumb-item.active::before {
-        color: #3474d4;
+        color: #ff007f;
     }
 
     .ec-breadcrumb {
@@ -37,7 +37,7 @@
     }
 
     .ec-breadcrumb-list li.active {
-        color: #3474d4;
+        color: #ff007f;
     }
 
     .ec-breadcrumb-item+.ec-breadcrumb-item {
@@ -54,7 +54,7 @@
     }
 
     .ec-checkout-title {
-        background: linear-gradient(135deg, #ff007f 0%, #ff4da6 100%);
+        background: linear-gradient(135deg, #ff007f 0%, #ff5e9e 100%);
         color: #fff !important;
         padding: 20px 25px;
         margin: 0;
@@ -141,7 +141,7 @@
     }
 
     .ec-sb-title {
-        background: linear-gradient(135deg, #ff007f 0%, #ff4da6 100%);
+        background: linear-gradient(135deg, #ff007f 0%, #ff5e9e 100%);
         padding: 20px;
     }
 
@@ -360,7 +360,7 @@
                                                 <div class="col-md-6">
                                                     <span class="ec-bill-wrap">
                                                         <label>Phone Number *</label>
-                                                        <input type="tel" name="phone" placeholder="+91 1234 567890"
+                                                        <input type="tel" name="phone" placeholder="+44 1234 567890"
                                                             required />
                                                     </span>
                                                 </div>
@@ -437,19 +437,19 @@
                                 <div class="ec-checkout-summary">
                                     <div>
                                         <span class="text-left">Sub-Total</span>
-                                        <span class="text-right">₹{{ cart.subtotal|default:"0.00"|floatformat:2}}</span>
+                                        <span class="text-right">£{{ cart.subtotal|default:"0.00"|floatformat:2}}</span>
                                     </div>
                                     <div>
                                         <span class="text-left">VAT (20%)</span>
-                                        <span class="text-right">₹{{ cart.vat|default:"0.00"|floatformat:2 }}</span>
+                                        <span class="text-right">£{{ cart.vat|default:"0.00"|floatformat:2 }}</span>
                                     </div>
                                     <div>
                                         <span class="text-left">Delivery</span>
-                                        <span class="text-right" id="delivery_cost">₹0.00</span>
+                                        <span class="text-right" id="delivery_cost">£0.00</span>
                                     </div>
                                     <div class="ec-checkout-summary-total">
                                         <span class="text-left">Total Amount</span>
-                                        <span class="text-right">₹{{ cart.total|default:"0.00"|floatformat:2 }}</span>
+                                        <span class="text-right">£{{ cart.total|default:"0.00"|floatformat:2 }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -473,7 +473,7 @@
                                             <span class="ec-del-opt-head">Express Delivery</span>
                                             <input type="radio" id="del2" name="delivery_method_radio" value="express"
                                                 onchange="updateDeliveryMethod('express')">
-                                            <label for="del2">1-2 working days - ₹500.00</label>
+                                            <label for="del2">1-2 working days - £5.00</label>
                                         </span>
                                     </span>
                                     <span class="ec-del-commemt">
@@ -551,7 +551,7 @@
     function updateDeliveryMethod(method) {
         document.getElementById('delivery_method_input').value = method;
         // Update delivery cost display
-        const deliveryCost = method === 'express' ? '₹500.00' : '₹0.00';
+        const deliveryCost = method === 'express' ? '£5.00' : '£0.00';
         document.getElementById('delivery_cost').textContent = deliveryCost;
     }
 
