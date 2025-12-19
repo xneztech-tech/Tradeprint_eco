@@ -119,8 +119,7 @@
 									<div class="info-content">
 										{{ order.shipping_first_name }} {{ order.shipping_last_name }}<br>
 										{{ order.shipping_address }}<br>
-										{{ order.shipping_city }}, {{ order.shipping_state }} {{ order.shipping_postcode
-										}}<br>
+										{{ order.shipping_city }}, {{ order.shipping_state }} {{ order.shipping_postcode }}<br>
 										{{ order.shipping_country }}<br>
 										<abbr title="Phone">P:</abbr> {{ order.shipping_phone }}
 									</div>
@@ -132,8 +131,7 @@
 									<div class="info-content">
 										{{ order.get_payment_method_display }}<br>
 										Status: <span
-											class="badge badge-{% if order.payment_status == 'paid' %}success{% else %}warning{% endif %}">{{
-											order.get_payment_status_display }}</span><br>
+											class="badge badge-{% if order.payment_status == 'paid' %}success{% else %}warning{% endif %}">{{ order.get_payment_status_display }}</span><br>
 									</div>
 								</address>
 							</div>
@@ -237,12 +235,9 @@
 						<span class="text-medium">{{ order.tracking_number }}</span>
 					</div>
 					<div class="d-flex flex-wrap flex-sm-nowrap justify-content-between py-3 px-2 bg-secondary">
-						<div class="w-100 text-center py-1 px-2"><span class="text-medium">Shipped Via:</span> {{
-							order.delivery_method|default:"Standard"|title }}</div>
-						<div class="w-100 text-center py-1 px-2"><span class="text-medium">Status:</span> {{
-							order.get_status_display }}</div>
-						<div class="w-100 text-center py-1 px-2"><span class="text-medium">Date:</span> {{
-							order.updated_at|date:"M d, Y" }}</div>
+						<div class="w-100 text-center py-1 px-2"><span class="text-medium">Shipped Via:</span> {{ order.delivery_method|default:"Standard"|title }}</div>
+						<div class="w-100 text-center py-1 px-2"><span class="text-medium">Status:</span> {{ order.get_status_display }}</div>
+						<div class="w-100 text-center py-1 px-2"><span class="text-medium">Date:</span> {{ order.updated_at|date:"M d, Y" }}</div>
 					</div>
 					<div class="card-body">
 						<div

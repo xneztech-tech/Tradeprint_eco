@@ -78,7 +78,7 @@ def admin_dashboard(request):
         return redirect('shop_dashboard')
     
     from django.db.models import Sum
-    from .models import Order, User, Product
+    from .models import Order, User, Product, PrintShop
     from django.utils import timezone
     
     # Statistics
@@ -86,10 +86,12 @@ def admin_dashboard(request):
     total_orders = Order.objects.count()
     total_revenue = Order.objects.aggregate(Sum('total'))['total__sum'] or 0
     total_products = Product.objects.count()
+    total_shopkeepers = PrintShop.objects.filter(status='active').count()
     
     # Recent Data
     recent_orders = Order.objects.select_related('customer').order_by('-created_at')[:5]
     new_customers = User.objects.filter(role='user').order_by('-date_joined')[:5]
+    recent_shopkeepers = PrintShop.objects.select_related('user').filter(status='active').order_by('-created_at')[:5]
     
     # Calculate daily signups/visits (mocked or real if tracking exists)
     # daily_signups = User.objects.filter(date_joined__date=timezone.now().date()).count()
@@ -150,8 +152,10 @@ def admin_dashboard(request):
         'total_orders': total_orders,
         'total_revenue': total_revenue,
         'total_products': total_products,
+        'total_shopkeepers': total_shopkeepers,
         'recent_orders': recent_orders,
         'new_customers': new_customers,
+        'recent_shopkeepers': recent_shopkeepers,
         # Chart Data
         'chart_dates': json.dumps(chart_dates),
         'chart_sales': json.dumps(chart_sales),
