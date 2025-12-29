@@ -39,7 +39,6 @@ def frontend_base_context(request):
         })
 
     # Get cart items for the current user/session
-    from .models import Cart
     cart = None
     cart_items = []
     
