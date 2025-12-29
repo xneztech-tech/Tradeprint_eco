@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
@@ -12,7 +13,9 @@
 	<!-- GOOGLE FONTS -->
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800;900&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet"> 
+	<link
+		href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800;900&family=Roboto:wght@400;500;700;900&display=swap"
+		rel="stylesheet">
 
 	<link href="https://cdn.materialdesignicons.com/4.4.95/css/materialdesignicons.min.css" rel="stylesheet" />
 
@@ -32,15 +35,16 @@
 
 	<!--  WRAPPER  -->
 	<div class="wrapper">
-		
+
 		<!-- LEFT MAIN SIDEBAR -->
 		<div class="ec-left-sidebar ec-bg-sidebar">
 			<div id="sidebar" class="sidebar ec-sidebar-footer">
 
 				<div class="ec-brand">
-					<a href="index.html" title="Ekka">
-						<img class="ec-brand-icon" src="assets/img/logo/ec-site-logo.png" alt="" />
-						<span class="ec-brand-name text-truncate">PRINTS</span>
+					<a href="{% url 'admin_dashboard' %}" title="Tradeprint">
+						<img class="ec-brand-icon" src="{% static 'frontend/assets/images/logoo.jpeg' %}"
+							alt="Tradeprint Logo" style="max-width: 50px; border-radius: 5px;" />
+						<span class="ec-brand-name text-truncate">Tradeprint</span>
 					</a>
 				</div>
 
@@ -65,7 +69,7 @@
 							</a>
 							<div class="collapse">
 								<ul class="sub-menu" id="users" data-parent="#sidebar-menu">
-									
+
 									<li class="">
 										<a class="sidenav-item-link" href="user-list.html">
 											<span class="nav-text">User List</span>
@@ -121,7 +125,7 @@
 											<span class="nav-text">List Product</span>
 										</a>
 									</li>
-									
+
 									<li class="">
 										<a class="sidenav-item-link" href="product-detail.html">
 											<span class="nav-text">Product Detail</span>
@@ -154,7 +158,7 @@
 											<span class="nav-text">Order Detail</span>
 										</a>
 									</li>
-									
+
 								</ul>
 							</div>
 						</li>
@@ -181,7 +185,7 @@
 							</div>
 						</li>
 
-						
+
 					</ul>
 				</div>
 			</div>
@@ -825,7 +829,8 @@
 					<div class="breadcrumb-wrapper d-flex align-items-center justify-content-between">
 						<div>
 							<h1>Vendor Card</h1>
-							<p class="breadcrumbs"><span><a href="index.html">Home</a></span><span><i class="mdi mdi-chevron-right"></i></span> Vendor</p>
+							<p class="breadcrumbs"><span><a href="index.html">Home</a></span><span><i
+										class="mdi mdi-chevron-right"></i></span> Vendor</p>
 						</div>
 						<div>
 							<button type="button" class="btn btn-primary" data-bs-toggle="modal"
@@ -840,11 +845,11 @@
 							<div class="col-lg-6 col-xl-4 col-xxl-3">
 								<div class="card card-default mt-24px">
 									<a href="javascript:0" data-bs-toggle="modal" data-bs-target="#modal-contact"
-											class="view-detail"><i class="mdi mdi-eye-plus-outline"></i>
+										class="view-detail"><i class="mdi mdi-eye-plus-outline"></i>
 									</a>
 									<div class="vendor-info card-body text-center p-4">
 										<a href="javascript:0" class="text-secondary d-inline-block mb-3">
-											<div class="image mb-3">  
+											<div class="image mb-3">
 												<img src="assets/img/vendor/u1.jpg" class="img-fluid rounded-circle"
 													alt="Avatar Image">
 											</div>
@@ -882,7 +887,7 @@
 							<div class="col-lg-6 col-xl-4 col-xxl-3">
 								<div class="card card-default mt-24px">
 									<a href="javascript:0" data-bs-toggle="modal" data-bs-target="#modal-contact"
-											class="view-detail"><i class="mdi mdi-eye-plus-outline"></i>
+										class="view-detail"><i class="mdi mdi-eye-plus-outline"></i>
 									</a>
 									<div class="vendor-info card-body text-center p-4">
 										<a href="javascript:0" class="text-secondary d-inline-block mb-3">
@@ -924,7 +929,7 @@
 							<div class="col-lg-6 col-xl-4 col-xxl-3">
 								<div class="card card-default mt-24px">
 									<a href="javascript:0" data-bs-toggle="modal" data-bs-target="#modal-contact"
-											class="view-detail"><i class="mdi mdi-eye-plus-outline"></i>
+										class="view-detail"><i class="mdi mdi-eye-plus-outline"></i>
 									</a>
 									<div class="vendor-info card-body text-center p-4">
 										<a href="javascript:0" class="text-secondary d-inline-block mb-3">
@@ -968,7 +973,7 @@
 							<div class="col-lg-6 col-xl-4 col-xxl-3">
 								<div class="card card-default mt-24px">
 									<a href="javascript:0" data-bs-toggle="modal" data-bs-target="#modal-contact"
-											class="view-detail"><i class="mdi mdi-eye-plus-outline"></i>
+										class="view-detail"><i class="mdi mdi-eye-plus-outline"></i>
 									</a>
 									<div class="vendor-info card-body text-center p-4">
 										<a href="javascript:0" class="text-secondary d-inline-block mb-3">
@@ -1012,7 +1017,7 @@
 							<div class="col-lg-6 col-xl-4 col-xxl-3">
 								<div class="card card-default mt-24px">
 									<a href="javascript:0" data-bs-toggle="modal" data-bs-target="#modal-contact"
-											class="view-detail"><i class="mdi mdi-eye-plus-outline"></i>
+										class="view-detail"><i class="mdi mdi-eye-plus-outline"></i>
 									</a>
 									<div class="vendor-info card-body text-center p-4">
 										<a href="javascript:0" class="text-secondary d-inline-block mb-3">
@@ -1056,7 +1061,7 @@
 							<div class="col-lg-6 col-xl-4 col-xxl-3">
 								<div class="card card-default mt-24px">
 									<a href="javascript:0" data-bs-toggle="modal" data-bs-target="#modal-contact"
-											class="view-detail"><i class="mdi mdi-eye-plus-outline"></i>
+										class="view-detail"><i class="mdi mdi-eye-plus-outline"></i>
 									</a>
 									<div class="vendor-info card-body text-center p-4">
 										<a href="javascript:0" class="text-secondary d-inline-block mb-3">
@@ -1100,7 +1105,7 @@
 							<div class="col-lg-6 col-xl-4 col-xxl-3">
 								<div class="card card-default mt-24px">
 									<a href="javascript:0" data-bs-toggle="modal" data-bs-target="#modal-contact"
-											class="view-detail"><i class="mdi mdi-eye-plus-outline"></i>
+										class="view-detail"><i class="mdi mdi-eye-plus-outline"></i>
 									</a>
 									<div class="vendor-info card-body text-center p-4">
 										<a href="javascript:0" class="text-secondary d-inline-block mb-3">
@@ -1144,7 +1149,7 @@
 							<div class="col-lg-6 col-xl-4 col-xxl-3">
 								<div class="card card-default mt-24px">
 									<a href="javascript:0" data-bs-toggle="modal" data-bs-target="#modal-contact"
-											class="view-detail"><i class="mdi mdi-eye-plus-outline"></i>
+										class="view-detail"><i class="mdi mdi-eye-plus-outline"></i>
 									</a>
 									<div class="vendor-info card-body text-center p-4">
 										<a href="javascript:0" class="text-secondary d-inline-block mb-3">
@@ -1188,7 +1193,7 @@
 							<div class="col-lg-6 col-xl-4 col-xxl-3">
 								<div class="card card-default mt-24px">
 									<a href="javascript:0" data-bs-toggle="modal" data-bs-target="#modal-contact"
-											class="view-detail"><i class="mdi mdi-eye-plus-outline"></i>
+										class="view-detail"><i class="mdi mdi-eye-plus-outline"></i>
 									</a>
 									<div class="vendor-info card-body text-center p-4">
 										<a href="javascript:0" class="text-secondary d-inline-block mb-3">
@@ -1232,7 +1237,7 @@
 							<div class="col-lg-6 col-xl-4 col-xxl-3">
 								<div class="card card-default mt-24px">
 									<a href="javascript:0" data-bs-toggle="modal" data-bs-target="#modal-contact"
-											class="view-detail"><i class="mdi mdi-eye-plus-outline"></i>
+										class="view-detail"><i class="mdi mdi-eye-plus-outline"></i>
 									</a>
 									<div class="vendor-info card-body text-center p-4">
 										<a href="javascript:0" class="text-secondary d-inline-block mb-3">
@@ -1276,7 +1281,7 @@
 							<div class="col-lg-6 col-xl-4 col-xxl-3">
 								<div class="card card-default mt-24px">
 									<a href="javascript:0" data-bs-toggle="modal" data-bs-target="#modal-contact"
-											class="view-detail"><i class="mdi mdi-eye-plus-outline"></i>
+										class="view-detail"><i class="mdi mdi-eye-plus-outline"></i>
 									</a>
 									<div class="vendor-info card-body text-center p-4">
 										<a href="javascript:0" class="text-secondary d-inline-block mb-3">
@@ -1320,7 +1325,7 @@
 							<div class="col-lg-6 col-xl-4 col-xxl-3">
 								<div class="card card-default mt-24px">
 									<a href="javascript:0" data-bs-toggle="modal" data-bs-target="#modal-contact"
-											class="view-detail"><i class="mdi mdi-eye-plus-outline"></i>
+										class="view-detail"><i class="mdi mdi-eye-plus-outline"></i>
 									</a>
 									<div class="vendor-info card-body text-center p-4">
 										<a href="javascript:0" class="text-secondary d-inline-block mb-3">
@@ -1371,7 +1376,8 @@
 						<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 							<div class="modal-content">
 								<div class="modal-header justify-content-end border-bottom-0">
-									<button type="button" class="btn-edit-icon" data-bs-dismiss="modal" aria-label="Close">
+									<button type="button" class="btn-edit-icon" data-bs-dismiss="modal"
+										aria-label="Close">
 										<i class="mdi mdi-pencil"></i>
 									</button>
 
@@ -1406,8 +1412,7 @@
 													<div class="card-body">
 														<h4 class="py-2 text-dark">John Deo</h4>
 														<p>john.example@gmail.com</p>
-														<a class="btn btn-primary btn-pill my-3"
-															href="#">Follow</a>
+														<a class="btn btn-primary btn-pill my-3" href="#">Follow</a>
 													</div>
 												</div>
 
@@ -1440,7 +1445,8 @@
 												<p class="text-dark font-weight-medium pt-3 mb-2">Birthday</p>
 												<p>Dec 10, 1991</p>
 												<p class="text-dark font-weight-medium pt-3 mb-2">Event</p>
-												<p class="mb-2">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+												<p class="mb-2">Lorem Ipsum is simply dummy text of the printing and
+													typesetting industry.</p>
 											</div>
 										</div>
 									</div>
@@ -1874,8 +1880,9 @@
 				<div class="copyright bg-white">
 					<p>
 						Copyright &copy; <span id="ec-year"></span><a class="text-primary"
-						href="https://themeforest.net/user/ashishmaraviya" target="_blank"> Ekka Admin Dashboard</a>. All Rights Reserved.
-					  </p>
+							href="https://themeforest.net/user/ashishmaraviya" target="_blank"> Ekka Admin
+							Dashboard</a>. All Rights Reserved.
+					</p>
 				</div>
 			</footer>
 

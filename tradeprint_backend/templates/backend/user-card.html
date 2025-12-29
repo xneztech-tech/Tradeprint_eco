@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
@@ -12,7 +13,9 @@
 	<!-- GOOGLE FONTS -->
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800;900&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet"> 
+	<link
+		href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800;900&family=Roboto:wght@400;500;700;900&display=swap"
+		rel="stylesheet">
 
 	<link href="https://cdn.materialdesignicons.com/4.4.95/css/materialdesignicons.min.css" rel="stylesheet" />
 
@@ -32,15 +35,16 @@
 
 	<!--  WRAPPER  -->
 	<div class="wrapper">
-		
+
 		<!-- LEFT MAIN SIDEBAR -->
 		<div class="ec-left-sidebar ec-bg-sidebar">
 			<div id="sidebar" class="sidebar ec-sidebar-footer">
 
 				<div class="ec-brand">
-					<a href="index.html" title="Ekka">
-						<img class="ec-brand-icon" src="assets/img/logo/ec-site-logo.png" alt="" />
-						<span class="ec-brand-name text-truncate">PRINTS</span>
+					<a href="{% url 'admin_dashboard' %}" title="Tradeprint">
+						<img class="ec-brand-icon" src="{% static 'frontend/assets/images/logoo.jpeg' %}"
+							alt="Tradeprint Logo" style="max-width: 50px; border-radius: 5px;" />
+						<span class="ec-brand-name text-truncate">Tradeprint</span>
 					</a>
 				</div>
 
@@ -65,7 +69,7 @@
 							</a>
 							<div class="collapse">
 								<ul class="sub-menu" id="users" data-parent="#sidebar-menu">
-									
+
 									<li class="">
 										<a class="sidenav-item-link" href="user-list.html">
 											<span class="nav-text">User List</span>
@@ -121,7 +125,7 @@
 											<span class="nav-text">List Product</span>
 										</a>
 									</li>
-									
+
 									<li class="">
 										<a class="sidenav-item-link" href="product-detail.html">
 											<span class="nav-text">Product Detail</span>
@@ -154,7 +158,7 @@
 											<span class="nav-text">Order Detail</span>
 										</a>
 									</li>
-									
+
 								</ul>
 							</div>
 						</li>
@@ -181,7 +185,7 @@
 							</div>
 						</li>
 
-						
+
 					</ul>
 				</div>
 			</div>
@@ -1242,7 +1246,8 @@
 					</div>
 
 					<!-- Add Contact Button  -->
-					<div class="modal fade modal-add-contact" id="modal-add-contact" tabindex="-1" role="dialog" aria-hidden="true">
+					<div class="modal fade modal-add-contact" id="modal-add-contact" tabindex="-1" role="dialog"
+						aria-hidden="true">
 						<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 							<div class="modal-content">
 								<form>

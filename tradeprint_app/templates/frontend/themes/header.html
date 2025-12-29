@@ -7,9 +7,9 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
 
-    <title>PRINTS</title>
-    <meta name="keywords" content="PRINTS" />
-    <meta name="description" content="PRINTS">
+    <title>Tradeprint</title>
+    <meta name="keywords" content="Tradeprint, Printing, Custom Prints" />
+    <meta name="description" content="Tradeprint - Professional Printing Services">
     <meta name="author" content="ashishmaraviya">
 
     <!-- site Favicon -->
@@ -129,8 +129,11 @@
                     <div class="header-bottom-flex">
                         <!-- Ec Header Logo Start -->
                         <div class="align-self-center ec-header-logo ">
-                            <div class="header-logo" style="font-size:30px;font-weight :400px;">
-                                <a href="{% url 'home' %}">PRINTS</a>
+                            <div class="header-logo">
+                                <a href="{% url 'home' %}">
+                                    <img src="{% static 'frontend/assets/images/logoo.jpeg' %}" alt="Tradeprint Logo"
+                                        style="max-width: 150px;" />
+                                </a>
                             </div>
                         </div>
                         <!-- Ec Header Logo End -->
@@ -220,8 +223,8 @@
                     <!-- Ec Header Logo Start -->
                     <div class="col">
                         <div class="header-logo">
-                            <a href="index.html"><img src="#" alt="Site Logo" /><img class="dark-logo" src="#"
-                                    alt="Site Logo" style="display: none;" />PRINTS</a>
+                            <a href="{% url 'home' %}"><img src="{% static 'frontend/assets/images/logoo.jpeg' %}"
+                                    alt="Tradeprint Logo" style="max-width: 120px;" /></a>
                         </div>
                     </div>
                     <!-- Ec Header Logo End -->
