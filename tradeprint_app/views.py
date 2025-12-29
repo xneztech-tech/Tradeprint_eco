@@ -503,6 +503,116 @@ def order_detail(request, order_id):
     
     return render(request, 'frontend/order-detail.html', context)
 
+# ========================================
+# PASSWORD RESET FUNCTIONALITY
+# ========================================
+
+def forgot_password(request):
+    """Forgot password - send reset email"""
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        
+        try:
+            user = User.objects.get(email=email, role='user')
+            
+            # Generate password reset token
+            from django.contrib.auth.tokens import default_token_generator
+            from django.utils.http import urlsafe_base64_encode
+            from django.utils.encoding import force_bytes
+            from django.core.mail import send_mail
+            from django.conf import settings
+            
+            token = default_token_generator.make_token(user)
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            
+            # Build reset URL
+            reset_url = request.build_absolute_uri(
+                f'/reset-password/{uid}/{token}/'
+            )
+            
+            # Send email
+            subject = 'Password Reset Request - Tradeprint'
+            message = f"""
+Hello {user.first_name},
+
+You requested to reset your password. Click the link below to reset your password:
+
+{reset_url}
+
+If you didn't request this, please ignore this email.
+
+This link will expire in 24 hours.
+
+Best regards,
+Tradeprint Team
+            """
+            
+            try:
+                send_mail(
+                    subject,
+                    message,
+                    settings.DEFAULT_FROM_EMAIL,
+                    [email],
+                    fail_silently=False,
+                )
+                return redirect('password_reset_sent')
+            except Exception as e:
+                # If email fails, still show success page for security
+                # (don't reveal if email exists)
+                messages.info(request, 'If an account exists with this email, you will receive a password reset link.')
+                return redirect('password_reset_sent')
+                
+        except User.DoesNotExist:
+            # Don't reveal if email exists or not for security
+            messages.info(request, 'If an account exists with this email, you will receive a password reset link.')
+            return redirect('password_reset_sent')
+    
+    return render(request, 'frontend/forgot-password.html')
+
+
+def password_reset_sent(request):
+    """Password reset email sent confirmation"""
+    return render(request, 'frontend/password-reset-sent.html')
+
+
+def reset_password(request, uidb64, token):
+    """Reset password with token"""
+    from django.contrib.auth.tokens import default_token_generator
+    from django.utils.http import urlsafe_base64_decode
+    from django.utils.encoding import force_str
+    
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    
+    if user is not None and default_token_generator.check_token(user, token):
+        if request.method == 'POST':
+            password = request.POST.get('password')
+            confirm_password = request.POST.get('confirm_password')
+            
+            if password != confirm_password:
+                messages.error(request, 'Passwords do not match!')
+                return render(request, 'frontend/reset-password.html')
+            
+            if len(password) < 8:
+                messages.error(request, 'Password must be at least 8 characters long!')
+                return render(request, 'frontend/reset-password.html')
+            
+            # Set new password
+            user.set_password(password)
+            user.save()
+            
+            messages.success(request, 'Password reset successful! You can now login with your new password.')
+            return redirect('user_login')
+        
+        return render(request, 'frontend/reset-password.html')
+    else:
+        messages.error(request, 'Invalid or expired password reset link.')
+        return redirect('forgot_password')
+
+
 def contact_us(request):
     """Contact Us Page"""
     return render(request, 'frontend/contact-us.html')

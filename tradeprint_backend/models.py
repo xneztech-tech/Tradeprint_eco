@@ -522,11 +522,35 @@ class PrintShop(models.Model):
     
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='print_shop_profile')
     shop_name = models.CharField(max_length=150)
-    location = models.CharField(max_length=255) # City/Region for simple matching
+    
+    # Contact Information
     contact_phone = models.CharField(max_length=20)
+    contact_email = models.EmailField(blank=True, null=True)
+    
+    # Address Information
+    location = models.CharField(max_length=255)  # City/Region for simple matching
+    address = models.TextField(blank=True, null=True)
+    postcode = models.CharField(max_length=20, blank=True, null=True)
+    
+    # Business Information
+    business_registration_number = models.CharField(max_length=100, blank=True, null=True)
+    tax_id = models.CharField(max_length=100, blank=True, null=True)
+    
+    # Capacity & Operations
+    daily_capacity = models.IntegerField(default=50, help_text="Maximum orders per day")
+    monthly_capacity = models.IntegerField(default=1000, help_text="Maximum orders per month")
+    
+    # Status
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='active')
     
+    # Timestamps
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
         return self.shop_name
+    
+    class Meta:
+        verbose_name = "Print Shop"
+        verbose_name_plural = "Print Shops"
+        ordering = ['-created_at']

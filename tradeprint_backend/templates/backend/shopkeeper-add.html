@@ -7,58 +7,197 @@
 <div class="ec-content-wrapper">
     <div class="content">
         <div class="breadcrumb-wrapper breadcrumb-wrapper-2 breadcrumb-contacts">
-            <h1>Add Shopkeeper</h1>
+            <h1>Add New Shopkeeper</h1>
             <p class="breadcrumbs">
                 <span><a href="{% url 'admin_dashboard' %}">Home</a></span>
+                <span><i class="mdi mdi-chevron-right"></i></span>
+                <span><a href="{% url 'shopkeeper_list' %}">Shopkeepers</a></span>
                 <span><i class="mdi mdi-chevron-right"></i></span>
                 <span>Add Shopkeeper</span>
             </p>
         </div>
 
         <div class="row">
-            <div class="col-xl-8 col-lg-12" style="margin-left: 272px;">
+            <div class="col-xl-10 col-lg-12 mx-auto">
                 <div class="ec-cat-list card card-default">
+                    <div class="card-header">
+                        <h5 class="card-title">Shopkeeper Registration Form</h5>
+                        <p class="text-muted small">Fill in all required information to register a new print shop</p>
+                    </div>
                     <div class="card-body">
-                        <form method="POST">
+                        <form method="POST" id="shopkeeperForm">
                             {% csrf_token %}
-                            <div class="form-group row">
-                                <label class="col-12 col-form-label">Shop Name</label>
-                                <div class="col-12">
-                                    <input name="shop_name" class="form-control" type="text" required>
+
+                            <!-- Owner Information Section -->
+                            <div class="mb-4">
+                                <h6 class="border-bottom pb-2 mb-3">
+                                    <i class="mdi mdi-account-circle mr-2"></i>Owner Information
+                                </h6>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">First Name <span
+                                                    class="text-danger">*</span></label>
+                                            <input name="first_name" class="form-control" type="text" required
+                                                placeholder="Enter first name">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Last Name <span
+                                                    class="text-danger">*</span></label>
+                                            <input name="last_name" class="form-control" type="text" required
+                                                placeholder="Enter last name">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Email (Login Username) <span
+                                                    class="text-danger">*</span></label>
+                                            <input name="email" class="form-control" type="email" required
+                                                placeholder="shopkeeper@example.com">
+                                            <small class="form-text text-muted">This will be used for login</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Password <span
+                                                    class="text-danger">*</span></label>
+                                            <input name="password" class="form-control" type="password" required
+                                                minlength="6" placeholder="Minimum 6 characters">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="form-group row">
-                                <label class="col-12 col-form-label">Email (Login Username)</label>
-                                <div class="col-12">
-                                    <input name="email" class="form-control" type="email" required>
+                            <!-- Shop Information Section -->
+                            <div class="mb-4">
+                                <h6 class="border-bottom pb-2 mb-3">
+                                    <i class="mdi mdi-store mr-2"></i>Shop Information
+                                </h6>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Shop Name <span
+                                                    class="text-danger">*</span></label>
+                                            <input name="shop_name" class="form-control" type="text" required
+                                                placeholder="e.g., ABC Print Shop">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Contact Phone <span
+                                                    class="text-danger">*</span></label>
+                                            <input name="contact_phone" class="form-control" type="tel" required
+                                                placeholder="+44 123 456 7890">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Contact Email</label>
+                                            <input name="contact_email" class="form-control" type="email"
+                                                placeholder="shop@example.com (optional)">
+                                            <small class="form-text text-muted">If different from owner email</small>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="form-group row">
-                                <label class="col-12 col-form-label">Password</label>
-                                <div class="col-12">
-                                    <input name="password" class="form-control" type="password" required>
+                            <!-- Address Information Section -->
+                            <div class="mb-4">
+                                <h6 class="border-bottom pb-2 mb-3">
+                                    <i class="mdi mdi-map-marker mr-2"></i>Address Information
+                                </h6>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Full Address</label>
+                                            <textarea name="address" class="form-control" rows="2"
+                                                placeholder="Street address, building number, etc."></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">City/Location <span
+                                                    class="text-danger">*</span></label>
+                                            <input name="location" class="form-control" type="text" required
+                                                placeholder="e.g., London, Manchester">
+                                            <small class="form-text text-muted">Used for order assignment</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Postcode</label>
+                                            <input name="postcode" class="form-control" type="text"
+                                                placeholder="e.g., SW1A 1AA">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="form-group row">
-                                <label class="col-12 col-form-label">Location (City)</label>
-                                <div class="col-12">
-                                    <input name="location" class="form-control" type="text" required>
+                            <!-- Business Information Section -->
+                            <div class="mb-4">
+                                <h6 class="border-bottom pb-2 mb-3">
+                                    <i class="mdi mdi-briefcase mr-2"></i>Business Information
+                                </h6>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Business Registration Number</label>
+                                            <input name="business_registration_number" class="form-control" type="text"
+                                                placeholder="Company registration number">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Tax ID / VAT Number</label>
+                                            <input name="tax_id" class="form-control" type="text"
+                                                placeholder="VAT registration number">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="form-group row">
-                                <label class="col-12 col-form-label">Contact Phone</label>
-                                <div class="col-12">
-                                    <input name="phone" class="form-control" type="text" required>
+                            <!-- Capacity Settings Section -->
+                            <div class="mb-4">
+                                <h6 class="border-bottom pb-2 mb-3">
+                                    <i class="mdi mdi-chart-line mr-2"></i>Capacity Settings
+                                </h6>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Daily Capacity (Orders)</label>
+                                            <input name="daily_capacity" class="form-control" type="number" min="1"
+                                                value="50" placeholder="50">
+                                            <small class="form-text text-muted">Maximum orders per day</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Monthly Capacity (Orders)</label>
+                                            <input name="monthly_capacity" class="form-control" type="number" min="1"
+                                                value="1000" placeholder="1000">
+                                            <small class="form-text text-muted">Maximum orders per month</small>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="row">
+                            <!-- Action Buttons -->
+                            <div class="row mt-4">
                                 <div class="col-12">
-                                    <button name="submit" type="submit" class="btn btn-primary">Add Shopkeeper</button>
+                                    <button type="submit" class="btn btn-primary btn-lg">
+                                        <i class="mdi mdi-check mr-2"></i>Add Shopkeeper
+                                    </button>
+                                    <a href="{% url 'shopkeeper_list' %}" class="btn btn-secondary btn-lg ml-2">
+                                        <i class="mdi mdi-close mr-2"></i>Cancel
+                                    </a>
                                 </div>
                             </div>
                         </form>
@@ -68,4 +207,19 @@
         </div>
     </div>
 </div>
+
+<style>
+    .form-label {
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+    }
+
+    .border-bottom {
+        border-bottom: 2px solid #e9ecef !important;
+    }
+
+    .card-header {
+        background-color: #f8f9fa;
+    }
+</style>
 {% endblock %}

@@ -31,6 +31,11 @@ urlpatterns = [
     path('login/', views.user_login, name="user_login"),
     path('logout/', views.user_logout, name="user_logout"),
     
+    # Password Reset
+    path('forgot-password/', views.forgot_password, name="forgot_password"),
+    path('password-reset-sent/', views.password_reset_sent, name="password_reset_sent"),
+    path('reset-password/<uidb64>/<token>/', views.reset_password, name="reset_password"),
+    
     # Customer Orders
     path('my-orders/', views.my_orders, name="my_orders"),
     path('order/<int:order_id>/', views.order_detail, name="order_detail_customer"),

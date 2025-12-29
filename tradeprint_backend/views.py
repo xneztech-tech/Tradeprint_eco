@@ -1239,33 +1239,75 @@ def shopkeeper_add(request):
     if request.method == 'POST':
         from .models import User, PrintShop
         
-        # Simple form handling
-        name = request.POST.get('shop_name')
-        email = request.POST.get('email')
+        # User Information
+        first_name = request.POST.get('first_name', '').strip()
+        last_name = request.POST.get('last_name', '').strip()
+        email = request.POST.get('email', '').strip()
         password = request.POST.get('password')
-        location = request.POST.get('location')
-        phone = request.POST.get('phone')
+        
+        # Shop Information
+        shop_name = request.POST.get('shop_name', '').strip()
+        contact_phone = request.POST.get('contact_phone', '').strip()
+        contact_email = request.POST.get('contact_email', '').strip()
+        
+        # Address Information
+        location = request.POST.get('location', '').strip()
+        address = request.POST.get('address', '').strip()
+        postcode = request.POST.get('postcode', '').strip()
+        
+        # Business Information
+        business_reg = request.POST.get('business_registration_number', '').strip()
+        tax_id = request.POST.get('tax_id', '').strip()
+        
+        # Capacity
+        daily_capacity = request.POST.get('daily_capacity', '50')
+        monthly_capacity = request.POST.get('monthly_capacity', '1000')
+        
+        # Validation
+        if not all([first_name, last_name, email, password, shop_name, contact_phone, location]):
+            messages.error(request, "Please fill in all required fields")
+            return redirect('shopkeeper_add')
         
         if User.objects.filter(email=email).exists():
             messages.error(request, "Email already exists")
             return redirect('shopkeeper_add')
             
-        # Create User
-        user = User.objects.create_user(username=email, email=email, password=password)
-        user.role = 'shopkeeper'
-        user.save()
-        
-        # Create Shop Profile
-        PrintShop.objects.create(
-            user=user,
-            shop_name=name,
-            location=location,
-            contact_phone=phone,
-            status='active'
-        )
-        
-        messages.success(request, "Shopkeeper added successfully")
-        return redirect('shopkeeper_list')
+        try:
+            # Create User
+            user = User.objects.create_user(
+                username=email,
+                email=email,
+                password=password,
+                first_name=first_name,
+                last_name=last_name
+            )
+            user.role = 'shopkeeper'
+            user.save()
+            
+            # Create Shop Profile
+            PrintShop.objects.create(
+                user=user,
+                shop_name=shop_name,
+                contact_phone=contact_phone,
+                contact_email=contact_email or email,
+                location=location,
+                address=address,
+                postcode=postcode,
+                business_registration_number=business_reg,
+                tax_id=tax_id,
+                daily_capacity=int(daily_capacity) if daily_capacity else 50,
+                monthly_capacity=int(monthly_capacity) if monthly_capacity else 1000,
+                status='active'
+            )
+            
+            messages.success(request, f"Shopkeeper '{shop_name}' added successfully!")
+            return redirect('shopkeeper_list')
+            
+        except Exception as e:
+            messages.error(request, f"Error creating shopkeeper: {str(e)}")
+            if user:
+                user.delete()  # Rollback user creation if shop creation fails
+            return redirect('shopkeeper_add')
         
     return render(request, 'backend/shopkeeper-add.html')
 
@@ -1281,31 +1323,65 @@ def shopkeeper_edit(request, pk):
     shop = get_object_or_404(PrintShop, pk=pk)
     
     if request.method == 'POST':
-        name = request.POST.get('shop_name')
-        email = request.POST.get('email')
-        location = request.POST.get('location')
-        phone = request.POST.get('phone')
-        status = request.POST.get('status')
+        # User Information
+        first_name = request.POST.get('first_name', '').strip()
+        last_name = request.POST.get('last_name', '').strip()
+        email = request.POST.get('email', '').strip()
+        
+        # Shop Information
+        shop_name = request.POST.get('shop_name', '').strip()
+        contact_phone = request.POST.get('contact_phone', '').strip()
+        contact_email = request.POST.get('contact_email', '').strip()
+        
+        # Address Information
+        location = request.POST.get('location', '').strip()
+        address = request.POST.get('address', '').strip()
+        postcode = request.POST.get('postcode', '').strip()
+        
+        # Business Information
+        business_reg = request.POST.get('business_registration_number', '').strip()
+        tax_id = request.POST.get('tax_id', '').strip()
+        
+        # Capacity
+        daily_capacity = request.POST.get('daily_capacity', '50')
+        monthly_capacity = request.POST.get('monthly_capacity', '1000')
+        
+        # Status
+        status = request.POST.get('status', 'active')
         
         # Check if email is being changed and if it duplicates another user
         if email != shop.user.email and User.objects.filter(email=email).exists():
             messages.error(request, "Email already exists")
             return redirect('shopkeeper_edit', pk=pk)
         
-        # Update User
-        shop.user.email = email
-        shop.user.username = email  # Keep username same as email
-        shop.user.save()
-        
-        # Update Shop Profile
-        shop.shop_name = name
-        shop.location = location
-        shop.contact_phone = phone
-        shop.status = status
-        shop.save()
-        
-        messages.success(request, "Shopkeeper updated successfully")
-        return redirect('shopkeeper_list')
+        try:
+            # Update User
+            shop.user.first_name = first_name
+            shop.user.last_name = last_name
+            shop.user.email = email
+            shop.user.username = email  # Keep username same as email
+            shop.user.save()
+            
+            # Update Shop Profile
+            shop.shop_name = shop_name
+            shop.contact_phone = contact_phone
+            shop.contact_email = contact_email
+            shop.location = location
+            shop.address = address
+            shop.postcode = postcode
+            shop.business_registration_number = business_reg
+            shop.tax_id = tax_id
+            shop.daily_capacity = int(daily_capacity) if daily_capacity else 50
+            shop.monthly_capacity = int(monthly_capacity) if monthly_capacity else 1000
+            shop.status = status
+            shop.save()
+            
+            messages.success(request, f"Shopkeeper '{shop_name}' updated successfully!")
+            return redirect('shopkeeper_list')
+            
+        except Exception as e:
+            messages.error(request, f"Error updating shopkeeper: {str(e)}")
+            return redirect('shopkeeper_edit', pk=pk)
         
     return render(request, 'backend/shopkeeper-edit.html', {'shop': shop})
 
@@ -1331,5 +1407,52 @@ def shopkeeper_delete(request, pk):
     except Exception as e:
         messages.error(request, f"Error deleting shopkeeper: {str(e)}")
         
+    return redirect('shopkeeper_list')
+
+
+@login_required
+def fix_shopkeeper_profiles(request):
+    """Utility view to create PrintShop records for existing shopkeeper users"""
+    if request.user.role != 'admin':
+        messages.error(request, 'Access denied.')
+        return redirect('signin')
+    
+    from .models import User, PrintShop
+    
+    # Find all shopkeeper users
+    shopkeeper_users = User.objects.filter(role='shopkeeper')
+    
+    created_count = 0
+    existing_count = 0
+    
+    for user in shopkeeper_users:
+        # Check if they already have a print shop
+        if hasattr(user, 'print_shop_profile'):
+            existing_count += 1
+        else:
+            # Create a PrintShop for this user
+            shop_name = f"{user.first_name}'s Print Shop" if user.first_name else f"{user.email}'s Print Shop"
+            
+            PrintShop.objects.create(
+                user=user,
+                shop_name=shop_name,
+                contact_phone="0000000000",  # Default phone - should be updated
+                contact_email=user.email,
+                location="Unknown",  # Default location - should be updated
+                address="",
+                postcode="",
+                business_registration_number="",
+                tax_id="",
+                daily_capacity=50,
+                monthly_capacity=1000,
+                status='active'
+            )
+            created_count += 1
+    
+    if created_count > 0:
+        messages.success(request, f"Created {created_count} PrintShop profiles. Please update their contact details.")
+    else:
+        messages.info(request, f"All {existing_count} shopkeeper users already have PrintShop profiles.")
+    
     return redirect('shopkeeper_list')
 

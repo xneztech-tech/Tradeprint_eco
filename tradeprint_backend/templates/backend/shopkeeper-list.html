@@ -7,12 +7,25 @@
 <div class="ec-content-wrapper">
     <div class="content">
         <div class="breadcrumb-wrapper breadcrumb-wrapper-2 breadcrumb-contacts" style="margin-left: 240px;">
-            <h1>Shopkeeper List</h1>
-            <p class="breadcrumbs">
-                <span><a href="{% url 'admin_dashboard' %}">Home</a></span>
-                <span><i class="mdi mdi-chevron-right"></i></span>
-                <span>Shopkeepers</span>
-            </p>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h1>Shopkeeper List</h1>
+                    <p class="breadcrumbs">
+                        <span><a href="{% url 'admin_dashboard' %}">Home</a></span>
+                        <span><i class="mdi mdi-chevron-right"></i></span>
+                        <span>Shopkeepers</span>
+                    </p>
+                </div>
+                <div>
+                    <a href="{% url 'fix_shopkeeper_profiles' %}" class="btn btn-warning"
+                        onclick="return confirm('This will create PrintShop profiles for shopkeeper users who don\'t have them. Continue?')">
+                        <i class="mdi mdi-wrench"></i> Fix Missing Profiles
+                    </a>
+                    <a href="{% url 'shopkeeper_add' %}" class="btn btn-primary">
+                        <i class="mdi mdi-plus"></i> Add Shopkeeper
+                    </a>
+                </div>
+            </div>
         </div>
 
         <div class="row">

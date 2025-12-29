@@ -12,6 +12,7 @@ urlpatterns = [
     path("shopkeeper/list/", views.shopkeeper_list, name="shopkeeper_list"),
     path("shopkeeper/edit/<int:pk>/", views.shopkeeper_edit, name="shopkeeper_edit"),
     path("shopkeeper/delete/<int:pk>/", views.shopkeeper_delete, name="shopkeeper_delete"),
+    path("shopkeeper/fix-profiles/", views.fix_shopkeeper_profiles, name="fix_shopkeeper_profiles"),
     path("user-dashboard/", views.user_dashboard, name="user_dashboard"),
     
     # ==========================
