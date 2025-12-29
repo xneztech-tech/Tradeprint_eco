@@ -38,7 +38,26 @@ def frontend_base_context(request):
             "subcategories": subcat_block
         })
 
-    return {"menu_data": menu}
+    # Get cart items for the current user/session
+    from .models import Cart
+    cart = None
+    cart_items = []
+    
+    if request.user.is_authenticated:
+        cart = Cart.objects.filter(user=request.user).first()
+    else:
+        session_key = request.session.session_key
+        if session_key:
+            cart = Cart.objects.filter(session_key=session_key).first()
+    
+    if cart:
+        cart_items = cart.items.all()
+
+    return {
+        "menu_data": menu,
+        "cart_items": cart_items,
+        "cart": cart
+    }
 
 # Category page - shows all products in a category
 def category_view(request, category_slug):

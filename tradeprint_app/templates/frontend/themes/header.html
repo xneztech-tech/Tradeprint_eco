@@ -107,7 +107,7 @@
                             <!-- Header Cart Start -->
                             <a href="#ec-side-cart" class="ec-header-btn ec-side-toggle">
                                 <div class="header-icon"><i class="fi-rr-shopping-basket"></i></div>
-                                <span class="ec-header-count ec-cart-count">0</span>
+                                <span class="ec-header-count ec-cart-count">{{ cart_items|length|default:0 }}</span>
                             </a>
                             <!-- Header Cart End -->
                             <!-- Header menu Start -->
@@ -203,7 +203,7 @@
                                 <!-- Header Cart Start -->
                                 <a href="#ec-side-cart" class="ec-header-btn ec-side-toggle">
                                     <div class="header-icon"><i class="fi-rr-shopping-basket"></i></div>
-                                    <span class="ec-header-count ec-cart-count">3</span><span class="ec-btn-title">In
+                                    <span class="ec-header-count ec-cart-count">{{ cart_items|length|default:0 }}</span><span class="ec-btn-title">In
                                         Cart</span>
                                 </a>
                                 <!-- Header Cart End -->
